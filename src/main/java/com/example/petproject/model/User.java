@@ -7,22 +7,19 @@ import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Entity
+@Table(name="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank
-    @Size(max = 20)
     private String username;
-    @NotBlank
-    @Size(max = 120)
     private String password;
-    @NotBlank
     private String name;
-    @OneToMany
+    @ManyToMany
     private Set<Role> roles = new HashSet<>();
 
     public User(String username, String name, String password) {
