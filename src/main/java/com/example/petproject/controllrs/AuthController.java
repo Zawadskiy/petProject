@@ -14,12 +14,15 @@ import com.example.petproject.repository.RoleRepository;
 import com.example.petproject.repository.UserRepository;
 import com.example.petproject.security.service.UserPrincipal;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +49,13 @@ public class AuthController {
     PasswordEncoder encoder;
 
     @PostMapping("/signin")
-    public UserInfoResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public UserInfoResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(authentication);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", context);
 
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 

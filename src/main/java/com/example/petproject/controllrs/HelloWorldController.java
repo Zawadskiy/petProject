@@ -1,9 +1,5 @@
 package com.example.petproject.controllrs;
 
-import com.example.petproject.model.Dormitory;
-import com.example.petproject.model.Gender;
-import com.example.petproject.model.Room;
-import com.example.petproject.model.University;
 import com.example.petproject.repository.DormitoryRepository;
 import com.example.petproject.repository.RoomRepository;
 import com.example.petproject.repository.StudentRepository;
@@ -68,5 +64,15 @@ public class HelloWorldController {
 //        roomRepository.save(room2);
 //        roomRepository.save(room3);
         return "Hello World";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/user")
+    public String user() {
+        return "user";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/admin")
+    public String admin() {
+        return "admin";
     }
 }
