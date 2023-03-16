@@ -1,6 +1,5 @@
 package com.example.petproject.config.security;
 
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +19,7 @@ public class WebSecurityConfig {
 
     @Autowired
     public WebSecurityConfig(UserDetailsService userDetailsService) {
-        this.userDetailsService=userDetailsService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -47,8 +46,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/user").hasAuthority("ROLE_USER")
-                .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/admin**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/user**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers("/**").permitAll()
                 .and()
                 .csrf().disable();

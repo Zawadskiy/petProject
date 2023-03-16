@@ -1,15 +1,15 @@
 package com.example.petproject.dto.response;
 
-import java.util.List;
+import java.util.Set;
 
 public class UserInfoResponse {
 
     private long id;
     private String username;
     private String name;
-    private final List<String> roles;
+    private final Set<String> roles;
 
-    public UserInfoResponse(long id, String username, String name, List<String> roles) {
+    public UserInfoResponse(long id, String username, String name, Set<String> roles) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -40,7 +40,7 @@ public class UserInfoResponse {
         this.username = username;
     }
 
-    public List<String> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 }

@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: root
+    url: jdbc:postgresql://localhost:5432/root
+    password: admin
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+#    spring:
+#      jpa:
+#        properties:
+#          jakarta:
+#            persistence:
+#              schema-generation:
+#                scripts:
+#                  create-target: create.sql
+#                  action: create
+#                  create-source: metadata
