@@ -1,23 +1,20 @@
-package com.example.petproject.controllrs;
+package com.example.petproject.controller;
 
-import com.example.petproject.exceptions.DuplicateUsernameException;
-import com.example.petproject.exceptions.RoleNotFoundException;
+import com.example.petproject.dto.request.LoginRequest;
+import com.example.petproject.dto.request.SignupRequest;
+import com.example.petproject.dto.response.MessageResponse;
+import com.example.petproject.dto.response.UserInfoResponse;
+import com.example.petproject.exception.DuplicateUsernameException;
+import com.example.petproject.exception.RoleNotFoundException;
 import com.example.petproject.model.ERole;
 import com.example.petproject.model.Role;
 import com.example.petproject.model.User;
-import com.example.petproject.payload.request.LoginRequest;
-import com.example.petproject.payload.request.SignupRequest;
-import com.example.petproject.payload.response.ErrorResponse;
-import com.example.petproject.payload.response.MessageResponse;
-import com.example.petproject.payload.response.UserInfoResponse;
+import com.example.petproject.model.UserPrincipal;
 import com.example.petproject.repository.RoleRepository;
 import com.example.petproject.repository.UserRepository;
-import com.example.petproject.security.service.UserPrincipal;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,7 +22,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,17 +36,24 @@ import java.util.stream.Collectors;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Resource
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Resource
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Resource
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Resource
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
+
+    @Autowired
+    public AuthController(AuthenticationManager authenticationManager,
+                          UserRepository userRepository,
+                          RoleRepository roleRepository,
+                          PasswordEncoder encoder) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.encoder = encoder;
+    }
 
     @PostMapping("/signin")
     public UserInfoResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
@@ -83,7 +90,7 @@ public class AuthController {
 
         Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                .orElseThrow(() -> new RoleNotFoundException("Role is not found."));
+                .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(ERole.ROLE_USER)));
         roles.add(userRole);
 
         user.setRoles(roles);
@@ -92,15 +99,4 @@ public class AuthController {
         return new MessageResponse("User registered successfully!");
     }
 
-    @ExceptionHandler({RoleNotFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ErrorResponse roleNotFound(RoleNotFoundException exception) {
-        return new ErrorResponse(exception.getMessage());
-    }
-
-    @ExceptionHandler(DuplicateUsernameException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody ErrorResponse usernameIsTaken(DuplicateUsernameException exception) {
-        return new ErrorResponse(exception.getMessage());
-    }
 }

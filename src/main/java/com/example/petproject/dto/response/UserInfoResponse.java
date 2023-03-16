@@ -1,4 +1,4 @@
-package com.example.petproject.payload.response;
+package com.example.petproject.dto.response;
 
 import java.util.List;
 

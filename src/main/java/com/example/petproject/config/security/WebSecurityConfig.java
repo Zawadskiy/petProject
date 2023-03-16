@@ -1,6 +1,7 @@
-package com.example.petproject.security;
+package com.example.petproject.config.security;
 
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,8 +16,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfig {
 
-    @Resource
-    UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public WebSecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService=userDetailsService;
+    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {

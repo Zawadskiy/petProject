@@ -1,4 +1,4 @@
-package com.example.petproject.exceptions;
+package com.example.petproject.exception;
 
 public class DuplicateUsernameException extends RuntimeException {
 
