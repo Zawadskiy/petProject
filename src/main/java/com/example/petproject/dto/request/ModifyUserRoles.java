@@ -3,7 +3,7 @@ package com.example.petproject.dto.request;
 import com.example.petproject.validator.RoleNameValidation;
 import jakarta.validation.constraints.NotBlank;
 
-public class AddRoleRequest {
+public class ModifyUserRoles {
 
     @NotBlank(message = "Can't be blank")
     private String username;
