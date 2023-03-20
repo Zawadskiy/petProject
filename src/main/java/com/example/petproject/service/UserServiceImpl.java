@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,13 +31,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserInfoResponse addRoleForUser(String username, String roleName) {
 
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        Optional<Role> byName = roleRepository.findByName(ERole.valueOf(roleName));
+        Role role = roleRepository.findByName(ERole.valueOf(roleName))
+                .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(roleName)));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username %s doesn't exists".formatted(username)));
 
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User with username %s doesn't exists".formatted(username)));
-
-        user.getRoles().add(byName.orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(roleName))));
-
+        user.getRoles().add(role);
         userRepository.save(user);
 
         return new UserInfoResponse(
@@ -47,7 +45,28 @@ public class UserServiceImpl implements UserService {
                 user.getName(),
                 user.getRoles()
                         .stream()
-                        .map(role -> role.getName().name())
+                        .map(r -> r.getName().name())
+                        .collect(Collectors.toSet()));
+    }
+
+    @Override
+    @Transactional
+    public UserInfoResponse deleteRoleForUser(String username, String roleName) {
+        Role role = roleRepository.findByName(ERole.valueOf(roleName))
+                .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(roleName)));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username %s doesn't exists".formatted(username)));
+
+        user.getRoles().remove(role);
+        userRepository.save(user);
+
+        return new UserInfoResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getName(),
+                user.getRoles()
+                        .stream()
+                        .map(r -> r.getName().name())
                         .collect(Collectors.toSet()));
     }
 }
