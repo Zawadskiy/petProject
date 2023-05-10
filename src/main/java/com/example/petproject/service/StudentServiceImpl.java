@@ -37,11 +37,10 @@ public class StudentServiceImpl implements StudentService {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Student> all = studentRepository.findAll(pageRequest);
 
-
-        List<Student> allWhereUniversityNameIs = studentRepository
-                .findByUniversityNameIgnoreCaseOrDormitoryNumber(role.substring(4).toLowerCase(), role.substring(4).toLowerCase(), pageRequest);
-        List<Student> f = studentRepository
-                .findByUniversityNameIgnoreCaseOrDormitoryNumber("test", "test", pageRequest);
+//        List<Student> allWhereUniversityNameIs = studentRepository
+//                .findByUniversityNameIgnoreCaseOrDormitoryNumber(role.substring(4).toLowerCase(), role.substring(4).toLowerCase(), pageRequest);
+//        List<Student> f = studentRepository
+//                .findByUniversityNameIgnoreCaseOrDormitoryNumber("test", "test", pageRequest);
 
         return all.stream().toList();
     }
@@ -51,5 +50,13 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(student);
 
         return student;
+    }
+    @Override
+    public List<Student> findStudentsByUniversity(String name) {
+        return studentRepository.findByUniversityName(name);
+    }
+    @Override
+    public List<Student> findStudentsByDormitory(String number) {
+        return studentRepository.findByDormitoryNumber(number);
     }
 }

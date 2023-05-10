@@ -1,26 +1,10 @@
-package com.example.petproject.dto.response;
+package com.example.petproject.dto.model.user;
 
-public class UserInfoResponse {
-
-    private long id;
+public class UserDto {
     private String username;
     private String name;
     private String role;
-
-    public UserInfoResponse(long id, String username, String name, String role) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.role = role;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    private String password;
 
     public String getName() {
         return name;
@@ -44,5 +28,9 @@ public class UserInfoResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

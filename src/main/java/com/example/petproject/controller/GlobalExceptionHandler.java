@@ -1,6 +1,6 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.dto.response.ErrorResponse;
+import com.example.petproject.dto.error.ErrorDto;
 import com.example.petproject.error.ApiError;
 import com.example.petproject.exception.DuplicateUsernameException;
 import com.example.petproject.exception.RoleNotFoundException;
@@ -27,20 +27,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RoleNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ErrorResponse roleNotFound(RoleNotFoundException exception) {
-        return new ErrorResponse(exception.getMessage());
+    public @ResponseBody ErrorDto roleNotFound(RoleNotFoundException exception) {
+        return new ErrorDto(exception.getMessage());
     }
 
     @ExceptionHandler(DuplicateUsernameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody ErrorResponse usernameIsTaken(DuplicateUsernameException exception) {
-        return new ErrorResponse(exception.getMessage());
+    public @ResponseBody ErrorDto usernameIsTaken(DuplicateUsernameException exception) {
+        return new ErrorDto(exception.getMessage());
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ErrorResponse usernameNotFound(UsernameNotFoundException exception) {
-        return new ErrorResponse(exception.getMessage());
+    public @ResponseBody ErrorDto usernameNotFound(UsernameNotFoundException exception) {
+        return new ErrorDto(exception.getMessage());
     }
 
     @Override

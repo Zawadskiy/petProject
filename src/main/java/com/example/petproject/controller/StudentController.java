@@ -1,9 +1,9 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.dto.response.statistic.StatisticResponse;
-import com.example.petproject.model.Student;
-import com.example.petproject.service.StatisticService;
-import com.example.petproject.service.StudentService;
+import com.example.petproject.dto.model.statistic.StatisticDto;
+import com.example.petproject.dto.model.student.StudentDto;
+import com.example.petproject.facade.statistic.StatisticFacade;
+import com.example.petproject.facade.student.StudentFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,23 +15,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 public class StudentController {
+    private final StudentFacade studentFacade;
 
-    private final StudentService studentService;
-    private final StatisticService statisticService;
+    private final StatisticFacade statisticFacade;
 
     @Autowired
-    public StudentController(StudentService studentService, StatisticService statisticService) {
-        this.studentService = studentService;
-        this.statisticService = statisticService;
+    public StudentController(StudentFacade studentFacade, StatisticFacade statisticFacade) {
+        this.studentFacade = studentFacade;
+        this.statisticFacade = statisticFacade;
     }
 
     @GetMapping(params = {"page", "size"})
-    public List<Student> getStudents(@RequestParam("page") int page, @RequestParam("size") int size) {
-        return studentService.getStudents(page, size);
+    public List<StudentDto> getStudents(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return studentFacade.getStudents(page, size);
     }
 
     @GetMapping("/getstatistic")
-    public List<StatisticResponse> getStatistic() {
-        return statisticService.getStatistic();
+    public List<StatisticDto> getStatistic() {
+        return statisticFacade.getStatistic();
     }
 }

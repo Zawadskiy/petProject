@@ -1,8 +1,6 @@
 package com.example.petproject.service;
 
-import com.example.petproject.dto.response.UserInfoResponse;
 import com.example.petproject.exception.RoleNotFoundException;
-import com.example.petproject.model.ERole;
 import com.example.petproject.model.Role;
 import com.example.petproject.model.User;
 import com.example.petproject.repository.RoleRepository;
@@ -27,16 +25,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserInfoResponse modifyRoleForUser(String username, ERole role) {
+    public User updateUser(User update) {
 
-        Role newRole = roleRepository.findByName(role)
-                .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(role)));
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User with username %s doesn't exists".formatted(username)));
+        User user = userRepository.findByUsername(update.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User with username %s doesn't exists".formatted(update.getUsername())));
 
-        user.setRole(newRole);
+        if (update.getRole() != null) {
+            Role newRole = roleRepository.findByName(update.getRole().getName())
+                    .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(update.getRole().getName())));
+            user.setRole(newRole);
+        }
+
+        if (update.getPassword() != null) {
+            user.setPassword(update.getPassword());
+        }
+
+        if (update.getUsername() != null) {
+            user.setUsername(update.getUsername());
+        }
+
+        if (update.getName() != null) {
+            user.setName(update.getName());
+        }
+
         userRepository.save(user);
 
-        return new UserInfoResponse(user.getId(), user.getUsername(), user.getName(), user.getRole().getName().name());
+        return user;
     }
 }

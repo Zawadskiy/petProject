@@ -1,17 +1,15 @@
-package com.example.petproject.dto.response.statistic;
+package com.example.petproject.dto.model.statistic;
+
+import com.example.petproject.dto.model.dormitory.DormitoryDto;
 
 import java.util.List;
 
-public class StatisticResponse {
+public class StatisticDto {
 
     private String universityName;
-    private List<DormitoryResponse> dormitory;
+    private List<DormitoryStatisticDto> dormitoryStatistic;
     private int studentsCount;
     private long liveInDormitory;
-
-    public List<DormitoryResponse> getDormitory() {
-        return dormitory;
-    }
 
     public int getStudentsCount() {
         return studentsCount;
@@ -21,9 +19,6 @@ public class StatisticResponse {
         return liveInDormitory;
     }
 
-    public void setDormitory(List<DormitoryResponse> dormitory) {
-        this.dormitory = dormitory;
-    }
 
     public void setStudentsCount(int studentsCount) {
         this.studentsCount = studentsCount;
@@ -39,5 +34,13 @@ public class StatisticResponse {
 
     public void setUniversityName(String universityName) {
         this.universityName = universityName;
+    }
+
+    public List<DormitoryStatisticDto> getDormitoryStatistic() {
+        return dormitoryStatistic;
+    }
+
+    public void setDormitoryStatistic(List<DormitoryStatisticDto> dormitoryStatistic) {
+        this.dormitoryStatistic = dormitoryStatistic;
     }
 }

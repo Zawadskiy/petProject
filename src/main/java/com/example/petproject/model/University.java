@@ -32,7 +32,7 @@ public class University {
         this.name = name;
     }
 
-    public double getStudyDuration() {
+    public int getStudyDuration() {
         return studyDuration;
     }
 

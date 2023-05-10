@@ -1,9 +1,10 @@
 package com.example.petproject.controller;
 
+import com.example.petproject.converter.UserConverter;
 import com.example.petproject.dto.request.LoginRequest;
 import com.example.petproject.dto.request.SignupRequest;
 import com.example.petproject.dto.response.MessageResponse;
-import com.example.petproject.dto.response.UserInfoResponse;
+import com.example.petproject.dto.model.user.UserDto;
 import com.example.petproject.exception.RoleNotFoundException;
 import com.example.petproject.model.ERole;
 import com.example.petproject.model.Role;
@@ -35,6 +36,7 @@ public class AuthController {
     private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
     private final SignupRequestValidator signupRequestValidator;
+    private final UserConverter userConverter;
 
     @InitBinder("signupRequest")
     void initStudentValidator(WebDataBinder binder) {
@@ -46,16 +48,18 @@ public class AuthController {
                           UserRepository userRepository,
                           RoleRepository roleRepository,
                           PasswordEncoder encoder,
-                          SignupRequestValidator signupRequestValidator) {
+                          SignupRequestValidator signupRequestValidator,
+                          UserConverter userConverter) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
         this.signupRequestValidator = signupRequestValidator;
+        this.userConverter = userConverter;
     }
 
     @PostMapping("/signin")
-    public UserInfoResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
+    public UserDto authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -65,14 +69,11 @@ public class AuthController {
 
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
-        String role = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .findAny().orElseThrow(() -> new RoleNotFoundException("User don't have any role"));
+//        String role = userDetails.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .findAny().orElseThrow(() -> new RoleNotFoundException("User don't have any role"));
 
-        return new UserInfoResponse(userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getName(),
-                role);
+        return userConverter.toUserDto(userDetails);
     }
 
     @PostMapping("/signup")

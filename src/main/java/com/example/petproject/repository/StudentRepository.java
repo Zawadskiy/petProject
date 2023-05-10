@@ -11,5 +11,7 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    List<Student> findByUniversityNameIgnoreCaseOrDormitoryNumber(String name, String number, PageRequest pageRequest);
+    List<Student> findByUniversityName(String name);
+
+    List<Student> findByDormitoryNumber(String number);
 }

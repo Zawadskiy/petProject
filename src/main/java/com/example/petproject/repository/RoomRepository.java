@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
+    List<Room> findAllByDormitoryIdAndAvailabilityForAccommodation(long dormitory_id, boolean availabilityForAccommodation);
 
-    @Query("SELECT r from Room r where r.dormitory.id = :id")
-    List<Room> findAllWhereDormitoryIs(@Param("id") long id);
+    Optional<Room> findByNumberAndDormitoryId(String number, long dormitory_id);
 }
