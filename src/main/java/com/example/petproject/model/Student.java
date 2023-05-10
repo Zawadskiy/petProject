@@ -13,6 +13,7 @@ public class Student {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @ManyToOne
