@@ -4,7 +4,6 @@ import com.example.petproject.dto.request.LoginRequest;
 import com.example.petproject.dto.request.SignupRequest;
 import com.example.petproject.dto.response.MessageResponse;
 import com.example.petproject.dto.response.UserInfoResponse;
-import com.example.petproject.exception.DuplicateUsernameException;
 import com.example.petproject.exception.RoleNotFoundException;
 import com.example.petproject.model.ERole;
 import com.example.petproject.model.Role;
@@ -12,6 +11,7 @@ import com.example.petproject.model.User;
 import com.example.petproject.model.UserPrincipal;
 import com.example.petproject.repository.RoleRepository;
 import com.example.petproject.repository.UserRepository;
+import com.example.petproject.validator.SignupRequestValidator;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,36 +22,36 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
+    //TODO добавити пласт сервісів
     private final AuthenticationManager authenticationManager;
-
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
-
     private final PasswordEncoder encoder;
+    private final SignupRequestValidator signupRequestValidator;
+
+    @InitBinder("signupRequest")
+    void initStudentValidator(WebDataBinder binder) {
+        binder.setValidator(signupRequestValidator);
+    }
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager,
                           UserRepository userRepository,
                           RoleRepository roleRepository,
-                          PasswordEncoder encoder) {
+                          PasswordEncoder encoder,
+                          SignupRequestValidator signupRequestValidator) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
+        this.signupRequestValidator = signupRequestValidator;
     }
 
     @PostMapping("/signin")
@@ -65,37 +65,29 @@ public class AuthController {
 
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
-        Set<String> roles = userDetails.getAuthorities().stream()
+        String role = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
+                .findAny().orElseThrow(() -> new RoleNotFoundException("User don't have any role"));
 
         return new UserInfoResponse(userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getName(),
-                roles);
+                role);
     }
 
-    //TODO подумати над способом дадавання ролей юзеру, зараз стандартне створення юзера з роллю юзер
     @PostMapping("/signup")
-    public MessageResponse registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public MessageResponse registerUser(@Valid @RequestBody SignupRequest signupRequest) {
 
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new DuplicateUsernameException("Username is already taken!");
-        }
+        User user = new User(signupRequest.getUsername(),
+                signupRequest.getName(),
+                encoder.encode(signupRequest.getPassword()));
 
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getName(),
-                encoder.encode(signUpRequest.getPassword()));
-
-        Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                 .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(ERole.ROLE_USER)));
-        roles.add(userRole);
 
-        user.setRoles(roles);
+        user.setRole(userRole);
         userRepository.save(user);
 
         return new MessageResponse("User registered successfully!");
     }
-
 }

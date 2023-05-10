@@ -2,13 +2,6 @@ package com.example.petproject.model;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.hibernate.validator.constraints.UniqueElements;
-
 @Entity
 @Table(name="users")
 public class User {
@@ -19,8 +12,8 @@ public class User {
     private String username;
     private String password;
     private String name;
-    @ManyToMany
-    private Set<Role> roles = new HashSet<>();
+    @OneToOne
+    private Role role;
 
     public User(String username, String name, String password) {
         this.username = username;
@@ -29,7 +22,6 @@ public class User {
     }
 
     public User() {
-
     }
 
     public long getId() {
@@ -56,12 +48,12 @@ public class User {
         this.name = name;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getPassword() {

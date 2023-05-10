@@ -2,9 +2,8 @@ package com.example.petproject.service;
 
 
 import com.example.petproject.dto.response.UserInfoResponse;
+import com.example.petproject.model.ERole;
 
 public interface UserService {
-    UserInfoResponse addRoleForUser(String username, String roleName);
-
-    UserInfoResponse deleteRoleForUser(String username, String roleName);
+    UserInfoResponse modifyRoleForUser(String username, ERole roleName);
 }

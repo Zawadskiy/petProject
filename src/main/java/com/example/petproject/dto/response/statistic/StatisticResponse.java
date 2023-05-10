@@ -2,14 +2,14 @@ package com.example.petproject.dto.response.statistic;
 
 import java.util.List;
 
-public class Statistic {
+public class StatisticResponse {
 
     private String universityName;
-    private List<DormitoryDTO> dormitory;
+    private List<DormitoryResponse> dormitory;
     private int studentsCount;
     private long liveInDormitory;
 
-    public List<DormitoryDTO> getDormitory() {
+    public List<DormitoryResponse> getDormitory() {
         return dormitory;
     }
 
@@ -21,7 +21,7 @@ public class Statistic {
         return liveInDormitory;
     }
 
-    public void setDormitory(List<DormitoryDTO> dormitory) {
+    public void setDormitory(List<DormitoryResponse> dormitory) {
         this.dormitory = dormitory;
     }
 

@@ -38,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ErrorResponse usernameNotFound(UsernameNotFoundException exception) {
         return new ErrorResponse(exception.getMessage());
     }
@@ -54,9 +54,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
 
-        ApiError apiError =
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return handleExceptionInternal(
-                ex, apiError, headers, apiError.getStatus(), request);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 }

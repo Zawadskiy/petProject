@@ -1,14 +1,13 @@
 package com.example.petproject.service;
 
-import com.example.petproject.dto.response.statistic.DormitoryDTO;
-import com.example.petproject.dto.response.statistic.Statistic;
+import com.example.petproject.dto.response.statistic.DormitoryResponse;
+import com.example.petproject.dto.response.statistic.StatisticResponse;
 import com.example.petproject.model.Dormitory;
 import com.example.petproject.model.Room;
 import com.example.petproject.model.Student;
 import com.example.petproject.model.University;
 import com.example.petproject.repository.RoomRepository;
 import com.example.petproject.repository.StudentRepository;
-import com.example.petproject.repository.UniversityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,33 +33,34 @@ public class StatisticServiceImpl implements StatisticService {
 
     //TODO занадто жирний) подумати над реалізацією пізнише
     @Override
-    public List<Statistic> getStatistic() {
+    public List<StatisticResponse> getStatistic() {
 
-        List<Statistic> result = new ArrayList<>();
+        List<StatisticResponse> result = new ArrayList<>();
 
+        //TODO модифікувати запит ан завежність від ролі користувача
         List<Student> allStudents = studentRepository.findAll();
 
         Map<University, List<Student>> universityStudents = allStudents.stream().collect(Collectors.groupingBy(Student::getUniversity));
 
         for (Map.Entry<University, List<Student>> universityListEntry : universityStudents.entrySet()) {
 
-            Statistic statistic = new Statistic();
+            StatisticResponse statistic = new StatisticResponse();
             List<Student> students = universityListEntry.getValue();
 
             Map<Dormitory, List<Student>> dormitoryStudents = students.stream().collect(Collectors.groupingBy(Student::getDormitory));
 
-            List<DormitoryDTO> dormitoryDTOS = new ArrayList<>();
+            List<DormitoryResponse> dormitoryDTOS = new ArrayList<>();
             for (Map.Entry<Dormitory, List<Student>> dormitoryListEntry : dormitoryStudents.entrySet()) {
                 Dormitory dormitory = dormitoryListEntry.getKey();
                 List<Student> studentsInDormitory = dormitoryListEntry.getValue();
 
-                DormitoryDTO dormitoryDTO = new DormitoryDTO();
+                DormitoryResponse dormitoryResponse = new DormitoryResponse();
 
-                dormitoryDTO.setNumber(dormitory.getNumber());
+                dormitoryResponse.setNumber(dormitory.getNumber());
 
-                dormitoryDTO.setFreePlaces(getAllPlacesInDormitory(dormitory) - studentsInDormitory.size());
+                dormitoryResponse.setFreePlaces(getAllPlacesInDormitory(dormitory) - studentsInDormitory.size());
 
-                dormitoryDTOS.add(dormitoryDTO);
+                dormitoryDTOS.add(dormitoryResponse);
             }
 
             statistic.setDormitory(dormitoryDTOS);

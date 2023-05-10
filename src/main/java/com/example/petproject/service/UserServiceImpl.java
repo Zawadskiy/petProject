@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -29,44 +27,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserInfoResponse addRoleForUser(String username, String roleName) {
+    public UserInfoResponse modifyRoleForUser(String username, ERole role) {
 
-        Role role = roleRepository.findByName(ERole.valueOf(roleName))
-                .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(roleName)));
+        Role newRole = roleRepository.findByName(role)
+                .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(role)));
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username %s doesn't exists".formatted(username)));
 
-        user.getRoles().add(role);
+        user.setRole(newRole);
         userRepository.save(user);
 
-        return new UserInfoResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getName(),
-                user.getRoles()
-                        .stream()
-                        .map(r -> r.getName().name())
-                        .collect(Collectors.toSet()));
-    }
-
-    @Override
-    @Transactional
-    public UserInfoResponse deleteRoleForUser(String username, String roleName) {
-        Role role = roleRepository.findByName(ERole.valueOf(roleName))
-                .orElseThrow(() -> new RoleNotFoundException("%s is not found.".formatted(roleName)));
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User with username %s doesn't exists".formatted(username)));
-
-        user.getRoles().remove(role);
-        userRepository.save(user);
-
-        return new UserInfoResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getName(),
-                user.getRoles()
-                        .stream()
-                        .map(r -> r.getName().name())
-                        .collect(Collectors.toSet()));
+        return new UserInfoResponse(user.getId(), user.getUsername(), user.getName(), user.getRole().getName().name());
     }
 }

@@ -1,14 +1,15 @@
 package com.example.petproject.repository;
 
 import com.example.petproject.model.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
-
-    //насколько то хреновіій вариант?)
-    @Query("select s from Student s where s.university.name in (:authorities) or s.dormitory.number in (:authorities) or 'ROLE_ADMIN' in :authorities")
-    List<Student> findAll(List<String> authorities);
+    List<Student> findByUniversityNameIgnoreCaseOrDormitoryNumber(String name, String number, PageRequest pageRequest);
 }

@@ -1,9 +1,8 @@
 package com.example.petproject.dto.response.statistic;
 
-public class DormitoryDTO {
+public class DormitoryResponse {
 
     private String number;
-
     private long freePlaces;
 
     public String getNumber() {
