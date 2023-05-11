@@ -2,6 +2,7 @@ package com.example.petproject.dto.model.dormitory;
 
 public class DormitoryDto {
 
+    private long id;
     private String number;
     private int numberOfRooms;
 
@@ -39,5 +40,13 @@ public class DormitoryDto {
 
     public void setAvailabilityForAccommodation(boolean availabilityForAccommodation) {
         this.availabilityForAccommodation = availabilityForAccommodation;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

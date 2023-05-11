@@ -4,19 +4,16 @@ import com.example.petproject.dto.model.statistic.StatisticDto;
 import com.example.petproject.dto.model.student.StudentDto;
 import com.example.petproject.facade.statistic.StatisticFacade;
 import com.example.petproject.facade.student.StudentFacade;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/student")
 public class StudentController {
     private final StudentFacade studentFacade;
-
     private final StatisticFacade statisticFacade;
 
     @Autowired
@@ -33,5 +30,25 @@ public class StudentController {
     @GetMapping("/getstatistic")
     public List<StatisticDto> getStatistic() {
         return statisticFacade.getStatistic();
+    }
+
+    @PutMapping("/update")
+    public StudentDto updateStudent(@Valid @RequestBody StudentDto request) {
+        return studentFacade.updateStudent(request);
+    }
+
+    @GetMapping("/get/{id}")
+    public StudentDto getStudent(@PathVariable long id) {
+        return studentFacade.getStudent(id);
+    }
+
+    @PostMapping ("/new")
+    public StudentDto createStudent(@Valid @RequestBody StudentDto request) {
+        return studentFacade.createStudent(request);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public StudentDto deleteStudent(@PathVariable long id) {
+        return studentFacade.deleteStudent(id);
     }
 }

@@ -2,10 +2,9 @@ package com.example.petproject.converter;
 
 import com.example.petproject.dto.model.student.StudentDto;
 import com.example.petproject.model.*;
-import com.example.petproject.repository.RoomRepository;
-import com.example.petproject.service.DormitoryService;
-import com.example.petproject.service.RoomService;
-import com.example.petproject.service.UniversityService;
+import com.example.petproject.service.dormitory.DormitoryService;
+import com.example.petproject.service.room.RoomService;
+import com.example.petproject.service.university.UniversityService;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,6 +23,7 @@ public class StudentConverter {
     public Student toStudent(StudentDto studentDto) {
         Student student = new Student();
 
+        student.setId(studentDto.getId());
         student.setLiveInDormitory(studentDto.isLiveInDormitory());
         student.setName(studentDto.getName());
         student.setGender(Gender.valueOf(studentDto.getGender()));
@@ -47,12 +47,13 @@ public class StudentConverter {
     public StudentDto toStudentDto(Student student) {
         StudentDto studentDto = new StudentDto();
 
-        studentDto.setDormitoryNumber(student.getDormitory().getNumber());
-        studentDto.setGender(student.getGender().name());
-        studentDto.setRoomNumber(student.getRoom().getNumber());
+        studentDto.setId(student.getId());
+//        studentDto.setDormitoryNumber(student.getDormitory().getNumber());
+//        studentDto.setGender(student.getGender().name());
+//        studentDto.setRoomNumber(student.getRoom().getNumber());
         studentDto.setUniversityName(student.getUniversity().getName());
         studentDto.setName(student.getName());
-        studentDto.setLiveInDormitory(student.isLiveInDormitory());
+//        studentDto.setLiveInDormitory(student.isLiveInDormitory());
 
 //        @TODO
 //        studentDto.setAdmissionYear();

@@ -1,4 +1,4 @@
-package com.example.petproject.service;
+package com.example.petproject.service.user;
 
 import com.example.petproject.model.User;
 import com.example.petproject.model.UserPrincipal;

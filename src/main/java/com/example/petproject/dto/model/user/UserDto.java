@@ -1,6 +1,8 @@
 package com.example.petproject.dto.model.user;
 
 public class UserDto {
+
+    private long id;
     private String username;
     private String name;
     private String role;
@@ -10,7 +12,7 @@ public class UserDto {
         return name;
     }
 
-    public void setName(String email) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -32,5 +34,13 @@ public class UserDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

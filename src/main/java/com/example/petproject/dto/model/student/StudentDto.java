@@ -2,15 +2,13 @@ package com.example.petproject.dto.model.student;
 
 public class StudentDto {
 
+    private long id;
     private String name;
     private String gender;
     private String universityName;
     private String dormitoryNumber;
-
     private String roomNumber;
-
     private String admissionYear;
-
     private String deductionDate;
     private boolean liveInDormitory;
 
@@ -76,5 +74,13 @@ public class StudentDto {
 
     public void setLiveInDormitory(boolean liveInDormitory) {
         this.liveInDormitory = liveInDormitory;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

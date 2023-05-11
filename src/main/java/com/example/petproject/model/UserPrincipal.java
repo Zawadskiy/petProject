@@ -13,14 +13,10 @@ import java.util.Objects;
 public class UserPrincipal implements UserDetails {
 
     private final long id;
-
     private final String username;
-
     private final String name;
-
     @JsonIgnore
     private final String password;
-
     private final Collection<? extends GrantedAuthority> authorities;
 
     public UserPrincipal(long id, String username, String name, String password,

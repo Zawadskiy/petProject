@@ -2,6 +2,8 @@ package com.example.petproject.dto.model.room;
 
 public class RoomDto {
 
+    private long id;
+
     private String number;
     private String dormitoryNumber;
     private int capacity;
@@ -18,14 +20,6 @@ public class RoomDto {
 
     public boolean isAvailabilityForAccommodation() {
         return availabilityForAccommodation;
-    }
-
-    public String getDormitory() {
-        return dormitoryNumber;
-    }
-
-    public void setDormitory(String dormitoryNumber) {
-        this.dormitoryNumber = dormitoryNumber;
     }
 
     public int getCapacity() {
@@ -46,5 +40,21 @@ public class RoomDto {
 
     public void setResidentsGender(String residentsGender) {
         this.residentsGender = residentsGender;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDormitoryNumber() {
+        return dormitoryNumber;
+    }
+
+    public void setDormitoryNumber(String dormitoryNumber) {
+        this.dormitoryNumber = dormitoryNumber;
     }
 }

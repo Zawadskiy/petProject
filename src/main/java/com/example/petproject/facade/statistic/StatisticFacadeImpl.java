@@ -6,10 +6,11 @@ import com.example.petproject.model.Dormitory;
 import com.example.petproject.model.Room;
 import com.example.petproject.model.Student;
 import com.example.petproject.model.University;
-import com.example.petproject.service.DormitoryService;
-import com.example.petproject.service.RoomService;
-import com.example.petproject.service.StudentService;
-import com.example.petproject.service.UniversityService;
+import com.example.petproject.service.dormitory.DormitoryService;
+import com.example.petproject.service.room.RoomService;
+import com.example.petproject.service.student.StudentService;
+import com.example.petproject.service.university.UniversityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class StatisticFacadeImpl implements StatisticFacade {
     private final RoomService roomService;
     private final StudentService studentService;
 
-
+    @Autowired
     public StatisticFacadeImpl(UniversityService universityService,
                                DormitoryService dormitoryService,
                                RoomService roomService,
@@ -41,6 +42,7 @@ public class StatisticFacadeImpl implements StatisticFacade {
     }
 
     private StatisticDto getStatisticByUniversity(University university) {
+
         StatisticDto statistic = new StatisticDto();
         List<Student> students = studentService.findStudentsByUniversity(university.getName());
 
@@ -57,6 +59,7 @@ public class StatisticFacadeImpl implements StatisticFacade {
     }
 
     private DormitoryStatisticDto getStatisticByDormitory(Dormitory dormitory) {
+
         DormitoryStatisticDto statistic = new DormitoryStatisticDto();
         List<Room> roomsInDormitory = roomService.findByDormitoryId(dormitory.getId());
 

@@ -3,7 +3,7 @@ package com.example.petproject.converter;
 import com.example.petproject.dto.model.dormitory.DormitoryDto;
 import com.example.petproject.model.Dormitory;
 import com.example.petproject.model.University;
-import com.example.petproject.service.UniversityService;
+import com.example.petproject.service.university.UniversityService;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +18,7 @@ public class DormitoryConverter {
     public Dormitory toDormitory(DormitoryDto dormitoryDto) {
         Dormitory dormitory = new Dormitory();
 
+        dormitory.setId(dormitoryDto.getId());
         dormitory.setNumberOfRooms(dormitoryDto.getNumberOfRooms());
         dormitory.setNumber(dormitory.getNumber());
         dormitory.setAvailabilityForAccommodation(dormitoryDto.isAvailabilityForAccommodation());
@@ -31,6 +32,7 @@ public class DormitoryConverter {
     public DormitoryDto toDormitoryDto(Dormitory dormitory) {
         DormitoryDto dormitoryDto = new DormitoryDto();
 
+        dormitoryDto.setId(dormitory.getId());
         if (dormitory.getUniversity() != null) {
             dormitoryDto.setUniversity(dormitory.getUniversity().getName());
         }

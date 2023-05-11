@@ -10,6 +10,7 @@ public class UniversityConverter {
     public University toUniversity(UniversityDto universityDto) {
         University university = new University();
 
+        university.setId(universityDto.getId());
         university.setName(universityDto.getName());
         university.setStudyDuration(universityDto.getStudyDuration());
 
@@ -19,6 +20,7 @@ public class UniversityConverter {
     public UniversityDto toUniversityDto(University university) {
         UniversityDto universityDto = new UniversityDto();
 
+        universityDto.setId(university.getId());
         universityDto.setName(university.getName());
         universityDto.setStudyDuration(university.getStudyDuration());
 

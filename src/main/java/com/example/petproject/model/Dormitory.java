@@ -9,13 +9,10 @@ public class Dormitory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String number;
     private int numberOfRooms;
-
     @ManyToOne
     private University university;
-
     private boolean availabilityForAccommodation;
 
     public long getId() {

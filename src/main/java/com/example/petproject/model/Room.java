@@ -9,16 +9,11 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String number;
-
     @ManyToOne
     private Dormitory dormitory;
-
     private int capacity;
-
     private boolean availabilityForAccommodation;
-
     @Enumerated(EnumType.STRING)
     private Gender residentsGender;
 
