@@ -12,6 +12,7 @@ public class User {
     private String username;
     private String password;
     private String name;
+    // TODO: 16.05.2023 Зачем?))))  Тем более, тут же м2о
     @OneToOne
     private Role role;
 

@@ -29,10 +29,15 @@ public class DormitoryConverter {
         return dormitory;
     }
 
+    // TODO: 16.05.2023 В целом, вкусовщина. Но я бы сделал интерфейс конвертера
+    //  (или заюзал существующие) с одним методом convert()
+    //  перегруженным для одиночных сущностей и коллекций.
+    //  Последнее полезно, чтобы оптимизировать запросы в бд для получения связей
     public DormitoryDto toDormitoryDto(Dormitory dormitory) {
         DormitoryDto dormitoryDto = new DormitoryDto();
 
         dormitoryDto.setId(dormitory.getId());
+        // TODO: 16.05.2023 зачем имя? логичнее id
         if (dormitory.getUniversity() != null) {
             dormitoryDto.setUniversity(dormitory.getUniversity().getName());
         }

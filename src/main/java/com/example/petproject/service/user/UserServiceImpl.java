@@ -16,6 +16,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    // TODO: 16.05.2023 юзлес
     private final RoleRepository roleRepository;
 
     @Autowired
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    // TODO: 16.05.2023 Даже интересно. Какая реализация подтягивается. Спринг дата JDBC же
     public User updateUser(User update) {
 
         User user = findById(update.getId());

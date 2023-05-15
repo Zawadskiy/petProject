@@ -3,6 +3,7 @@ package com.example.petproject.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+// TODO: 16.05.2023 А сеттеры зачем в реквестах?
 public class SignupRequest {
 
     @NotBlank

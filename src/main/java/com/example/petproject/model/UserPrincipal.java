@@ -1,4 +1,5 @@
 package com.example.petproject.model;
+// TODO: 16.05.2023 модели - это, обычно, что угодно, но не сущности. Сущности - domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+// TODO: 16.05.2023 это не энтитя
 public class UserPrincipal implements UserDetails {
 
     private final long id;

@@ -52,7 +52,7 @@ public class StudentServiceImpl implements StudentService {
 
         student.setRoom(update.getRoom());
         student.setDormitory(update.getDormitory());
-//        student.setGender(update.getGender()); // ну а вдруг?)
+//        student.setGender(update.getGender()); // ну а вдруг?) Орнул
         student.setUniversity(update.getUniversity());
         student.setName(update.getName());
         //TODO При установке университета нужно устанавливать дату поступления и окончания в сеттерах, убрать явную возможность изменения через сеттеріі.

@@ -13,6 +13,7 @@ public class Room {
     @ManyToOne
     private Dormitory dormitory;
     private int capacity;
+    // TODO: 16.05.2023 нотация сама перебивается?
     private boolean availabilityForAccommodation;
     @Enumerated(EnumType.STRING)
     private Gender residentsGender;

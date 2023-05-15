@@ -3,6 +3,7 @@ package com.example.petproject.model;
 import jakarta.persistence.*;
 
 @Entity
+// TODO: 16.05.2023 таблицы лучше в ед.ч. Кроме того, не советую баловаться левыми символами вроде '
 @Table(name = "dormitory's")
 public class Dormitory {
 
@@ -11,6 +12,8 @@ public class Dormitory {
     private long id;
     private String number;
     private int numberOfRooms;
+    // TODO: 16.05.2023 маппинг лучше явно указать. Я бы вообще советовал два поля делать.
+    //  Связь и связьАйди
     @ManyToOne
     private University university;
     private boolean availabilityForAccommodation;
@@ -54,4 +57,5 @@ public class Dormitory {
     public void setAvailabilityForAccommodation(boolean availabilityForAccommodation) {
         this.availabilityForAccommodation = availabilityForAccommodation;
     }
+    // TODO: 16.05.2023 как насчет служебных полей? даты создания и обновления
 }

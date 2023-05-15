@@ -40,6 +40,8 @@ public class UniversityController {
 
     @DeleteMapping("/delete/{id}")
     public UniversityDto deleteUniversity(@PathVariable long id) {
+        // TODO: 16.05.2023 Общее замечание: у тебя по названию класса понятна сущностью
+        // Зачем это дублировать в имени метода?
         return universityFacade.deleteUniversity(id);
     }
 

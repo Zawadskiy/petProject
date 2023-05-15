@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public class StatisticFacadeImpl implements StatisticFacade {
-
+    // TODO: 16.05.2023 Тут сервисная логика
     private final UniversityService universityService;
     private final DormitoryService dormitoryService;
     private final RoomService roomService;
@@ -35,7 +35,7 @@ public class StatisticFacadeImpl implements StatisticFacade {
 
     @Override
     public List<StatisticDto> getStatistic() {
-
+        // TODO: 16.05.2023 зачем переменная?
         List<University> universities = universityService.findAll();
 
         return universities.stream().map(this::getStatisticByUniversity).toList();
@@ -50,7 +50,7 @@ public class StatisticFacadeImpl implements StatisticFacade {
 
         statistic.setDormitoryStatistic(dormitories.stream().map(this::getStatisticByDormitory).toList());
 
-
+// TODO: 16.05.2023 Котел в аду уже топят
         statistic.setLiveInDormitory(students.stream().filter(student -> student.getDormitory() != null).count());
         statistic.setStudentsCount(students.size());
         statistic.setUniversityName(university.getName());
@@ -58,11 +58,14 @@ public class StatisticFacadeImpl implements StatisticFacade {
         return statistic;
     }
 
+    // TODO: 16.05.2023 почему это все в одном классе?
     private DormitoryStatisticDto getStatisticByDormitory(Dormitory dormitory) {
 
         DormitoryStatisticDto statistic = new DormitoryStatisticDto();
         List<Room> roomsInDormitory = roomService.findByDormitoryId(dormitory.getId());
 
+        // TODO: 16.05.2023 Статистику логично делать гибкой. За период, еще какие-то параметры
+        // TODO: 16.05.2023 Одна строчка - одна точка. Повсеместно
         int capacity = roomsInDormitory.stream().mapToInt(Room::getCapacity).sum();
         int studentsInDormitory = studentService.findStudentsByDormitory(dormitory.getNumber()).size();
 

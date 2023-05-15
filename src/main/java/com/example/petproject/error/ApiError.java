@@ -19,9 +19,11 @@ public class ApiError {
     }
 
     public ApiError(HttpStatus status, String message, String error) {
+        // TODO: 16.05.2023 зачем явный вызов?
         super();
         this.status = status;
         this.message = message;
+        // TODO: 16.05.2023 List.of()?
         errors = Arrays.asList(error);
     }
 

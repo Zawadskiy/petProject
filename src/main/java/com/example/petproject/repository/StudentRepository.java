@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByUniversityName(String name);
 
+    // TODO: 16.05.2023 Если список, то findAll
     List<Student> findByDormitoryNumber(String number);
 
     Optional<Student> findByName(String name);

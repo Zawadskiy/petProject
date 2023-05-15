@@ -1,6 +1,7 @@
 package com.example.petproject.dto.model.statistic;
 
 public class DormitoryStatisticDto {
+    // TODO: 16.05.2023 модификаторы доступа?
     String name;
     int freePlaces;
 

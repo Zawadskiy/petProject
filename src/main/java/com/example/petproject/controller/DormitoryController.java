@@ -19,6 +19,7 @@ public class DormitoryController {
         this.dormitoryFacade = dormitoryFacade;
     }
 
+    // TODO: 16.05.2023 Вам шашечки или ехать?) Рестфул?
     @PutMapping("/update")
     public DormitoryDto updateDormitory(@Valid @RequestBody DormitoryDto request) {
         return dormitoryFacade.updateDormitory(request);
@@ -40,6 +41,8 @@ public class DormitoryController {
     }
 
     @GetMapping(value = "/get/all", params = {"page", "size"})
+    // TODO: 16.05.2023 @PageableDefault. Не хочешь заодно фильтрацию сюда прикрутить?
+    // TODO: 16.05.2023 Если название переменной == название параметра - можно не указывать атрибут явно
     public List<DormitoryDto> getDormitories(@RequestParam("page") int page, @RequestParam("size") int size) {
         return dormitoryFacade.getDormitories(page, size);
     }

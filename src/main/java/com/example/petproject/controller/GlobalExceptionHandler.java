@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
+// TODO: 16.05.2023 В отдельный пакет
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RoleNotFoundException.class)
@@ -46,7 +47,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
+        // TODO: 16.05.2023 Алмазный оператор
         List<String> errors = new ArrayList<String>();
+        // TODO: 16.05.2023 Stream API?
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.add(error.getField() + ": " + error.getDefaultMessage());
         }

@@ -4,6 +4,8 @@ import com.example.petproject.model.Dormitory;
 
 import java.util.List;
 
+// TODO: 16.05.2023 и зачем тут интерфейс?)
+//  Название на уровне сервиса - обычно getBy... fina - уровень репы
 public interface DormitoryService {
     Dormitory findByNumberAndUniversityId(String number, long id);
 

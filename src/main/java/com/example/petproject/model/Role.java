@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name="roles")
 public class Role {
+    // TODO: 16.05.2023 в чем ценность этой сущности, если роль одна у юзера и ролевая статическая?
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

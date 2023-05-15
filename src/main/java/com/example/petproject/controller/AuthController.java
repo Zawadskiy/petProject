@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     //TODO добавити пласт сервісів
+    // TODO: 16.05.2023 Не советую инжекты вперемешку делать.
+    //  Группируй по слою архитектуры/зоне ответтсвенности
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final PasswordEncoder encoder;
@@ -56,8 +58,9 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
+    // TODO: 16.05.2023 Работу с сессией я бы выпихнул в фильтр
     public UserDto authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
-
+// TODO: 16.05.2023 Раздутый контроллер. Его задача - дергать сервисы, а не выполнять логику самостоятельно
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -70,17 +73,19 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    // TODO: 16.05.2023 что с названием метода?)
     public MessageResponse registerUser(@Valid @RequestBody SignupRequest signupRequest) {
 
         User user = new User(signupRequest.getUsername(),
                 signupRequest.getName(),
                 encoder.encode(signupRequest.getPassword()));
-
+// TODO: 16.05.2023 Опять же. Это должно быть в сервисе. В т.ч. и хеширование пароля
         Role userRole = roleService.findByName(ERole.ROLE_USER.name());
 
         user.setRole(userRole);
         userService.create(user);
 
+        // TODO: 16.05.2023 Чем EntityResponse не угодил?
         return new MessageResponse("User registered successfully!");
     }
 }

@@ -25,6 +25,8 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     @Override
     public Dormitory findByNumber(String number) {
+        // TODO: 16.05.2023 одна строчка - одна точка.
+        //  К слову, лучше уж дефолтный эксепшн тут. И мтеод референс
         return dormitoryRepository.findByNumber(number).orElseThrow(() -> new RuntimeException());
     }
 
@@ -34,13 +36,16 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
+    // TODO: 16.05.2023 параметр логичнее было бы принимать, а не хардкодить.
+    //  И как насчет criteria api?)
     public List<Dormitory> findAllAvailableForAccommodation() {
         return dormitoryRepository.findAllByAvailabilityForAccommodation(true);
     }
 
     @Override
+    // TODO: 16.05.2023 почему не Page в возвращаемом типе?
     public List<Dormitory> getDormitories(int page, int size) {
-
+// TODO: 16.05.2023 Зачем вручную создавать?
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Dormitory> dormitories = dormitoryRepository.findAll(pageRequest);
 
@@ -48,6 +53,7 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
+    // TODO: 16.05.2023 транзакции?
     public Dormitory update(Dormitory update) {
 
         Dormitory dormitory = findById(update.getId());
@@ -72,6 +78,7 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
+    // TODO: 16.05.2023 параметр удаления очевиден по параметру метода
     public void deleteById(long id) {
         dormitoryRepository.deleteById(id);
     }

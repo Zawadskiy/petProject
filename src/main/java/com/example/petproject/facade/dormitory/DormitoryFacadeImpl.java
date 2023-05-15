@@ -22,6 +22,8 @@ public class DormitoryFacadeImpl implements DormitoryFacade {
     }
 
     @Override
+    // TODO: 16.05.2023 Почти не смотрел остальные фасады.
+    //  Выглядит как бесполезный слой, который стоит с конвертером объединить
     public List<DormitoryDto> getDormitories(int page, int size) {
 
         List<Dormitory> dormitories = dormitoryService.getDormitories(page, size);

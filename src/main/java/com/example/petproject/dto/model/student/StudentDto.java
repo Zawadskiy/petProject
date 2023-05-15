@@ -12,6 +12,7 @@ public class StudentDto {
     private String deductionDate;
     private boolean liveInDormitory;
 
+    // TODO: 16.05.2023 Боже, ломбок храни
     public String getName() {
         return name;
     }

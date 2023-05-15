@@ -44,6 +44,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // TODO: 16.05.2023 Зачем переменная?
+        //  Одна точка - одна строчка. А не ни одной:) Здесь не важно, но как общее правило
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/admin**").hasAuthority("ROLE_ADMIN")
