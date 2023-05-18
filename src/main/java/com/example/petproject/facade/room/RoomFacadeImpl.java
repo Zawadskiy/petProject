@@ -1,7 +1,8 @@
 package com.example.petproject.facade.room;
 
 import com.example.petproject.converter.RoomConverter;
-import com.example.petproject.dto.model.room.RoomDto;
+import com.example.petproject.dto.request.modify.RoomRequest;
+import com.example.petproject.dto.response.RoomResponse;
 import com.example.petproject.model.Room;
 import com.example.petproject.service.room.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class RoomFacadeImpl implements RoomFacade {
     }
 
     @Override
-    public List<RoomDto> getRooms(int page, int size) {
+    public List<RoomResponse> getRooms(int page, int size) {
 
         List<Room> rooms = roomService.getRooms(page, size);
 
@@ -30,23 +31,25 @@ public class RoomFacadeImpl implements RoomFacade {
     }
 
     @Override
-    public RoomDto updateRoom(RoomDto roomDto) {
+    public RoomResponse updateRoom(RoomRequest roomDto, long id) {
 
-        Room room = roomService.update(roomConverter.toRoom(roomDto));
-
-        return roomConverter.toRoomDto(room);
-    }
-
-    @Override
-    public RoomDto getRoom(long id) {
-
-        Room room = roomService.findById(id);
+        Room room = roomConverter.toRoom(roomDto);
+        room.setId(id);
+        roomService.update(room);
 
         return roomConverter.toRoomDto(room);
     }
 
     @Override
-    public RoomDto createRoom(RoomDto roomDto) {
+    public RoomResponse getRoom(long id) {
+
+        Room room = roomService.getRoom(id);
+
+        return roomConverter.toRoomDto(room);
+    }
+
+    @Override
+    public RoomResponse createRoom(RoomRequest roomDto) {
 
         Room room = roomService.create(roomConverter.toRoom(roomDto));
 
@@ -54,10 +57,10 @@ public class RoomFacadeImpl implements RoomFacade {
     }
 
     @Override
-    public RoomDto deleteRoom(long id) {
+    public RoomResponse deleteRoom(long id) {
 
-        roomService.deleteById(id);
+        roomService.delete(id);
 
-        return new RoomDto();
+        return new RoomResponse();
     }
 }

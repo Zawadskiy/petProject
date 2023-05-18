@@ -1,7 +1,8 @@
 package com.example.petproject.facade.user;
 
 import com.example.petproject.converter.UserConverter;
-import com.example.petproject.dto.model.user.UserDto;
+import com.example.petproject.dto.request.modify.UserRequest;
+import com.example.petproject.dto.response.UserResponse;
 import com.example.petproject.model.User;
 import com.example.petproject.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +23,25 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto) {
+    public UserResponse updateUser(UserRequest userDto, long id) {
 
-        User user = userService.updateUser(userConverter.toUser(userDto));
-
-        return userConverter.toUserDto(user);
-    }
-
-    @Override
-    public UserDto getUser(long id) {
-
-        User user = userService.findById(id);
+        User user = userConverter.toUser(userDto);
+        user.setId(id);
+        userService.update(user);
 
         return userConverter.toUserDto(user);
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserResponse getUser(long id) {
+
+        User user = userService.getUser(id);
+
+        return userConverter.toUserDto(user);
+    }
+
+    @Override
+    public UserResponse createUser(UserRequest userDto) {
 
         User user = userService.create(userConverter.toUser(userDto));
 
@@ -46,15 +49,15 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public UserDto deleteUser(long id) {
+    public UserResponse deleteUser(long id) {
 
-        userService.deleteById(id);
+        userService.delete(id);
 
-        return new UserDto();
+        return new UserResponse();
     }
 
     @Override
-    public List<UserDto> getUsers(int page, int size) {
+    public List<UserResponse> getUsers(int page, int size) {
 
         List<User> users = userService.getUsers(page, size);
 

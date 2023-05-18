@@ -1,7 +1,8 @@
 package com.example.petproject.facade.university;
 
 import com.example.petproject.converter.UniversityConverter;
-import com.example.petproject.dto.model.university.UniversityDto;
+import com.example.petproject.dto.request.modify.UniversityRequest;
+import com.example.petproject.dto.response.UniversityResponse;
 import com.example.petproject.model.University;
 import com.example.petproject.service.university.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +23,25 @@ public class UniversityFacadeImpl implements UniversityFacade {
     }
 
     @Override
-    public UniversityDto updateUniversity(UniversityDto universityDto) {
+    public UniversityResponse updateUniversity(UniversityRequest universityDto, long id) {
 
-        University university = universityService.update(universityConverter.toUniversity(universityDto));
-
-        return universityConverter.toUniversityDto(university);
-    }
-
-    @Override
-    public UniversityDto getUniversity(long id) {
-
-        University university = universityService.findById(id);
+        University university = universityConverter.toUniversity(universityDto);
+        university.setId(id);
+        universityService.update(university);
 
         return universityConverter.toUniversityDto(university);
     }
 
     @Override
-    public UniversityDto createUniversity(UniversityDto universityDto) {
+    public UniversityResponse getUniversity(long id) {
+
+        University university = universityService.getUniversity(id);
+
+        return universityConverter.toUniversityDto(university);
+    }
+
+    @Override
+    public UniversityResponse createUniversity(UniversityRequest universityDto) {
 
         University university = universityService.create(universityConverter.toUniversity(universityDto));
 
@@ -46,15 +49,15 @@ public class UniversityFacadeImpl implements UniversityFacade {
     }
 
     @Override
-    public UniversityDto deleteUniversity(long id) {
+    public UniversityResponse deleteUniversity(long id) {
 
-        universityService.deleteById(id);
+        universityService.delete(id);
 
-        return new UniversityDto();
+        return new UniversityResponse();
     }
 
     @Override
-    public List<UniversityDto> getUniversities(int page, int size) {
+    public List<UniversityResponse> getUniversities(int page, int size) {
 
         List<University> universities = universityService.getUniversities(page, size);
 

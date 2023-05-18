@@ -1,6 +1,7 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.dto.model.university.UniversityDto;
+import com.example.petproject.dto.request.modify.UniversityRequest;
+import com.example.petproject.dto.response.UniversityResponse;
 import com.example.petproject.facade.university.UniversityFacade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("university")
+@RequestMapping("universities")
 public class UniversityController {
 
     private final UniversityFacade universityFacade;
@@ -19,34 +20,28 @@ public class UniversityController {
         this.universityFacade = universityFacade;
     }
 
-    //TODO якщо роль не співпадаю з енамом, то ми отримаємо
-    // "title": "Bad Request",
-    // "status": 400
-    // exception прокидуеться раніше на моменті десеріалізації...знайти варіант кастомізували відповідь сервера...
-    @PutMapping("/update")
-    public UniversityDto updateUniversity(@Valid @RequestBody UniversityDto request) {
-        return universityFacade.updateUniversity(request);
+    @PutMapping("/{id}")
+    public UniversityResponse update(@Valid @RequestBody UniversityRequest request, @PathVariable long id) {
+        return universityFacade.updateUniversity(request, id);
     }
 
-    @GetMapping("/get/{id}")
-    public UniversityDto getUniversity(@PathVariable long id) {
+    @GetMapping("/{id}")
+    public UniversityResponse get(@PathVariable long id) {
         return universityFacade.getUniversity(id);
     }
 
-    @PostMapping("/new")
-    public UniversityDto createUniversity(@Valid @RequestBody UniversityDto request) {
+    @PostMapping
+    public UniversityResponse create(@Valid @RequestBody UniversityRequest request) {
         return universityFacade.createUniversity(request);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public UniversityDto deleteUniversity(@PathVariable long id) {
-        // TODO: 16.05.2023 Общее замечание: у тебя по названию класса понятна сущностью
-        // Зачем это дублировать в имени метода?
+    @DeleteMapping("/{id}")
+    public UniversityResponse delete(@PathVariable long id) {
         return universityFacade.deleteUniversity(id);
     }
 
-    @GetMapping(value = "/get/all", params = {"page", "size"})
-    public List<UniversityDto> getUniversities(@RequestParam("page") int page, @RequestParam("size") int size) {
+    @GetMapping(params = {"page", "size"})
+    public List<UniversityResponse> getAll(@RequestParam int page, @RequestParam int size) {
         return universityFacade.getUniversities(page, size);
     }
 }

@@ -1,8 +1,8 @@
 package com.example.petproject.converter;
 
-import com.example.petproject.dto.model.room.RoomDto;
+import com.example.petproject.dto.request.modify.RoomRequest;
+import com.example.petproject.dto.response.RoomResponse;
 import com.example.petproject.model.Dormitory;
-import com.example.petproject.model.Gender;
 import com.example.petproject.model.Room;
 import com.example.petproject.service.dormitory.DormitoryService;
 import org.springframework.stereotype.Component;
@@ -16,31 +16,34 @@ public class RoomConverter {
         this.dormitoryService = dormitoryService;
     }
 
-    public Room toRoom(RoomDto roomDto) {
+    public Room toRoom(RoomRequest roomDto) {
+
         Room room = new Room();
 
-        room.setId(roomDto.getId());
         room.setNumber(roomDto.getNumber());
-        room.setCapacity(room.getCapacity());
-        room.setAvailabilityForAccommodation(room.isAvailabilityForAccommodation());
+        room.setCapacity(roomDto.getCapacity());
+        room.setAvailabilityForAccommodation(roomDto.isAvailabilityForAccommodation());
+        room.setResidentsGender(roomDto.getResidentsGender());
 
-        room.setResidentsGender(Gender.valueOf(roomDto.getResidentsGender()));
-
-        Dormitory dormitory = dormitoryService.findByNumber(roomDto.getDormitoryNumber());
+        Dormitory dormitory = dormitoryService.getDormitory(roomDto.getDormitory());
         room.setDormitory(dormitory);
 
         return room;
     }
 
-    public RoomDto toRoomDto(Room room) {
-        RoomDto roomDto = new RoomDto();
+    public RoomResponse toRoomDto(Room room) {
+
+        RoomResponse roomDto = new RoomResponse();
 
         roomDto.setId(room.getId());
         roomDto.setCapacity(room.getCapacity());
         roomDto.setNumber(room.getNumber());
-        roomDto.setDormitoryNumber(room.getDormitory().getNumber());
         roomDto.setAvailabilityForAccommodation(room.isAvailabilityForAccommodation());
-        roomDto.setResidentsGender(room.getResidentsGender().name());
+        roomDto.setResidentsGender(room.getResidentsGender());
+
+        if (room.getDormitory() != null) {
+            roomDto.setDormitory(room.getDormitory().getId());
+        }
 
         return roomDto;
     }

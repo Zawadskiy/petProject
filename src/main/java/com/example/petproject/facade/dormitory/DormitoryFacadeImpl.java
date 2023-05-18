@@ -1,7 +1,8 @@
 package com.example.petproject.facade.dormitory;
 
 import com.example.petproject.converter.DormitoryConverter;
-import com.example.petproject.dto.model.dormitory.DormitoryDto;
+import com.example.petproject.dto.request.modify.DormitoryRequest;
+import com.example.petproject.dto.response.DormitoryResponse;
 import com.example.petproject.model.Dormitory;
 import com.example.petproject.service.dormitory.DormitoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class DormitoryFacadeImpl implements DormitoryFacade {
     @Override
     // TODO: 16.05.2023 Почти не смотрел остальные фасады.
     //  Выглядит как бесполезный слой, который стоит с конвертером объединить
-    public List<DormitoryDto> getDormitories(int page, int size) {
+    public List<DormitoryResponse> getDormitories(int page, int size) {
 
         List<Dormitory> dormitories = dormitoryService.getDormitories(page, size);
 
@@ -32,23 +33,26 @@ public class DormitoryFacadeImpl implements DormitoryFacade {
     }
 
     @Override
-    public DormitoryDto updateDormitory(DormitoryDto dormitoryDto) {
+    public DormitoryResponse updateDormitory(DormitoryRequest dormitoryDto, long id) {
 
-        Dormitory dormitory = dormitoryService.update(dormitoryConverter.toDormitory(dormitoryDto));
+        Dormitory dormitory = dormitoryConverter.toDormitory(dormitoryDto);
+        dormitory.setId(id);
 
-        return dormitoryConverter.toDormitoryDto(dormitory);
-    }
-
-    @Override
-    public DormitoryDto getDormitory(long id) {
-
-        Dormitory dormitory = dormitoryService.findById(id);
+        dormitoryService.update(dormitory);
 
         return dormitoryConverter.toDormitoryDto(dormitory);
     }
 
     @Override
-    public DormitoryDto createDormitory(DormitoryDto dormitoryDto) {
+    public DormitoryResponse getDormitory(long id) {
+
+        Dormitory dormitory = dormitoryService.getDormitory(id);
+
+        return dormitoryConverter.toDormitoryDto(dormitory);
+    }
+
+    @Override
+    public DormitoryResponse createDormitory(DormitoryRequest dormitoryDto) {
 
         Dormitory dormitory = dormitoryService.create(dormitoryConverter.toDormitory(dormitoryDto));
 
@@ -56,11 +60,11 @@ public class DormitoryFacadeImpl implements DormitoryFacade {
     }
 
     @Override
-    public DormitoryDto deleteDormitory(long id) {
+    public DormitoryResponse deleteDormitory(long id) {
 
-        dormitoryService.deleteById(id);
+        dormitoryService.delete(id);
 
         //TODO
-        return new DormitoryDto();
+        return new DormitoryResponse();
     }
 }

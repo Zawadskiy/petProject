@@ -36,39 +36,29 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> findStudentsByUniversity(String name) {
-        return studentRepository.findByUniversityName(name);
+    public List<Student> getStudentsByUniversityId(long id) {
+        return studentRepository.findByUniversityId(id);
     }
 
     @Override
-    public List<Student> findStudentsByDormitory(String number) {
-        return studentRepository.findByDormitoryNumber(number);
+    public List<Student> getStudentsByDormitoryId(long id) {
+        return studentRepository.findAllByDormitoryId(id);
     }
 
     @Override
     @Transactional
     public Student update(Student update) {
-        Student student = findById(update.getId());
-
-        student.setRoom(update.getRoom());
-        student.setDormitory(update.getDormitory());
-//        student.setGender(update.getGender()); // ну а вдруг?) Орнул
-        student.setUniversity(update.getUniversity());
-        student.setName(update.getName());
-        //TODO При установке университета нужно устанавливать дату поступления и окончания в сеттерах, убрать явную возможность изменения через сеттеріі.
-        // При установке student.setDormitory устанавливать setLiveInDormitory, также переработать сеттеріі.
-
-        return studentRepository.save(student);
+        return studentRepository.save(update);
     }
 
     @Override
-    public Student findById(long id) {
+    public Student getStudent(long id) {
         return studentRepository.findById(id).orElseThrow(() -> new RuntimeException());
     }
 
     @Override
     @Transactional
-    public void deleteById(long id) {
+    public void delete(long id) {
         studentRepository.deleteById(id);
     }
 }

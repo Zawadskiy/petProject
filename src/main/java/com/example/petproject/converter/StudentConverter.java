@@ -1,6 +1,7 @@
 package com.example.petproject.converter;
 
-import com.example.petproject.dto.model.student.StudentDto;
+import com.example.petproject.dto.request.modify.StudentRequest;
+import com.example.petproject.dto.response.StudentResponse;
 import com.example.petproject.model.*;
 import com.example.petproject.service.dormitory.DormitoryService;
 import com.example.petproject.service.room.RoomService;
@@ -20,21 +21,21 @@ public class StudentConverter {
         this.roomService = roomService;
     }
 
-    public Student toStudent(StudentDto studentDto) {
+    public Student toStudent(StudentRequest studentDto) {
+
         Student student = new Student();
 
-        student.setId(studentDto.getId());
         student.setLiveInDormitory(studentDto.isLiveInDormitory());
         student.setName(studentDto.getName());
         student.setGender(Gender.valueOf(studentDto.getGender()));
 
-        University university = universityService.findByName(studentDto.getUniversityName());
+        University university = universityService.getUniversity(studentDto.getUniversity());
         student.setUniversity(university);
 
-        Dormitory dormitory = dormitoryService.findByNumberAndUniversityId(studentDto.getDormitoryNumber(), university.getId());
+        Dormitory dormitory = dormitoryService.getDormitory(studentDto.getDormitory());
         student.setDormitory(dormitory);
 
-        Room room = roomService.findByNumberAndDormitoryId(studentDto.getRoomNumber(), dormitory.getId());
+        Room room = roomService.getRoom(studentDto.getRoom());
         student.setRoom(room);
 
 //        @TODO
@@ -44,16 +45,24 @@ public class StudentConverter {
         return student;
     }
 
-    public StudentDto toStudentDto(Student student) {
-        StudentDto studentDto = new StudentDto();
+    public StudentResponse toStudentDto(Student student) {
+
+        StudentResponse studentDto = new StudentResponse();
 
         studentDto.setId(student.getId());
-//        studentDto.setDormitoryNumber(student.getDormitory().getNumber());
-//        studentDto.setGender(student.getGender().name());
-//        studentDto.setRoomNumber(student.getRoom().getNumber());
-        studentDto.setUniversityName(student.getUniversity().getName());
         studentDto.setName(student.getName());
-//        studentDto.setLiveInDormitory(student.isLiveInDormitory());
+        studentDto.setLiveInDormitory(student.isLiveInDormitory());
+        studentDto.setGender(student.getGender().name());
+
+        if (student.getDormitory() != null) {
+            studentDto.setDormitory(student.getDormitory().getId());
+        }
+        if (student.getRoom() != null) {
+            studentDto.setRoom(student.getRoom().getId());
+        }
+        if (student.getUniversity() != null) {
+            studentDto.setUniversity(student.getUniversity().getId());
+        }
 
 //        @TODO
 //        studentDto.setAdmissionYear();

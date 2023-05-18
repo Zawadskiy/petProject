@@ -3,7 +3,7 @@ package com.example.petproject.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "room")
 public class Room {
 
     @Id
@@ -13,7 +13,7 @@ public class Room {
     @ManyToOne
     private Dormitory dormitory;
     private int capacity;
-    // TODO: 16.05.2023 нотация сама перебивается?
+    @Column(name = "available_for_accommodation")
     private boolean availabilityForAccommodation;
     @Enumerated(EnumType.STRING)
     private Gender residentsGender;

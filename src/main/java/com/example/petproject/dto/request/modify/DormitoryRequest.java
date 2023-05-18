@@ -1,30 +1,11 @@
-package com.example.petproject.model;
+package com.example.petproject.dto.request.modify;
 
-import jakarta.persistence.*;
+public class DormitoryRequest {
 
-@Entity
-@Table(name = "dormitory")
-public class Dormitory {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private String number;
     private int numberOfRooms;
-
-    @ManyToOne
-    @JoinColumn(name = "university_id")
-    private University university;
-    @Column(name = "available_for_accommodation")
+    private long university;
     private boolean availabilityForAccommodation;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getNumber() {
         return number;
@@ -42,11 +23,11 @@ public class Dormitory {
         this.numberOfRooms = numberOfRooms;
     }
 
-    public University getUniversity() {
+    public long getUniversity() {
         return university;
     }
 
-    public void setUniversity(University university) {
+    public void setUniversity(long university) {
         this.university = university;
     }
 
@@ -57,5 +38,4 @@ public class Dormitory {
     public void setAvailabilityForAccommodation(boolean availabilityForAccommodation) {
         this.availabilityForAccommodation = availabilityForAccommodation;
     }
-    // TODO: 16.05.2023 как насчет служебных полей? даты создания и обновления
 }

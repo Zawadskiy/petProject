@@ -20,17 +20,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room findByNumberAndDormitoryId(String number, long dormitory_id) {
-        return roomRepository.findByNumberAndDormitoryId(number, dormitory_id).orElseThrow(() -> new RuntimeException());
+    public List<Room> getByDormitoryId(long dormitoryId) {
+        return roomRepository.findAllByDormitoryIdAndAvailabilityForAccommodation(dormitoryId, true);
     }
 
     @Override
-    public List<Room> findByDormitoryId(long dormitory_id) {
-        return roomRepository.findAllByDormitoryIdAndAvailabilityForAccommodation(dormitory_id, true);
-    }
-
-    @Override
-    public void deleteById(long id) {
+    public void delete(long id) {
         roomRepository.deleteById(id);
     }
 
@@ -40,21 +35,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room findById(long id) {
+    public Room getRoom(long id) {
         return roomRepository.findById(id).orElseThrow(() -> new RuntimeException());
     }
 
     @Override
     public Room update(Room update) {
-        Room room = findById(update.getId());
-
-        room.setCapacity(update.getCapacity());
-        room.setDormitory(update.getDormitory());
-        room.setResidentsGender(update.getResidentsGender());
-        room.setAvailabilityForAccommodation(update.isAvailabilityForAccommodation());
-        room.setNumber(update.getNumber());
-
-        return roomRepository.save(room);
+        return roomRepository.save(update);
     }
 
     @Override

@@ -1,22 +1,17 @@
-package com.example.petproject.dto.model.university;
+package com.example.petproject.dto.response;
 
-public class UniversityDto {
+public class UniversityResponse {
 
     private long id;
-
     private String name;
     private int studyDuration;
 
-    public String getName() {
-        return name;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getStudyDuration() {
-        return studyDuration;
     }
 
     public void setStudyDuration(int studyDuration) {
@@ -27,7 +22,11 @@ public class UniversityDto {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getName() {
+        return name;
+    }
+
+    public int getStudyDuration() {
+        return studyDuration;
     }
 }

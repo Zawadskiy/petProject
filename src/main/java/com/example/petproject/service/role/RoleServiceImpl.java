@@ -1,6 +1,5 @@
 package com.example.petproject.service.role;
 
-import com.example.petproject.model.ERole;
 import com.example.petproject.model.Role;
 import com.example.petproject.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role findByName(String name) {
-        return roleRepository.findByName(ERole.valueOf(name)).orElseThrow(()-> new RuntimeException());
+    public Role getByName(String name) {
+        return roleRepository.findByName(name).orElseThrow(()-> new RuntimeException());
     }
 }

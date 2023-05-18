@@ -1,7 +1,7 @@
 package com.example.petproject.facade.statistic;
 
-import com.example.petproject.dto.model.statistic.DormitoryStatisticDto;
-import com.example.petproject.dto.model.statistic.StatisticDto;
+import com.example.petproject.dto.response.DormitoryStatisticResponse;
+import com.example.petproject.dto.response.StatisticResponse;
 import com.example.petproject.model.Dormitory;
 import com.example.petproject.model.Room;
 import com.example.petproject.model.Student;
@@ -34,24 +34,21 @@ public class StatisticFacadeImpl implements StatisticFacade {
     }
 
     @Override
-    public List<StatisticDto> getStatistic() {
-        // TODO: 16.05.2023 зачем переменная?
-        List<University> universities = universityService.findAll();
-
-        return universities.stream().map(this::getStatisticByUniversity).toList();
+    public List<StatisticResponse> getStatistic() {
+        return universityService.getAll().stream().map(this::getStatisticByUniversity).toList();
     }
 
-    private StatisticDto getStatisticByUniversity(University university) {
+    private StatisticResponse getStatisticByUniversity(University university) {
 
-        StatisticDto statistic = new StatisticDto();
-        List<Student> students = studentService.findStudentsByUniversity(university.getName());
-
-        List<Dormitory> dormitories = dormitoryService.findAllAvailableForAccommodation();
+        StatisticResponse statistic = new StatisticResponse();
+        List<Student> students = studentService.getStudentsByUniversityId(university.getId());
+        List<Dormitory> dormitories = dormitoryService.getAllAvailableForAccommodation();
 
         statistic.setDormitoryStatistic(dormitories.stream().map(this::getStatisticByDormitory).toList());
 
-// TODO: 16.05.2023 Котел в аду уже топят
-        statistic.setLiveInDormitory(students.stream().filter(student -> student.getDormitory() != null).count());
+        long liveInDormitory = students.stream().filter(student -> student.getDormitory() != null).count();
+
+        statistic.setLiveInDormitory(liveInDormitory);
         statistic.setStudentsCount(students.size());
         statistic.setUniversityName(university.getName());
 
@@ -59,15 +56,18 @@ public class StatisticFacadeImpl implements StatisticFacade {
     }
 
     // TODO: 16.05.2023 почему это все в одном классе?
-    private DormitoryStatisticDto getStatisticByDormitory(Dormitory dormitory) {
+    private DormitoryStatisticResponse getStatisticByDormitory(Dormitory dormitory) {
 
-        DormitoryStatisticDto statistic = new DormitoryStatisticDto();
-        List<Room> roomsInDormitory = roomService.findByDormitoryId(dormitory.getId());
+        DormitoryStatisticResponse statistic = new DormitoryStatisticResponse();
+        List<Room> roomsInDormitory = roomService.getByDormitoryId(dormitory.getId());
 
         // TODO: 16.05.2023 Статистику логично делать гибкой. За период, еще какие-то параметры
-        // TODO: 16.05.2023 Одна строчка - одна точка. Повсеместно
-        int capacity = roomsInDormitory.stream().mapToInt(Room::getCapacity).sum();
-        int studentsInDormitory = studentService.findStudentsByDormitory(dormitory.getNumber()).size();
+        int capacity = roomsInDormitory.stream()
+                .mapToInt(Room::getCapacity)
+                .sum();
+
+        int studentsInDormitory = studentService.getStudentsByDormitoryId(dormitory.getId())
+                .size();
 
         statistic.setName(dormitory.getNumber());
         statistic.setFreePlaces(capacity-studentsInDormitory);

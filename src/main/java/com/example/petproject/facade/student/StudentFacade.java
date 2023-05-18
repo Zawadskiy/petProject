@@ -1,17 +1,18 @@
 package com.example.petproject.facade.student;
 
-import com.example.petproject.dto.model.student.StudentDto;
+import com.example.petproject.dto.request.modify.StudentRequest;
+import com.example.petproject.dto.response.StudentResponse;
 
 import java.util.List;
 
 public interface StudentFacade {
-    List<StudentDto> getStudents(int page, int size);
+    List<StudentResponse> getStudents(int page, int size);
 
-    StudentDto updateStudent(StudentDto request);
+    StudentResponse updateStudent(StudentRequest request, long id);
 
-    StudentDto getStudent(long id);
+    StudentResponse getStudent(long id);
 
-    StudentDto createStudent(StudentDto request);
+    StudentResponse createStudent(StudentRequest request);
 
-    StudentDto deleteStudent(long id);
+    StudentResponse deleteStudent(long id);
 }

@@ -6,9 +6,9 @@ import com.example.petproject.model.User;
 import java.util.List;
 
 public interface UserService {
-    User updateUser(User user);
+    User update(User user);
     User create(User user);
-    User findById(long id);
-    void deleteById(long id);
+    User getUser(long id);
+    void delete(long id);
     List<User> getUsers(int page, int size);
 }

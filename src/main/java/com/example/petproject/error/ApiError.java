@@ -12,19 +12,15 @@ public class ApiError {
     private List<String> errors;
 
     public ApiError(HttpStatus status, String message, List<String> errors) {
-        super();
         this.status = status;
         this.message = message;
         this.errors = errors;
     }
 
     public ApiError(HttpStatus status, String message, String error) {
-        // TODO: 16.05.2023 зачем явный вызов?
-        super();
         this.status = status;
         this.message = message;
-        // TODO: 16.05.2023 List.of()?
-        errors = Arrays.asList(error);
+        errors = List.of(error);
     }
 
     public HttpStatus getStatus() {

@@ -1,18 +1,18 @@
 package com.example.petproject.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "universities")
+@Table(name = "university")
 public class University {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    // TODO: 16.05.2023 подобные комменты лучше в стиле джавадока указывать
-    //in months
+    /**
+     study duration in months
+     */
     private int studyDuration;
 
     public long getId() {

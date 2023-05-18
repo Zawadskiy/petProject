@@ -1,6 +1,7 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.dto.model.room.RoomDto;
+import com.example.petproject.dto.request.modify.RoomRequest;
+import com.example.petproject.dto.response.RoomResponse;
 import com.example.petproject.facade.room.RoomFacade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/room")
+@RequestMapping("/rooms")
 public class RoomController {
 
     private final RoomFacade roomFacade;
@@ -19,28 +20,28 @@ public class RoomController {
         this.roomFacade = roomFacade;
     }
 
-    @PutMapping("/update")
-    public RoomDto updateRoom(@Valid @RequestBody RoomDto request) {
-        return roomFacade.updateRoom(request);
+    @PutMapping("/{id}")
+    public RoomResponse update(@Valid @RequestBody RoomRequest request, @PathVariable long id) {
+        return roomFacade.updateRoom(request, id);
     }
 
-    @GetMapping("/get/{id}")
-    public RoomDto getRoom(@PathVariable long id) {
+    @GetMapping("/{id}")
+    public RoomResponse get(@PathVariable long id) {
         return roomFacade.getRoom(id);
     }
 
-    @PostMapping("/new")
-    public RoomDto createRoom(@Valid @RequestBody RoomDto request) {
+    @PostMapping
+    public RoomResponse create(@Valid @RequestBody RoomRequest request) {
         return roomFacade.createRoom(request);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public RoomDto deleteRoom(@PathVariable long id) {
+    @DeleteMapping("/{id}")
+    public RoomResponse delete(@PathVariable long id) {
         return roomFacade.deleteRoom(id);
     }
 
-    @GetMapping(value = "/get/all", params = {"page", "size"})
-    public List<RoomDto> getUniversities(@RequestParam("page") int page, @RequestParam("size") int size) {
+    @GetMapping(params = {"page", "size"})
+    public List<RoomResponse> getAll(@RequestParam int page, @RequestParam int size) {
         return roomFacade.getRooms(page, size);
     }
 }

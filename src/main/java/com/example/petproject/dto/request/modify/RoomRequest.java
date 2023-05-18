@@ -1,14 +1,14 @@
-package com.example.petproject.dto.model.room;
+package com.example.petproject.dto.request.modify;
 
-public class RoomDto {
+import com.example.petproject.model.Gender;
 
-    private long id;
+public class RoomRequest {
 
     private String number;
-    private String dormitoryNumber;
+    private long dormitory;
     private int capacity;
     private boolean availabilityForAccommodation;
-    private String residentsGender;
+    private Gender residentsGender;
 
     public String getNumber() {
         return number;
@@ -34,27 +34,19 @@ public class RoomDto {
         this.availabilityForAccommodation = availabilityForAccommodation;
     }
 
-    public String getResidentsGender() {
+    public long getDormitory() {
+        return dormitory;
+    }
+
+    public void setDormitory(long dormitory) {
+        this.dormitory = dormitory;
+    }
+
+    public Gender getResidentsGender() {
         return residentsGender;
     }
 
-    public void setResidentsGender(String residentsGender) {
+    public void setResidentsGender(Gender residentsGender) {
         this.residentsGender = residentsGender;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDormitoryNumber() {
-        return dormitoryNumber;
-    }
-
-    public void setDormitoryNumber(String dormitoryNumber) {
-        this.dormitoryNumber = dormitoryNumber;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.petproject.converter;
 
-import com.example.petproject.dto.model.dormitory.DormitoryDto;
+import com.example.petproject.dto.request.modify.DormitoryRequest;
+import com.example.petproject.dto.response.DormitoryResponse;
 import com.example.petproject.model.Dormitory;
 import com.example.petproject.model.University;
 import com.example.petproject.service.university.UniversityService;
@@ -15,15 +16,15 @@ public class DormitoryConverter {
         this.universityService = universityService;
     }
 
-    public Dormitory toDormitory(DormitoryDto dormitoryDto) {
+    public Dormitory toDormitory(DormitoryRequest dormitoryDto) {
+
         Dormitory dormitory = new Dormitory();
 
-        dormitory.setId(dormitoryDto.getId());
         dormitory.setNumberOfRooms(dormitoryDto.getNumberOfRooms());
-        dormitory.setNumber(dormitory.getNumber());
+        dormitory.setNumber(dormitoryDto.getNumber());
         dormitory.setAvailabilityForAccommodation(dormitoryDto.isAvailabilityForAccommodation());
 
-        University university = universityService.findByName(dormitoryDto.getUniversity());
+        University university = universityService.getUniversity(dormitoryDto.getUniversity());
         dormitory.setUniversity(university);
 
         return dormitory;
@@ -33,13 +34,14 @@ public class DormitoryConverter {
     //  (или заюзал существующие) с одним методом convert()
     //  перегруженным для одиночных сущностей и коллекций.
     //  Последнее полезно, чтобы оптимизировать запросы в бд для получения связей
-    public DormitoryDto toDormitoryDto(Dormitory dormitory) {
-        DormitoryDto dormitoryDto = new DormitoryDto();
+    public DormitoryResponse toDormitoryDto(Dormitory dormitory) {
+
+        DormitoryResponse dormitoryDto = new DormitoryResponse();
 
         dormitoryDto.setId(dormitory.getId());
-        // TODO: 16.05.2023 зачем имя? логичнее id
+
         if (dormitory.getUniversity() != null) {
-            dormitoryDto.setUniversity(dormitory.getUniversity().getName());
+            dormitoryDto.setUniversity(dormitory.getUniversity().getId());
         }
 
         dormitoryDto.setNumber(dormitory.getNumber());

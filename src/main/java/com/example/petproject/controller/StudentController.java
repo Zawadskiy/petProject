@@ -1,7 +1,8 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.dto.model.statistic.StatisticDto;
-import com.example.petproject.dto.model.student.StudentDto;
+import com.example.petproject.dto.request.modify.StudentRequest;
+import com.example.petproject.dto.response.StatisticResponse;
+import com.example.petproject.dto.response.StudentResponse;
 import com.example.petproject.facade.statistic.StatisticFacade;
 import com.example.petproject.facade.student.StudentFacade;
 import jakarta.validation.Valid;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
     private final StudentFacade studentFacade;
     private final StatisticFacade statisticFacade;
@@ -23,32 +24,32 @@ public class StudentController {
     }
 
     @GetMapping(params = {"page", "size"})
-    public List<StudentDto> getStudents(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public List<StudentResponse> getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         return studentFacade.getStudents(page, size);
     }
 
-    @GetMapping("/getstatistic")
-    public List<StatisticDto> getStatistic() {
+    @GetMapping("/statistic")
+    public List<StatisticResponse> get() {
         return statisticFacade.getStatistic();
     }
 
-    @PutMapping("/update")
-    public StudentDto updateStudent(@Valid @RequestBody StudentDto request) {
-        return studentFacade.updateStudent(request);
+    @PutMapping("/{id}")
+    public StudentResponse update(@Valid @RequestBody StudentRequest request, @PathVariable long id) {
+        return studentFacade.updateStudent(request, id);
     }
 
-    @GetMapping("/get/{id}")
-    public StudentDto getStudent(@PathVariable long id) {
+    @GetMapping("/{id}")
+    public StudentResponse get(@PathVariable long id) {
         return studentFacade.getStudent(id);
     }
 
-    @PostMapping ("/new")
-    public StudentDto createStudent(@Valid @RequestBody StudentDto request) {
+    @PostMapping
+    public StudentResponse create(@Valid @RequestBody StudentRequest request) {
         return studentFacade.createStudent(request);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public StudentDto deleteStudent(@PathVariable long id) {
+    @DeleteMapping("/{id}")
+    public StudentResponse delete(@PathVariable long id) {
         return studentFacade.deleteStudent(id);
     }
 }

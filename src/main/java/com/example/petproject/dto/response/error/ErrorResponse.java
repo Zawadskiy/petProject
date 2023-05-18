@@ -1,9 +1,9 @@
-package com.example.petproject.dto.response;
+package com.example.petproject.dto.response.error;
 
-public class MessageResponse {
+public class ErrorResponse {
     private String message;
 
-    public MessageResponse(String message) {
+    public ErrorResponse(String message) {
         this.message = message;
     }
 

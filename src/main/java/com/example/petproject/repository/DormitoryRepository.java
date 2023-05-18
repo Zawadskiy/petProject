@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DormitoryRepository extends JpaRepository<Dormitory, Long> {
-    Optional<Dormitory> findByNumberAndUniversityId(String number, long universityId);
-    Optional<Dormitory> findByNumber(String number);
+    Optional<Dormitory> findByIdAndUniversityId(long id, long universityId);
+
+    Optional<Dormitory> findById(long id);
+
     List<Dormitory> findAllByAvailabilityForAccommodation(boolean availabilityForAccommodation);
 }

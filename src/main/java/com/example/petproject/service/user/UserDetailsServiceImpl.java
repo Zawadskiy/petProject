@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-// TODO: 16.05.2023 Эта лямбда какая-то очень отожравшаяся)
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -26,8 +25,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
 
-        return UserPrincipal.build(user.orElseThrow(() -> new UsernameNotFoundException(username)));
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return UserPrincipal.build(user);
     }
 }

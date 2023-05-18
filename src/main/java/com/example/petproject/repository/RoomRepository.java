@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    // TODO: 16.05.2023 что с именами переменных случилось?
-    List<Room> findAllByDormitoryIdAndAvailabilityForAccommodation(long dormitory_id, boolean availabilityForAccommodation);
+    List<Room> findAllByDormitoryIdAndAvailabilityForAccommodation(long dormitoryId, boolean availabilityForAccommodation);
 
-    Optional<Room> findByNumberAndDormitoryId(String number, long dormitory_id);
+    Optional<Room> findByIdAndDormitoryId(long roomId, long dormitoryId);
 }

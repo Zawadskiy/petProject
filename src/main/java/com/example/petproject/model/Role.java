@@ -3,29 +3,28 @@ package com.example.petproject.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="roles")
+@Table(name = "role")
 public class Role {
-    // TODO: 16.05.2023 в чем ценность этой сущности, если роль одна у юзера и ролевая статическая?
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Enumerated(EnumType.STRING)
-    private ERole name;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public long getId() {
+    private String name;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public ERole getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(ERole name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

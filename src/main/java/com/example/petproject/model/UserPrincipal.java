@@ -32,7 +32,7 @@ public class UserPrincipal implements UserDetails {
 
     public static UserPrincipal build(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
 
         return new UserPrincipal(user.getId(), user.getUsername(), user.getName(), user.getPassword(), authorities);
     }

@@ -27,13 +27,14 @@ public class SignupRequestValidator implements Validator {
     //  отработал ли стандартный валидатор, который на базе анноташек.
     //  Иначе работать будет некорректно
     public void validate(Object target, Errors errors) {
-        // TODO: 16.05.2023 Ты никогда не знаешь, откуда вызовут.
-        //  Лучше безопасный каст. В if с instanceof, например
-        SignupRequest request = (SignupRequest) target;
 
-        if (userRepository.existsByUsername(request.getUsername())) {
-            // TODO: 16.05.2023 У тебя же есть errors. Они нужны именно для этого
-            throw new DuplicateUsernameException("Username is already taken!");
+        if (target instanceof SignupRequest) {
+
+            SignupRequest request = (SignupRequest) target;
+
+            if (userRepository.existsByUsername(request.getUsername())) {
+                throw new Error("Username is already taken!");
+            }
         }
     }
 }
