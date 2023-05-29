@@ -1,11 +1,12 @@
 package com.example.petproject.dto.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StatisticResponse {
 
     private String universityName;
-    private List<DormitoryStatisticResponse> dormitoryStatistic;
+    private List<DormitoryStatisticResponse> dormitoryStatistic = new ArrayList<>();
     private int studentsCount;
     private long liveInDormitory;
 

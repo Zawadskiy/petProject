@@ -9,12 +9,15 @@ public class Dormitory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String number;
+
     private int numberOfRooms;
 
     @ManyToOne
     @JoinColumn(name = "university_id")
     private University university;
+
     @Column(name = "available_for_accommodation")
     private boolean availabilityForAccommodation;
 

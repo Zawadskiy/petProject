@@ -52,7 +52,6 @@ public class UniversityServiceImpl implements UniversityService {
     @Transactional
     public void delete(long id) {
         universityRepository.deleteById(id);
-        //TODO проверить каскадное удаление университета из общежитий и студентов) аналогично в других сервисах
     }
 
     @Override

@@ -36,6 +36,9 @@ public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, 
 
     @Override
     public List<Dormitory> convert(List<DormitoryRequest> source) {
-        return source.stream().map(this::convert).toList();
+
+        return source.stream()
+                .map(this::convert)
+                .toList();
     }
 }

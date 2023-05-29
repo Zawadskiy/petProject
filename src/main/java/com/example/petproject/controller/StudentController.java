@@ -1,12 +1,14 @@
 package com.example.petproject.controller;
 
+import com.example.petproject.converter.Converter;
 import com.example.petproject.dto.request.modify.StudentRequest;
-import com.example.petproject.dto.response.StatisticResponse;
 import com.example.petproject.dto.response.StudentResponse;
-import com.example.petproject.facade.statistic.StatisticFacade;
-import com.example.petproject.facade.student.StudentFacade;
+import com.example.petproject.model.Student;
+import com.example.petproject.service.student.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,42 +16,63 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 public class StudentController {
-    private final StudentFacade studentFacade;
-    private final StatisticFacade statisticFacade;
+    private final StudentService studentService;
+
+    private final Converter<StudentRequest, Student> studentConverter;
+    private final Converter<Student, StudentResponse> responseConverter;
 
     @Autowired
-    public StudentController(StudentFacade studentFacade, StatisticFacade statisticFacade) {
-        this.studentFacade = studentFacade;
-        this.statisticFacade = statisticFacade;
-    }
-
-    @GetMapping(params = {"page", "size"})
-    public List<StudentResponse> getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
-        return studentFacade.getStudents(page, size);
-    }
-
-    @GetMapping("/statistic")
-    public List<StatisticResponse> get() {
-        return statisticFacade.getStatistic();
+    public StudentController(StudentService studentService,
+                             Converter<StudentRequest, Student> studentConverter,
+                             Converter<Student, StudentResponse> responseConverter) {
+        this.studentService = studentService;
+        this.studentConverter = studentConverter;
+        this.responseConverter = responseConverter;
     }
 
     @PutMapping("/{id}")
-    public StudentResponse update(@Valid @RequestBody StudentRequest request, @PathVariable long id) {
-        return studentFacade.updateStudent(request, id);
+    public ResponseEntity<StudentResponse> update(@Valid @RequestBody StudentRequest request, @PathVariable long id) {
+
+        Student convert = studentConverter.convert(request);
+        convert.setId(id);
+
+        Student update = studentService.update(convert);
+
+        return new ResponseEntity<>(responseConverter.convert(update), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public StudentResponse get(@PathVariable long id) {
-        return studentFacade.getStudent(id);
+    public ResponseEntity<StudentResponse> get(@PathVariable long id) {
+
+        Student student = studentService.getStudent(id);
+
+        return new ResponseEntity<>(responseConverter.convert(student), HttpStatus.OK);
     }
 
     @PostMapping
-    public StudentResponse create(@Valid @RequestBody StudentRequest request) {
-        return studentFacade.createStudent(request);
+    public ResponseEntity<StudentResponse> create(@Valid @RequestBody StudentRequest request) {
+
+        Student convert = studentConverter.convert(request);
+
+        Student student = studentService.create(convert);
+
+        return new ResponseEntity<>(responseConverter.convert(student), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public StudentResponse delete(@PathVariable long id) {
-        return studentFacade.deleteStudent(id);
+    public ResponseEntity<String> delete(@PathVariable long id) {
+
+        studentService.delete(id);
+
+        return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping(params = {"page", "size"})
+    // TODO: 16.05.2023 @PageableDefault. Не хочешь заодно фильтрацию сюда прикрутить?
+    public ResponseEntity<List<StudentResponse>> getAll(@RequestParam int page, @RequestParam int size) {
+
+        List<Student> students = studentService.getStudents(page, size);
+
+        return new ResponseEntity<>(responseConverter.convert(students), HttpStatus.OK);
     }
 }

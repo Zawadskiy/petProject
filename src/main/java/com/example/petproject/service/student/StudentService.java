@@ -8,7 +8,7 @@ public interface StudentService {
     List<Student> getStudents(int page, int size);
     Student create(Student student);
     List<Student> getStudentsByUniversityId(long universityId);
-    List<Student> getStudentsByDormitoryId(long dormitoryId);
+    List<Student> getByDormitoryId(long dormitoryId);
     Student update(Student student);
     Student getStudent(long id);
     void delete(long id);

@@ -5,18 +5,23 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "room")
 public class Room {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String number;
+
     @ManyToOne
     private Dormitory dormitory;
+
     private int capacity;
+
     @Column(name = "available_for_accommodation")
     private boolean availabilityForAccommodation;
+
     @Enumerated(EnumType.STRING)
     private Gender residentsGender;
+
 
     public long getId() {
         return id;

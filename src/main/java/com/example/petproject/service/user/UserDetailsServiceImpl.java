@@ -26,10 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) {
 
-        User user = userRepository
-                .findByUsername(username)
+        return userRepository.findByUsername(username)
+                .map(UserPrincipal::build)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-
-        return UserPrincipal.build(user);
     }
 }

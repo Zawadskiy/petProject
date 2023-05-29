@@ -9,7 +9,9 @@ public class University {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String name;
+
     /**
      study duration in months
      */

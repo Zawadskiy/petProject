@@ -41,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getStudentsByDormitoryId(long id) {
+    public List<Student> getByDormitoryId(long id) {
         return studentRepository.findAllByDormitoryId(id);
     }
 

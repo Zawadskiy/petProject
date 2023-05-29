@@ -1,13 +1,10 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.converter.UserConverter;
+import com.example.petproject.converter.Converter;
 import com.example.petproject.dto.request.LoginRequest;
 import com.example.petproject.dto.request.SignupRequest;
 import com.example.petproject.dto.response.UserResponse;
-import com.example.petproject.model.Role;
-import com.example.petproject.model.User;
 import com.example.petproject.model.UserPrincipal;
-import com.example.petproject.service.role.RoleService;
 import com.example.petproject.service.user.UserService;
 import com.example.petproject.validator.SignupRequestValidator;
 import jakarta.servlet.http.HttpSession;
@@ -19,7 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +28,9 @@ public class AuthController {
     //  Группируй по слою архитектуры/зоне ответтсвенности
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final PasswordEncoder encoder;
+
     private final SignupRequestValidator signupRequestValidator;
-    private final UserConverter userConverter;
-    private final RoleService roleService;
+    private final Converter<UserDetails, UserResponse> userConverter;
 
     @InitBinder("signupRequest")
     void initStudentValidator(WebDataBinder binder) {
@@ -44,21 +40,17 @@ public class AuthController {
 
     public AuthController(AuthenticationManager authenticationManager,
                           UserService userService,
-                          PasswordEncoder encoder,
                           SignupRequestValidator signupRequestValidator,
-                          UserConverter userConverter,
-                          RoleService roleService) {
+                          Converter<UserDetails, UserResponse> userConverter) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.encoder = encoder;
         this.signupRequestValidator = signupRequestValidator;
         this.userConverter = userConverter;
-        this.roleService = roleService;
     }
 
     @PostMapping("/signin")
     // TODO: 16.05.2023 Работу с сессией я бы выпихнул в фильтр
-    public UserResponse signin(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ResponseEntity<UserResponse> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
 // TODO: 16.05.2023 Раздутый контроллер. Его задача - дергать сервисы, а не выполнять логику самостоятельно
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -68,20 +60,13 @@ public class AuthController {
 
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
-        return userConverter.toUserDto(userDetails);
+        return new ResponseEntity<>( userConverter.convert(userDetails), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@Valid @RequestBody SignupRequest signupRequest) {
 
-        User user = new User(signupRequest.getUsername(),
-                signupRequest.getName(),
-                encoder.encode(signupRequest.getPassword()));
-// TODO: 16.05.2023 Опять же. Это должно быть в сервисе. В т.ч. и хеширование пароля
-
-        Role role = roleService.getByName("ROLE_USER");
-        user.setRole(role);
-        userService.create(user);
+        userService.create(signupRequest);
 
         return new ResponseEntity<>( "User registered successfully!", HttpStatus.OK);
     }

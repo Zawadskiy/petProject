@@ -1,6 +1,5 @@
 package com.example.petproject.handler;
 
-import com.example.petproject.dto.response.error.ErrorResponse;
 import com.example.petproject.error.ApiError;
 import com.example.petproject.exception.DuplicateUsernameException;
 import com.example.petproject.exception.RoleNotFoundException;
@@ -25,24 +24,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RoleNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ErrorResponse roleNotFound(RoleNotFoundException exception) {
-        return new ErrorResponse(exception.getMessage());
+    public @ResponseBody ResponseEntity<String> roleNotFound(RoleNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DuplicateUsernameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody ErrorResponse usernameIsTaken(DuplicateUsernameException exception) {
-        return new ErrorResponse(exception.getMessage());
+    public @ResponseBody ResponseEntity<String> usernameIsTaken(DuplicateUsernameException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ErrorResponse usernameNotFound(UsernameNotFoundException exception) {
-        return new ErrorResponse(exception.getMessage());
+    public @ResponseBody ResponseEntity<String> usernameNotFound(UsernameNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers,
+                                                                  HttpStatusCode status,
+                                                                  WebRequest request) {
 
         List<String> errors = new ArrayList<>();
 

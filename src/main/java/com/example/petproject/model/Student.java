@@ -10,17 +10,25 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String name;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
     @ManyToOne
     private University university;
+
     @ManyToOne
     private Dormitory dormitory;
+
     @ManyToOne
     private Room room;
+
     private LocalDate admissionYear;
+
     private LocalDate deductionDate;
+
     private boolean liveInDormitory;
 
     public long getId() {
