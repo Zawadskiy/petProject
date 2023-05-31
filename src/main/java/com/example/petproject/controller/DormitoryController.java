@@ -3,7 +3,7 @@ package com.example.petproject.controller;
 import com.example.petproject.converter.Converter;
 import com.example.petproject.dto.request.modify.DormitoryRequest;
 import com.example.petproject.dto.response.DormitoryResponse;
-import com.example.petproject.model.Dormitory;
+import com.example.petproject.domain.Dormitory;
 import com.example.petproject.service.dormitory.DormitoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

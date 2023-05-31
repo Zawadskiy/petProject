@@ -2,7 +2,7 @@ package com.example.petproject.service.user;
 
 
 import com.example.petproject.dto.request.SignupRequest;
-import com.example.petproject.model.User;
+import com.example.petproject.domain.User;
 
 import java.util.List;
 

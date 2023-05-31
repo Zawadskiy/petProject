@@ -1,4 +1,4 @@
-package com.example.petproject.model;
+package com.example.petproject.domain;
 
 import jakarta.persistence.*;
 

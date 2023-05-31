@@ -1,6 +1,6 @@
 package com.example.petproject.dto.response;
 
-import com.example.petproject.model.Role;
+import com.example.petproject.domain.Role;
 
 public class UserResponse {
 

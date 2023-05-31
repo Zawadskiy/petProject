@@ -3,7 +3,7 @@ package com.example.petproject.controller;
 import com.example.petproject.converter.Converter;
 import com.example.petproject.dto.request.modify.StudentRequest;
 import com.example.petproject.dto.response.StudentResponse;
-import com.example.petproject.model.Student;
+import com.example.petproject.domain.Student;
 import com.example.petproject.service.student.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,6 @@ public class StudentController {
     }
 
     @GetMapping(params = {"page", "size"})
-    // TODO: 16.05.2023 @PageableDefault. Не хочешь заодно фильтрацию сюда прикрутить?
     public ResponseEntity<List<StudentResponse>> getAll(@RequestParam int page, @RequestParam int size) {
 
         List<Student> students = studentService.getStudents(page, size);

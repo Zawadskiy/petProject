@@ -3,7 +3,7 @@ package com.example.petproject.controller;
 import com.example.petproject.converter.Converter;
 import com.example.petproject.dto.request.modify.UniversityRequest;
 import com.example.petproject.dto.response.UniversityResponse;
-import com.example.petproject.model.University;
+import com.example.petproject.domain.University;
 import com.example.petproject.service.university.UniversityService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

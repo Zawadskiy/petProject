@@ -1,6 +1,6 @@
 package com.example.petproject.service.role;
 
-import com.example.petproject.model.Role;
+import com.example.petproject.domain.Role;
 import com.example.petproject.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -20,21 +21,27 @@ public class UserDetailsToUserResponse implements Converter<UserDetails, UserRes
 
     @Override
     public UserResponse convert(UserDetails source) {
-
-        UserResponse userDto = new UserResponse();
-
-        String role = source.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .findAny().orElseThrow(() -> new RoleNotFoundException("User don't have any role"));
-
-        userDto.setUsername(source.getUsername());
-        userDto.setRole(roleService.getByName(role));
-
-        return userDto;
+        return convert(Collections.singletonList(source)).get(0);
     }
 
     @Override
     public List<UserResponse> convert(List<UserDetails> source) {
-        return null;
+        return source.stream()
+                .map(this::mapToUserResponse)
+                .toList();
+    }
+
+    private UserResponse mapToUserResponse(UserDetails userDetails) {
+
+        UserResponse userDto = new UserResponse();
+
+        String role = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .findAny().orElseThrow(() -> new RoleNotFoundException("User don't have any role"));
+
+        userDto.setUsername(userDetails.getUsername());
+        userDto.setRole(roleService.getByName(role));
+
+        return userDto;
     }
 }

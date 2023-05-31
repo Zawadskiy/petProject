@@ -1,9 +1,10 @@
 package com.example.petproject.converter;
 
 import com.example.petproject.dto.response.UniversityResponse;
-import com.example.petproject.model.University;
+import com.example.petproject.domain.University;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -11,18 +12,24 @@ public class UniversityToUniversityResponse implements Converter<University, Uni
 
     @Override
     public UniversityResponse convert(University source) {
-
-        UniversityResponse universityDto = new UniversityResponse();
-
-        universityDto.setId(source.getId());
-        universityDto.setName(source.getName());
-        universityDto.setStudyDuration(source.getStudyDuration());
-
-        return universityDto;
+        return convert(Collections.singletonList(source)).get(0);
     }
 
     @Override
     public List<UniversityResponse> convert(List<University> source) {
-        return null;
+        return source.stream()
+                .map(this::mapToUniversityResponse)
+                .toList();
+    }
+
+    private UniversityResponse mapToUniversityResponse(University university) {
+
+        UniversityResponse universityDto = new UniversityResponse();
+
+        universityDto.setId(university.getId());
+        universityDto.setName(university.getName());
+        universityDto.setStudyDuration(university.getStudyDuration());
+
+        return universityDto;
     }
 }

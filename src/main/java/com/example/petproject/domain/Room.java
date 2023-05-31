@@ -1,25 +1,28 @@
-package com.example.petproject.model;
+package com.example.petproject.domain;
 
+import com.example.petproject.model.Gender;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dormitory")
-public class Dormitory {
-
+@Table(name = "room")
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String number;
 
-    private int numberOfRooms;
-
     @ManyToOne
-    @JoinColumn(name = "university_id")
-    private University university;
+    private Dormitory dormitory;
+
+    private int capacity;
 
     @Column(name = "available_for_accommodation")
     private boolean availabilityForAccommodation;
+
+    @Enumerated(EnumType.STRING)
+    private Gender residentsGender;
+
 
     public long getId() {
         return id;
@@ -37,20 +40,20 @@ public class Dormitory {
         this.number = number;
     }
 
-    public int getNumberOfRooms() {
-        return numberOfRooms;
+    public Dormitory getDormitory() {
+        return dormitory;
     }
 
-    public void setNumberOfRooms(int numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
+    public void setDormitory(Dormitory dormitory) {
+        this.dormitory = dormitory;
     }
 
-    public University getUniversity() {
-        return university;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setUniversity(University university) {
-        this.university = university;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public boolean isAvailabilityForAccommodation() {
@@ -60,5 +63,12 @@ public class Dormitory {
     public void setAvailabilityForAccommodation(boolean availabilityForAccommodation) {
         this.availabilityForAccommodation = availabilityForAccommodation;
     }
-    // TODO: 16.05.2023 как насчет служебных полей? даты создания и обновления
+
+    public Gender getResidentsGender() {
+        return residentsGender;
+    }
+
+    public void setResidentsGender(Gender residentsGender) {
+        this.residentsGender = residentsGender;
+    }
 }

@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    // TODO: 16.05.2023 Не советую инжекты вперемешку делать.
-    //  Группируй по слою архитектуры/зоне ответтсвенности
     private final AuthenticationManager authenticationManager;
+
     private final UserService userService;
 
     private final SignupRequestValidator signupRequestValidator;
+
     private final Converter<UserDetails, UserResponse> userConverter;
 
     @InitBinder("signupRequest")

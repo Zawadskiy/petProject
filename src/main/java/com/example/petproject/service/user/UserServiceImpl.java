@@ -1,8 +1,8 @@
 package com.example.petproject.service.user;
 
 import com.example.petproject.dto.request.SignupRequest;
-import com.example.petproject.model.Role;
-import com.example.petproject.model.User;
+import com.example.petproject.domain.Role;
+import com.example.petproject.domain.User;
 import com.example.petproject.repository.UserRepository;
 import com.example.petproject.service.role.RoleService;
 import jakarta.transaction.Transactional;

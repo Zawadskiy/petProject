@@ -1,7 +1,6 @@
 package com.example.petproject.service.university;
 
-import com.example.petproject.model.Student;
-import com.example.petproject.model.University;
+import com.example.petproject.domain.University;
 import com.example.petproject.repository.UniversityRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

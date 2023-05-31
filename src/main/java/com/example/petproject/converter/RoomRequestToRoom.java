@@ -1,12 +1,12 @@
 package com.example.petproject.converter;
 
 import com.example.petproject.dto.request.modify.RoomRequest;
-import com.example.petproject.model.Dormitory;
-import com.example.petproject.model.Room;
+import com.example.petproject.domain.Dormitory;
+import com.example.petproject.domain.Room;
 import com.example.petproject.service.dormitory.DormitoryService;
-import com.example.petproject.service.room.RoomService;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -20,22 +20,28 @@ public class RoomRequestToRoom implements Converter<RoomRequest, Room> {
 
     @Override
     public Room convert(RoomRequest source) {
-
-        Room room = new Room();
-
-        room.setNumber(source.getNumber());
-        room.setCapacity(source.getCapacity());
-        room.setAvailabilityForAccommodation(source.isAvailabilityForAccommodation());
-        room.setResidentsGender(source.getResidentsGender());
-
-        Dormitory dormitory = dormitoryService.getDormitory(source.getDormitory());
-        room.setDormitory(dormitory);
-
-        return room;
+        return convert(Collections.singletonList(source)).get(0);
     }
 
     @Override
     public List<Room> convert(List<RoomRequest> source) {
-        return null;
+        return source.stream()
+                .map(this::mapToRoom)
+                .toList();
+    }
+
+    private Room mapToRoom(RoomRequest roomRequest) {
+
+        Room room = new Room();
+
+        room.setNumber(roomRequest.getNumber());
+        room.setCapacity(roomRequest.getCapacity());
+        room.setAvailabilityForAccommodation(roomRequest.isAvailabilityForAccommodation());
+        room.setResidentsGender(roomRequest.getResidentsGender());
+
+        Dormitory dormitory = dormitoryService.getDormitory(roomRequest.getDormitory());
+        room.setDormitory(dormitory);
+
+        return room;
     }
 }

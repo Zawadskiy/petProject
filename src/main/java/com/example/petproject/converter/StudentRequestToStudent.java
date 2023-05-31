@@ -1,5 +1,9 @@
 package com.example.petproject.converter;
 
+import com.example.petproject.domain.Dormitory;
+import com.example.petproject.domain.Room;
+import com.example.petproject.domain.Student;
+import com.example.petproject.domain.University;
 import com.example.petproject.dto.request.modify.StudentRequest;
 import com.example.petproject.model.*;
 import com.example.petproject.service.dormitory.DormitoryService;
@@ -8,6 +12,7 @@ import com.example.petproject.service.university.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -28,20 +33,31 @@ public class StudentRequestToStudent implements Converter<StudentRequest, Studen
 
     @Override
     public Student convert(StudentRequest source) {
+        return convert(Collections.singletonList(source)).get(0);
+    }
+
+    @Override
+    public List<Student> convert(List<StudentRequest> source) {
+        return source.stream()
+                .map(this::mapToStudent)
+                .toList();
+    }
+
+    private Student mapToStudent(StudentRequest studentRequest) {
 
         Student student = new Student();
 
-        student.setLiveInDormitory(source.isLiveInDormitory());
-        student.setName(source.getName());
-        student.setGender(Gender.valueOf(source.getGender()));
+        student.setLiveInDormitory(studentRequest.isLiveInDormitory());
+        student.setName(studentRequest.getName());
+        student.setGender(Gender.valueOf(studentRequest.getGender()));
 
-        University university = universityService.getUniversity(source.getUniversity());
+        University university = universityService.getUniversity(studentRequest.getUniversity());
         student.setUniversity(university);
 
-        Dormitory dormitory = dormitoryService.getDormitory(source.getDormitory());
+        Dormitory dormitory = dormitoryService.getDormitory(studentRequest.getDormitory());
         student.setDormitory(dormitory);
 
-        Room room = roomService.getRoom(source.getRoom());
+        Room room = roomService.getRoom(studentRequest.getRoom());
         student.setRoom(room);
 
 //        @TODO
@@ -49,10 +65,5 @@ public class StudentRequestToStudent implements Converter<StudentRequest, Studen
 //        student.setDeductionDate();
 
         return student;
-    }
-
-    @Override
-    public List<Student> convert(List<StudentRequest> source) {
-        return null;
     }
 }

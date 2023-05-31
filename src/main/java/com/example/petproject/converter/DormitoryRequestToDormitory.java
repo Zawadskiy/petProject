@@ -1,12 +1,13 @@
 package com.example.petproject.converter;
 
 import com.example.petproject.dto.request.modify.DormitoryRequest;
-import com.example.petproject.model.Dormitory;
-import com.example.petproject.model.University;
+import com.example.petproject.domain.Dormitory;
+import com.example.petproject.domain.University;
 import com.example.petproject.service.university.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -21,6 +22,17 @@ public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, 
 
     @Override
     public Dormitory convert(DormitoryRequest source) {
+        return convert(Collections.singletonList(source)).get(0);
+    }
+
+    @Override
+    public List<Dormitory> convert(List<DormitoryRequest> source) {
+        return source.stream()
+                .map(this::mapToDormitory)
+                .toList();
+    }
+
+    private Dormitory mapToDormitory(DormitoryRequest source) {
 
         Dormitory dormitory = new Dormitory();
 
@@ -32,13 +44,5 @@ public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, 
         dormitory.setUniversity(university);
 
         return dormitory;
-    }
-
-    @Override
-    public List<Dormitory> convert(List<DormitoryRequest> source) {
-
-        return source.stream()
-                .map(this::convert)
-                .toList();
     }
 }

@@ -1,5 +1,6 @@
-package com.example.petproject.model;
+package com.example.petproject.domain;
 
+import com.example.petproject.model.Gender;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

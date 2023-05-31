@@ -1,6 +1,6 @@
 package com.example.petproject.dto.request.modify;
 
-import com.example.petproject.model.Role;
+import com.example.petproject.domain.Role;
 
 public class UserRequest {
     private String username;

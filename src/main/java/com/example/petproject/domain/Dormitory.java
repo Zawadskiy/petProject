@@ -1,27 +1,25 @@
-package com.example.petproject.model;
+package com.example.petproject.domain;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "room")
-public class Room {
+@Table(name = "dormitory")
+public class Dormitory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String number;
 
-    @ManyToOne
-    private Dormitory dormitory;
+    private int numberOfRooms;
 
-    private int capacity;
+    @ManyToOne
+    @JoinColumn(name = "university_id")
+    private University university;
 
     @Column(name = "available_for_accommodation")
     private boolean availabilityForAccommodation;
-
-    @Enumerated(EnumType.STRING)
-    private Gender residentsGender;
-
 
     public long getId() {
         return id;
@@ -39,20 +37,20 @@ public class Room {
         this.number = number;
     }
 
-    public Dormitory getDormitory() {
-        return dormitory;
+    public int getNumberOfRooms() {
+        return numberOfRooms;
     }
 
-    public void setDormitory(Dormitory dormitory) {
-        this.dormitory = dormitory;
+    public void setNumberOfRooms(int numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public University getUniversity() {
+        return university;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setUniversity(University university) {
+        this.university = university;
     }
 
     public boolean isAvailabilityForAccommodation() {
@@ -62,12 +60,5 @@ public class Room {
     public void setAvailabilityForAccommodation(boolean availabilityForAccommodation) {
         this.availabilityForAccommodation = availabilityForAccommodation;
     }
-
-    public Gender getResidentsGender() {
-        return residentsGender;
-    }
-
-    public void setResidentsGender(Gender residentsGender) {
-        this.residentsGender = residentsGender;
-    }
+    // TODO: 16.05.2023 как насчет служебных полей? даты создания и обновления
 }

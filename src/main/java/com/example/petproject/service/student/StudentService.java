@@ -1,6 +1,6 @@
 package com.example.petproject.service.student;
 
-import com.example.petproject.model.Student;
+import com.example.petproject.domain.Student;
 
 import java.util.List;
 

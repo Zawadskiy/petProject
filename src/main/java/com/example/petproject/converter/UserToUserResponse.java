@@ -1,28 +1,36 @@
 package com.example.petproject.converter;
 
 import com.example.petproject.dto.response.UserResponse;
-import com.example.petproject.model.User;
+import com.example.petproject.domain.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
 public class UserToUserResponse implements Converter<User, UserResponse> {
+
     @Override
     public UserResponse convert(User source) {
-
-        UserResponse userDto = new UserResponse();
-
-        userDto.setId(source.getId());
-        userDto.setName(source.getName());
-        userDto.setUsername(source.getUsername());
-        userDto.setRole(source.getRole());
-
-        return userDto;
+        return convert(Collections.singletonList(source)).get(0);
     }
 
     @Override
     public List<UserResponse> convert(List<User> source) {
-        return null;
+        return source.stream()
+                .map(this::mapToUserResponse)
+                .toList();
+    }
+
+    private UserResponse mapToUserResponse(User user) {
+
+        UserResponse userResponse = new UserResponse();
+
+        userResponse.setId(user.getId());
+        userResponse.setName(user.getName());
+        userResponse.setUsername(user.getUsername());
+        userResponse.setRole(user.getRole());
+
+        return userResponse;
     }
 }

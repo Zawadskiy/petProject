@@ -1,6 +1,6 @@
 package com.example.petproject.service.dormitory;
 
-import com.example.petproject.model.Dormitory;
+import com.example.petproject.domain.Dormitory;
 
 import java.util.List;
 

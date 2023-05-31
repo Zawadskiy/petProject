@@ -1,6 +1,6 @@
 package com.example.petproject.service.room;
 
-import com.example.petproject.model.Room;
+import com.example.petproject.domain.Room;
 
 import java.util.List;
 
