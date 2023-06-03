@@ -50,17 +50,19 @@ public class AuthController {
 
     @PostMapping("/signin")
     // TODO: 16.05.2023 Работу с сессией я бы выпихнул в фильтр
-    public ResponseEntity<UserResponse> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ResponseEntity<String> signIn(
+//            @Valid @RequestBody LoginRequest loginRequest, HttpSession session
+    ) {
 // TODO: 16.05.2023 Раздутый контроллер. Его задача - дергать сервисы, а не выполнять логику самостоятельно
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(authentication);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+//        Authentication authentication = authenticationManager
+//                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+//        SecurityContext context = SecurityContextHolder.getContext();
+//        context.setAuthentication(authentication);
+//        session.setAttribute("SPRING_SECURITY_CONTEXT", context);
 
-        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
+//        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
-        return new ResponseEntity<>( userConverter.convert(userDetails), HttpStatus.OK);
+        return new ResponseEntity<>("userConverter.convert(userDetails)", HttpStatus.OK);
     }
 
     @PostMapping("/signup")
