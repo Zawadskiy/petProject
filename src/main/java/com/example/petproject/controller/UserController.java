@@ -7,6 +7,9 @@ import com.example.petproject.domain.User;
 import com.example.petproject.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,11 +70,11 @@ public class UserController {
         return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping(params = {"page", "size"})
-    public ResponseEntity<List<UserResponse>> getAll(@RequestParam int page, @RequestParam int size) {
+    @GetMapping
+    public ResponseEntity<Page<User>> getAll(@PageableDefault Pageable pageable) {
 
-        List<User> users = userService.getUsers(page, size);
+        Page<User> users = userService.getUsers(pageable);
 
-        return new ResponseEntity<>(responseConverter.convert(users), HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

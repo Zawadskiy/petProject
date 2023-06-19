@@ -1,14 +1,20 @@
 package com.example.petproject.service.room;
 
 import com.example.petproject.domain.Room;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface RoomService {
-    List<Room> getByDormitoryId(long dormitoryId);
+
     void delete(long id);
+
     Room create(Room room);
+
     Room getRoom(long id);
+
     Room update(Room room);
-    List<Room> getRooms(int page, int size);
+
+    Page<Room> getRooms(Pageable pageRequest);
 }

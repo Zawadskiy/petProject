@@ -1,10 +1,19 @@
 package com.example.petproject.dto.request.modify;
 
+import jakarta.validation.constraints.NotNull;
+
 public class DormitoryRequest {
 
+    @NotNull
     private String number;
+
+    @NotNull
     private int numberOfRooms;
+
+    @NotNull
     private long university;
+
+    @NotNull
     private boolean availabilityForAccommodation;
 
     public String getNumber() {

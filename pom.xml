@@ -11,6 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>petProject</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>petProject</name>
     <description>petProject</description>
     <properties>
@@ -66,38 +67,29 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>generate-docs</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html</backend>
-                            <doctype>book</doctype>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework.restdocs</groupId>
-                        <artifactId>spring-restdocs-asciidoctor</artifactId>
-                        <version>${spring-restdocs.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.example.petproject.PetProjectApplication</mainClass>
+                    <layout>JAR</layout>
+                </configuration>
             </plugin>
         </plugins>
     </build>

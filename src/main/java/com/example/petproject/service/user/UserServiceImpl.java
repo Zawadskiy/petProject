@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers(int page, int size) {
-
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<User> users = userRepository.findAll(pageRequest);
-
-        return users.getContent();
+    public Page<User> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

@@ -1,8 +1,7 @@
 package com.example.petproject.handler;
 
 import com.example.petproject.error.ApiError;
-import com.example.petproject.exception.DuplicateUsernameException;
-import com.example.petproject.exception.RoleNotFoundException;
+import com.example.petproject.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -37,6 +36,30 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ResponseEntity<String> usernameNotFound(UsernameNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DormitoryNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ResponseEntity<String> dormitoryNotFound(DormitoryNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UniversityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ResponseEntity<String> universityNotFound(UniversityNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(StudentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ResponseEntity<String> studentNotFound(StudentNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RoomNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ResponseEntity<String> roomNotFound(RoomNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 

@@ -1,15 +1,18 @@
 package com.example.petproject.service.student;
 
 import com.example.petproject.domain.Student;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudentService {
-    List<Student> getStudents(int page, int size);
+
+    Page<Student> getStudents(Pageable pageRequest);
+
     Student create(Student student);
-    List<Student> getStudentsByUniversityId(long universityId);
-    List<Student> getByDormitoryId(long dormitoryId);
+
     Student update(Student student);
+
     Student getStudent(long id);
+
     void delete(long id);
 }

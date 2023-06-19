@@ -1,11 +1,12 @@
 package com.example.petproject.service.university;
 
 import com.example.petproject.domain.University;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface UniversityService {
-    University getUniversity(String name);
 
     University getUniversity(long id);
 
@@ -15,7 +16,5 @@ public interface UniversityService {
 
     void delete(long id);
 
-    List<University> getUniversities(int page, int size);
-
-    List<University> getAll();
+    Page<University> getUniversities(Pageable pageRequest);
 }

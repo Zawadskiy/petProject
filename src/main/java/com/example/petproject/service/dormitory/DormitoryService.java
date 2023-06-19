@@ -1,17 +1,14 @@
 package com.example.petproject.service.dormitory;
 
 import com.example.petproject.domain.Dormitory;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface DormitoryService {
-    Dormitory getDormitory(long id, long universityId);
 
     Dormitory getDormitory(long id);
 
-    List<Dormitory> getAllAvailableForAccommodation();
-
-    List<Dormitory> getDormitories(int page, int size);
+    Page<Dormitory> getDormitories(Pageable pageRequest);
 
     Dormitory update(Dormitory dormitory);
 

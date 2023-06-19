@@ -3,6 +3,8 @@ package com.example.petproject.service.user;
 
 import com.example.petproject.dto.request.SignupRequest;
 import com.example.petproject.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -17,5 +19,5 @@ public interface UserService {
 
     void delete(long id);
 
-    List<User> getUsers(int page, int size);
+    Page<User> getUsers(Pageable pageable);
 }

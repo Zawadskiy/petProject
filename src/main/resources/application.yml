@@ -1,9 +1,13 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: root
-    url: jdbc:postgresql://localhost:5432/root
+    username: admin
+#    url: jdbc:postgresql://localhost:5432/pet
+    url: jdbc:postgresql://postgres:5432/pet
     password: admin
+  data:
+    rest:
+      default-page-size: 10
   jpa:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect

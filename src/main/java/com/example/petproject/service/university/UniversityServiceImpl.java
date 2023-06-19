@@ -1,11 +1,13 @@
 package com.example.petproject.service.university;
 
 import com.example.petproject.domain.University;
+import com.example.petproject.exception.UniversityNotFoundException;
 import com.example.petproject.repository.UniversityRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,18 +23,8 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public University getUniversity(String name) {
-        return universityRepository.findByName(name).orElseThrow(()-> new RuntimeException());
-    }
-
-    @Override
     public University getUniversity(long id) {
-        return universityRepository.findById(id).orElseThrow(()->new RuntimeException());
-    }
-
-    @Override
-    public List<University> getAll() {
-        return universityRepository.findAll();
+        return universityRepository.findById(id).orElseThrow(() -> new UniversityNotFoundException(id));
     }
 
     @Override
@@ -54,11 +46,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<University> getUniversities(int page, int size) {
-
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<University> universities = universityRepository.findAll(pageRequest);
-
-        return universities.getContent();
+    public Page<University> getUniversities(Pageable pageRequest) {
+        return universityRepository.findAll(pageRequest);
     }
 }

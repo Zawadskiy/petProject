@@ -7,6 +7,9 @@ import com.example.petproject.domain.Student;
 import com.example.petproject.service.student.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,11 +70,11 @@ public class StudentController {
         return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping(params = {"page", "size"})
-    public ResponseEntity<List<StudentResponse>> getAll(@RequestParam int page, @RequestParam int size) {
+    @GetMapping
+    public ResponseEntity<Page<Student>> getAll(@PageableDefault Pageable pageRequest) {
 
-        List<Student> students = studentService.getStudents(page, size);
+        Page<Student> students = studentService.getStudents(pageRequest);
 
-        return new ResponseEntity<>(responseConverter.convert(students), HttpStatus.OK);
+        return new ResponseEntity<>(students, HttpStatus.OK);
     }
 }

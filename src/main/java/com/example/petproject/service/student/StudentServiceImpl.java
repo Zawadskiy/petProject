@@ -1,11 +1,13 @@
 package com.example.petproject.service.student;
 
 import com.example.petproject.domain.Student;
+import com.example.petproject.exception.StudentNotFoundException;
 import com.example.petproject.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,28 +23,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getStudents(int page, int size) {
-
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Student> students = studentRepository.findAll(pageRequest);
-
-        return students.getContent();
+    public Page<Student> getStudents(Pageable pageRequest) {
+        return studentRepository.findAll(pageRequest);
     }
 
     @Override
     @Transactional
     public Student create(Student student) {
         return studentRepository.save(student);
-    }
-
-    @Override
-    public List<Student> getStudentsByUniversityId(long id) {
-        return studentRepository.findByUniversityId(id);
-    }
-
-    @Override
-    public List<Student> getByDormitoryId(long id) {
-        return studentRepository.findAllByDormitoryId(id);
     }
 
     @Override
@@ -53,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getStudent(long id) {
-        return studentRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
     }
 
     @Override

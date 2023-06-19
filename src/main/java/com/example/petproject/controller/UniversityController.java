@@ -1,12 +1,16 @@
 package com.example.petproject.controller;
 
 import com.example.petproject.converter.Converter;
+import com.example.petproject.domain.User;
 import com.example.petproject.dto.request.modify.UniversityRequest;
 import com.example.petproject.dto.response.UniversityResponse;
 import com.example.petproject.domain.University;
 import com.example.petproject.service.university.UniversityService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,11 +72,11 @@ public class UniversityController {
         return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping(params = {"page", "size"})
-    public ResponseEntity<List<UniversityResponse>> getAll(@RequestParam int page, @RequestParam int size) {
+    @GetMapping
+    public ResponseEntity<Page<University>> getAll(@PageableDefault Pageable pageRequest) {
 
-        List<University> universities = universityService.getUniversities(page, size);
+        Page<University> universities = universityService.getUniversities(pageRequest);
 
-        return new ResponseEntity<>(responseConverter.convert(universities), HttpStatus.OK);
+        return new ResponseEntity<>(universities, HttpStatus.OK);
     }
 }

@@ -7,6 +7,9 @@ import com.example.petproject.domain.Dormitory;
 import com.example.petproject.service.dormitory.DormitoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,12 +71,12 @@ public class DormitoryController {
         return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping(params = {"page", "size"})
-    // TODO: 16.05.2023 @PageableDefault. Не хочешь заодно фильтрацию сюда прикрутить?
-    public ResponseEntity<List<DormitoryResponse>> getAll(@RequestParam int page, @RequestParam int size) {
+    @GetMapping
+    // TODO: 16.05.2023 Не хочешь заодно фильтрацию сюда прикрутить?
+    public ResponseEntity<Page<Dormitory>> getAll(@PageableDefault Pageable pageRequest) {
 
-        List<Dormitory> dormitories = dormitoryService.getDormitories(page, size);
+        Page<Dormitory> dormitories = dormitoryService.getDormitories(pageRequest);
 
-        return new ResponseEntity<>(responseConverter.convert(dormitories), HttpStatus.OK);
+        return new ResponseEntity<>(dormitories, HttpStatus.OK);
     }
 }

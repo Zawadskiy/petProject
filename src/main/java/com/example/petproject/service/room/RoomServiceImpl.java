@@ -1,10 +1,12 @@
 package com.example.petproject.service.room;
 
 import com.example.petproject.domain.Room;
+import com.example.petproject.exception.RoomNotFoundException;
 import com.example.petproject.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +22,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> getByDormitoryId(long dormitoryId) {
-        return roomRepository.findAllByDormitoryIdAndAvailabilityForAccommodation(dormitoryId, true);
-    }
-
-    @Override
     public void delete(long id) {
         roomRepository.deleteById(id);
     }
@@ -36,7 +33,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room getRoom(long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
     }
 
     @Override
@@ -45,11 +42,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> getRooms(int page, int size) {
-
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Room> rooms = roomRepository.findAll(pageRequest);
-
-        return rooms.getContent();
+    public Page<Room> getRooms(Pageable pageRequest) {
+        return roomRepository.findAll(pageRequest);
     }
 }
