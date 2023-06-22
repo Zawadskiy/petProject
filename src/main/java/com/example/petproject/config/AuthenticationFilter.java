@@ -18,12 +18,16 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
+// TODO: 22.06.2023 не очень понятно, почему базовый сервлетный фильтр.
+//  Если не знаком - глянь в сторону BasicAuthenticationFilter и SecurityFilterChain.
+//  Не то, чтобы тут нужно глубоко нырять, но тебе будет интересно, кмк
 public class AuthenticationFilter implements Filter {
 
     private final AuthenticationManager authenticationManager;
 
     private final ObjectMapper objectMapper;
 
+    // TODO: 22.06.2023 статик? если это консанта
     private final String url = "/auth/signin";
 
     @Autowired
@@ -43,15 +47,23 @@ public class AuthenticationFilter implements Filter {
         if (req.getRequestURI().equals(url)) {
 
             CachedBodyHttpServletRequest cachedBodyHttpServletRequest = new CachedBodyHttpServletRequest(req);
+            // TODO: 22.06.2023 точка - строчка
             String json = cachedBodyHttpServletRequest.getReader().lines().reduce(String::concat).orElse(StringUtils.EMPTY);
 
             LoginRequest loginRequest = objectMapper.readValue(json, LoginRequest.class);
 
             Authentication authentication = authenticationManager
+//                    todo а есть ли смысл пароль сетать? Продолжая мысль, в первый параметр - principal,
+//                     можно всунуть не только юзернейм, а и другую инфу по юзеру,
+//                     которая может быть полезна в секьюрити контексте. Скажем, его почта,
+//                     если она почему-то часто нужна в логике. Тогда мы в рантайме всегда сможем получить и логин,
+//                     и почту, не залазя в бд
                     .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(authentication);
 
+            // TODO: 22.06.2023 просто на потыкать. Можно сессии в каком-нить редисе хранить.
+            //  Прикольно поразбираться с этим
             HttpSession session = req.getSession(true);
             session.setAttribute("SPRING_SECURITY_CONTEXT", context);
         }

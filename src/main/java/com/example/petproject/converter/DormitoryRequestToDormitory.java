@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
+// TODO: 22.06.2023 не советую терять постиксы. Зато некоторые вещи можно упростить:
+//  DormitoryRequestConverter - если мы всегда только в одну сущность конвертим, зачем усложнять, пока нет причины?
 public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, Dormitory> {
 
     private final UniversityService universityService;
@@ -26,6 +28,11 @@ public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, 
     }
 
     @Override
+    // TODO: 22.06.2023 т.е. для каждой общаги ты делаешь запрос н аунивер в бд. Смысл?
+    //  Можно по списку общаг получить мапу айди универа-универ и дальше раскидать из нее.
+    //  Получится константное число запросов, а не как сейчас.
+    //  Отдельный вопрос - нужно ли сетать объект на уровне конвертера из реквеста.
+    //  Мб имеет смысл делать на уровне сервиса
     public List<Dormitory> convert(List<DormitoryRequest> source) {
         return source.stream()
                 .map(this::mapToDormitory)

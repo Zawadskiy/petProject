@@ -23,6 +23,7 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     @Override
     public Dormitory getDormitory(long id) {
+        // TODO: 23.06.2023 если захочешь узнать как избавиться от однотипного опншл.оЕлзСроу - пни, расскажу в лс
         return dormitoryRepository.findById(id)
                 .orElseThrow(() -> new DormitoryNotFoundException(id));
     }

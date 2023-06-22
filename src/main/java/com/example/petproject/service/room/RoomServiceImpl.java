@@ -37,6 +37,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    // TODO: 23.06.2023 у тебя же жпа. Тут есть нюанс с тем, что объект update(название не очень) не под управлением ем.
+    //  Ну и нюанс с тем, что это так не работает, если есть неизменяемые поля. Точнее работает, но надо немного кунг-фу
     public Room update(Room update) {
         return roomRepository.save(update);
     }

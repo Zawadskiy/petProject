@@ -22,6 +22,8 @@ public class DormitoryController {
 
     private final DormitoryService dormitoryService;
 
+    // TODO: 22.06.2023 я бы здесь рекомендовал наследника указывать типом.
+    //  Спринг скушает и так, но смысл от избыточного обобщения?
     private final Converter<DormitoryRequest, Dormitory> dormitoryConverter;
     private final Converter<Dormitory, DormitoryResponse> responseConverter;
 
@@ -36,7 +38,9 @@ public class DormitoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<DormitoryResponse> update(@Valid @RequestBody DormitoryRequest request, @PathVariable long id) {
-
+// TODO: 22.06.2023 неудачное название переменной. Почему бы в конвертере не сетать айди?
+//  Можно ведь расширить интерфейс конвертера, сделав в т.ч. конрвертер, кроме сорса и таргета принимающего метаинфу.
+//  Ну и непонятно, почему базовый интерфейс конвертера не хочешь спринговый стянуть
         Dormitory convert = dormitoryConverter.convert(request);
         convert.setId(id);
 
@@ -73,6 +77,7 @@ public class DormitoryController {
 
     @GetMapping
     // TODO: 16.05.2023 Не хочешь заодно фильтрацию сюда прикрутить?
+    //  pageRequest -> pageable. выглядит логичнее
     public ResponseEntity<Page<Dormitory>> getAll(@PageableDefault Pageable pageRequest) {
 
         Page<Dormitory> dormitories = dormitoryService.getDormitories(pageRequest);

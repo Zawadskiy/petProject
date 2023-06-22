@@ -17,6 +17,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getByName(String name) {
+        // TODO: 23.06.2023 точка - строчка? Ну и с эксепшном мутно здесь
         return roleRepository.findByName(name).orElseThrow(()-> new RuntimeException());
     }
 }

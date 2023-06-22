@@ -29,6 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
+    // TODO: 22.06.2023 заглушка? вроде же можно сделать без явного определения в контроллере.
+    //  Просто указать в секьюрити конфиге урл для логина
     public ResponseEntity<String> signIn() {
         return new ResponseEntity<>(HttpStatus.OK);
     }

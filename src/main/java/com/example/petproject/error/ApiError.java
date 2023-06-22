@@ -17,6 +17,7 @@ public class ApiError {
         this.errors = errors;
     }
 
+    // TODO: 23.06.2023 мб тут стоит что-то вроде this(status, message, List.of(error)) юзать?
     public ApiError(HttpStatus status, String message, String error) {
         this.status = status;
         this.message = message;

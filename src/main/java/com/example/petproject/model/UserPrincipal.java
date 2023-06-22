@@ -33,6 +33,7 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
+    // TODO: 23.06.2023 точно ли этот метод должен быть здесь? почему не в UserDetailsServiceImpl, например?
     public static UserPrincipal build(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));

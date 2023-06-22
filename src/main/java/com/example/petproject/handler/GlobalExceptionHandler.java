@@ -33,6 +33,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 
+    // TODO: 23.06.2023 тебе не кажется, что занадтно как-то? Мб стоит промежуточный 
+    //  абстрактный ObjectNotFoundException ввести? Меньше геморроя. Впрочем, лично я бы делал его не абстрактным, 
+    //  а просто с параметром, принимающим класс не найденного объекта 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ResponseEntity<String> usernameNotFound(UsernameNotFoundException exception) {
@@ -73,6 +76,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ex.getBindingResult()
                 .getFieldErrors()
+                // TODO: 23.06.2023 сайд эффекты - это не очень круто)
+                //  я бы подумал насчет получения двух списков из стримов и дальнейшего их слияния
                 .forEach(error-> errors.add(error.getField() + ": " + error.getDefaultMessage()));
 
         ex.getBindingResult()

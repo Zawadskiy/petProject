@@ -29,6 +29,7 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     @Transactional
+    // TODO: 23.06.2023 а в других сервисах транзакция на уровне сервиса не нужна?:)
     public University update(University update) {
         return universityRepository.save(update);
     }
@@ -46,6 +47,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    // TODO: 23.06.2023 getUniversities - есть другие идеи, что за список может вернуться?) getAll() мб?)
     public Page<University> getUniversities(Pageable pageRequest) {
         return universityRepository.findAll(pageRequest);
     }

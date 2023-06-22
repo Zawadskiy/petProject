@@ -26,10 +26,12 @@ public class SignupRequestValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
+        // TODO: 23.06.2023 почему не анноташками?
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "username is required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "name is required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password is required");
 
+        // TODO: 23.06.2023 можно же прямо здесь получить скащенный объект, без явного приведения внутри ифа
         if (target instanceof SignupRequest) {
 
             SignupRequest request = (SignupRequest) target;

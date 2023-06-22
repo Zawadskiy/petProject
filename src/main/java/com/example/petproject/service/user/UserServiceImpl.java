@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    // TODO: 23.06.2023 фуфу. Либо везде тянем дто в слой сервисов, либо везде передаем домен/набор исходных параметров
     public User create(SignupRequest signupRequest) {
 
         User user = new User(

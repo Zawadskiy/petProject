@@ -18,6 +18,7 @@ public class Dormitory {
     @JoinColumn(name = "university_id")
     private University university;
 
+    // TODO: 23.06.2023 accommodationAvailability короче, а смысл +-тот же
     @Column(name = "available_for_accommodation")
     private boolean availabilityForAccommodation;
 

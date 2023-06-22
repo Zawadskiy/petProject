@@ -7,6 +7,7 @@ spring:
     password: admin
   data:
     rest:
+#      todo если не путаю, можно и максимальное значение ограничить. Имеет смысл
       default-page-size: 10
   jpa:
     database: postgresql

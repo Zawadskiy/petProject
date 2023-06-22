@@ -32,6 +32,8 @@ public class StudentRequestToStudent implements Converter<StudentRequest, Studen
     }
 
     @Override
+    // TODO: 23.06.2023 имеет право на жизнь, но тоже есть нюансы.
+    //  Как с конвертером общаг пофиксишь - пни, нырнем тут глубже
     public Student convert(StudentRequest source) {
         return convert(Collections.singletonList(source)).get(0);
     }
