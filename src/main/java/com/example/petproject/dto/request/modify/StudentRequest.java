@@ -1,13 +1,14 @@
 package com.example.petproject.dto.request.modify;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class StudentRequest {
 
-    @NotNull
+    @NotEmpty
     private String name;
 
-    @NotNull
+    @NotEmpty
     private String gender;
 
     @NotNull

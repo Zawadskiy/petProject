@@ -1,10 +1,9 @@
 package com.example.petproject.repository;
 
 import com.example.petproject.domain.Role;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends CustomRepo<Role, Long> {
     Optional<Role> findByName(String name);
 }

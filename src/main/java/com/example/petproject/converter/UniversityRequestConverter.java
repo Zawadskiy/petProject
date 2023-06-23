@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class UniversityRequestToUniversity implements Converter<UniversityRequest, University> {
+public class UniversityRequestConverter implements Converter<UniversityRequest, University> {
 
     @Override
     public University convert(UniversityRequest source) {

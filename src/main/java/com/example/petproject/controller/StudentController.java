@@ -73,7 +73,7 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<Page<Student>> getAll(@PageableDefault Pageable pageRequest) {
 
-        Page<Student> students = studentService.getStudents(pageRequest);
+        Page<Student> students = studentService.getAll(pageRequest);
 
         return new ResponseEntity<>(students, HttpStatus.OK);
     }

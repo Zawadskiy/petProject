@@ -10,11 +10,11 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class RoomRequestToRoom implements Converter<RoomRequest, Room> {
+public class RoomRequestConverter implements Converter<RoomRequest, Room> {
 
     private final DormitoryService dormitoryService;
 
-    public RoomRequestToRoom(DormitoryService dormitoryService) {
+    public RoomRequestConverter(DormitoryService dormitoryService) {
         this.dormitoryService = dormitoryService;
     }
 

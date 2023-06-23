@@ -73,7 +73,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<Page<User>> getAll(@PageableDefault Pageable pageable) {
 
-        Page<User> users = userService.getUsers(pageable);
+        Page<User> users = userService.getAll(pageable);
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

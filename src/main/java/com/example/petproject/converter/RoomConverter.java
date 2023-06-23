@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class RoomToRoomRequest implements Converter<Room, RoomResponse> {
+public class RoomConverter implements Converter<Room, RoomResponse> {
 
     @Override
     public RoomResponse convert(Room source) {

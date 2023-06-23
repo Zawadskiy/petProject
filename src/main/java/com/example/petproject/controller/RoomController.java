@@ -74,7 +74,7 @@ public class RoomController {
     @GetMapping
     public ResponseEntity<Page<Room>> getAll(@PageableDefault Pageable pageRequest) {
 
-        Page<Room> rooms = roomService.getRooms(pageRequest);
+        Page<Room> rooms = roomService.getAll(pageRequest);
 
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }

@@ -1,24 +1,25 @@
 package com.example.petproject.converter;
 
-import com.example.petproject.dto.request.modify.DormitoryRequest;
 import com.example.petproject.domain.Dormitory;
 import com.example.petproject.domain.University;
+import com.example.petproject.dto.request.modify.DormitoryRequest;
 import com.example.petproject.service.university.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
-// TODO: 22.06.2023 не советую терять постиксы. Зато некоторые вещи можно упростить:
-//  DormitoryRequestConverter - если мы всегда только в одну сущность конвертим, зачем усложнять, пока нет причины?
-public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, Dormitory> {
+public class DormitoryRequestConverter implements Converter<DormitoryRequest, Dormitory> {
 
     private final UniversityService universityService;
 
     @Autowired
-    public DormitoryRequestToDormitory(UniversityService universityService) {
+    public DormitoryRequestConverter(UniversityService universityService) {
         this.universityService = universityService;
     }
 
@@ -34,12 +35,18 @@ public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, 
     //  Отдельный вопрос - нужно ли сетать объект на уровне конвертера из реквеста.
     //  Мб имеет смысл делать на уровне сервиса
     public List<Dormitory> convert(List<DormitoryRequest> source) {
+
+        Map<Long, University> universities = source.stream()
+                .map(DormitoryRequest::getUniversity)
+                .distinct()
+                .collect(Collectors.toMap(Function.identity(), universityService::getUniversity));
+
         return source.stream()
-                .map(this::mapToDormitory)
+                .map(dreq -> mapToDormitory(dreq, universities))
                 .toList();
     }
 
-    private Dormitory mapToDormitory(DormitoryRequest source) {
+    private Dormitory mapToDormitory(DormitoryRequest source, Map<Long, University> universities) {
 
         Dormitory dormitory = new Dormitory();
 
@@ -47,8 +54,7 @@ public class DormitoryRequestToDormitory implements Converter<DormitoryRequest, 
         dormitory.setNumber(source.getNumber());
         dormitory.setAvailabilityForAccommodation(source.isAvailabilityForAccommodation());
 
-        University university = universityService.getUniversity(source.getUniversity());
-        dormitory.setUniversity(university);
+        dormitory.setUniversity(universities.get(source.getUniversity()));
 
         return dormitory;
     }

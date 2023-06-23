@@ -16,14 +16,14 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class StudentRequestToStudent implements Converter<StudentRequest, Student> {
+public class StudentRequestConverter implements Converter<StudentRequest, Student> {
 
     private final DormitoryService dormitoryService;
     private final UniversityService universityService;
     private final RoomService roomService;
 
     @Autowired
-    public StudentRequestToStudent(DormitoryService dormitoryService,
+    public StudentRequestConverter(DormitoryService dormitoryService,
                                    UniversityService universityService,
                                    RoomService roomService) {
         this.dormitoryService = dormitoryService;

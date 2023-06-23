@@ -27,8 +27,7 @@ public class AuthenticationFilter implements Filter {
 
     private final ObjectMapper objectMapper;
 
-    // TODO: 22.06.2023 статик? если это консанта
-    private final String url = "/auth/signin";
+    private final static String URL = "/auth/signin";
 
     @Autowired
     public AuthenticationFilter(AuthenticationManager authenticationManager,
@@ -44,11 +43,13 @@ public class AuthenticationFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (req.getRequestURI().equals(url)) {
+        if (req.getRequestURI().equals(URL)) {
 
             CachedBodyHttpServletRequest cachedBodyHttpServletRequest = new CachedBodyHttpServletRequest(req);
-            // TODO: 22.06.2023 точка - строчка
-            String json = cachedBodyHttpServletRequest.getReader().lines().reduce(String::concat).orElse(StringUtils.EMPTY);
+            String json = cachedBodyHttpServletRequest.getReader()
+                    .lines()
+                    .reduce(String::concat)
+                    .orElse(StringUtils.EMPTY);
 
             LoginRequest loginRequest = objectMapper.readValue(json, LoginRequest.class);
 

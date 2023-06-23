@@ -31,11 +31,7 @@ public class SignupRequestValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "name is required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password is required");
 
-        // TODO: 23.06.2023 можно же прямо здесь получить скащенный объект, без явного приведения внутри ифа
-        if (target instanceof SignupRequest) {
-
-            SignupRequest request = (SignupRequest) target;
-
+        if (target instanceof SignupRequest request) {
             if (userRepository.existsByUsername(request.getUsername())) {
                 errors.rejectValue("username", "Username is already taken!");
             }

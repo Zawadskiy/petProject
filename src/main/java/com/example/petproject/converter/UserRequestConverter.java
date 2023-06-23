@@ -2,13 +2,22 @@ package com.example.petproject.converter;
 
 import com.example.petproject.dto.request.modify.UserRequest;
 import com.example.petproject.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
 @Component
-public class UserRequestToUser implements Converter<UserRequest, User> {
+public class UserRequestConverter implements Converter<UserRequest, User> {
+
+    private final PasswordEncoder encoder;
+
+    @Autowired
+    public UserRequestConverter(PasswordEncoder encoder) {
+        this.encoder = encoder;
+    }
 
     @Override
     public User convert(UserRequest source) {
@@ -28,7 +37,7 @@ public class UserRequestToUser implements Converter<UserRequest, User> {
 
         user.setName(user.getName());
         user.setUsername(userRequest.getUsername());
-        user.setPassword(userRequest.getPassword());
+        user.setPassword(encoder.encode(userRequest.getPassword()));
         user.setRole(userRequest.getRole());
 
         return user;

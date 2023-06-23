@@ -8,7 +8,7 @@ public interface DormitoryService {
 
     Dormitory getDormitory(long id);
 
-    Page<Dormitory> getDormitories(Pageable pageRequest);
+    Page<Dormitory> getAll(Pageable pageRequest);
 
     Dormitory update(Dormitory dormitory);
 

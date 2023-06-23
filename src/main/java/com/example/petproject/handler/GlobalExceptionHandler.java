@@ -33,37 +33,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 
-    // TODO: 23.06.2023 тебе не кажется, что занадтно как-то? Мб стоит промежуточный 
-    //  абстрактный ObjectNotFoundException ввести? Меньше геморроя. Впрочем, лично я бы делал его не абстрактным, 
-    //  а просто с параметром, принимающим класс не найденного объекта 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ResponseEntity<String> usernameNotFound(UsernameNotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(DormitoryNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ResponseEntity<String> dormitoryNotFound(DormitoryNotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(UniversityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ResponseEntity<String> universityNotFound(UniversityNotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(StudentNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ResponseEntity<String> studentNotFound(StudentNotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(RoomNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ResponseEntity<String> roomNotFound(RoomNotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(DuplicateUsernameException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody ResponseEntity<String> objectNotFound(DuplicateUsernameException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 
     @Override

@@ -1,16 +1,12 @@
 package com.example.petproject.service.student;
 
 import com.example.petproject.domain.Student;
-import com.example.petproject.exception.StudentNotFoundException;
 import com.example.petproject.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -23,8 +19,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<Student> getStudents(Pageable pageRequest) {
+    public Page<Student> getAll(Pageable pageRequest) {
         return studentRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public Student getStudent(long id) {
+        return studentRepository.findByIdCustom(id);
     }
 
     @Override
@@ -37,11 +38,6 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     public Student update(Student update) {
         return studentRepository.save(update);
-    }
-
-    @Override
-    public Student getStudent(long id) {
-        return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
     }
 
     @Override

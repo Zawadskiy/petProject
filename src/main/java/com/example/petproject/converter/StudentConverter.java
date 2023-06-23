@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class StudentToStudentResponse implements Converter<Student, StudentResponse> {
+public class StudentConverter implements Converter<Student, StudentResponse> {
 
     @Override
     public StudentResponse convert(Student source) {

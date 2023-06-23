@@ -2,13 +2,13 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: admin
-#    url: jdbc:postgresql://localhost:5432/pet
-    url: jdbc:postgresql://postgres:5432/pet
+    url: jdbc:postgresql://localhost:5432/pet
+#    url: jdbc:postgresql://postgres:5432/pet
     password: admin
   data:
     rest:
-#      todo если не путаю, можно и максимальное значение ограничить. Имеет смысл
       default-page-size: 10
+      max-page-size: 40
   jpa:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect

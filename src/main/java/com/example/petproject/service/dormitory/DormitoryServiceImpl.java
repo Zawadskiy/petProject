@@ -1,16 +1,12 @@
 package com.example.petproject.service.dormitory;
 
 import com.example.petproject.domain.Dormitory;
-import com.example.petproject.exception.DormitoryNotFoundException;
 import com.example.petproject.repository.DormitoryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DormitoryServiceImpl implements DormitoryService {
@@ -23,13 +19,11 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     @Override
     public Dormitory getDormitory(long id) {
-        // TODO: 23.06.2023 если захочешь узнать как избавиться от однотипного опншл.оЕлзСроу - пни, расскажу в лс
-        return dormitoryRepository.findById(id)
-                .orElseThrow(() -> new DormitoryNotFoundException(id));
+        return dormitoryRepository.findByIdCustom(id);
     }
 
     @Override
-    public Page<Dormitory> getDormitories(Pageable pageRequest) {
+    public Page<Dormitory> getAll(Pageable pageRequest) {
         return dormitoryRepository.findAll(pageRequest);
     }
 
@@ -40,11 +34,13 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
+    @Transactional
     public Dormitory create(Dormitory dormitory) {
         return dormitoryRepository.save(dormitory);
     }
 
     @Override
+    @Transactional
     public void delete(long id) {
         dormitoryRepository.deleteById(id);
     }

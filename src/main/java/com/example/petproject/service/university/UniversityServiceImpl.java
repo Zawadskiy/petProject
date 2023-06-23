@@ -1,16 +1,12 @@
 package com.example.petproject.service.university;
 
 import com.example.petproject.domain.University;
-import com.example.petproject.exception.UniversityNotFoundException;
 import com.example.petproject.repository.UniversityRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
@@ -24,12 +20,16 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public University getUniversity(long id) {
-        return universityRepository.findById(id).orElseThrow(() -> new UniversityNotFoundException(id));
+        return universityRepository.findByIdCustom(id);
+    }
+
+    @Override
+    public Page<University> getAll(Pageable pageRequest) {
+        return universityRepository.findAll(pageRequest);
     }
 
     @Override
     @Transactional
-    // TODO: 23.06.2023 а в других сервисах транзакция на уровне сервиса не нужна?:)
     public University update(University update) {
         return universityRepository.save(update);
     }
@@ -46,9 +46,5 @@ public class UniversityServiceImpl implements UniversityService {
         universityRepository.deleteById(id);
     }
 
-    @Override
-    // TODO: 23.06.2023 getUniversities - есть другие идеи, что за список может вернуться?) getAll() мб?)
-    public Page<University> getUniversities(Pageable pageRequest) {
-        return universityRepository.findAll(pageRequest);
-    }
+
 }

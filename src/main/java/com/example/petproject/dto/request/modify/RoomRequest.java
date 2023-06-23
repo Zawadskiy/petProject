@@ -1,11 +1,12 @@
 package com.example.petproject.dto.request.modify;
 
 import com.example.petproject.model.Gender;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class RoomRequest {
 
-    @NotNull
+    @NotEmpty
     private String number;
 
     @NotNull
@@ -17,7 +18,7 @@ public class RoomRequest {
     @NotNull
     private boolean availabilityForAccommodation;
 
-    @NotNull
+    @NotEmpty
     private Gender residentsGender;
 
     public String getNumber() {

@@ -16,5 +16,5 @@ public interface UniversityService {
 
     void delete(long id);
 
-    Page<University> getUniversities(Pageable pageRequest);
+    Page<University> getAll(Pageable pageRequest);
 }

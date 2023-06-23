@@ -1,10 +1,11 @@
 package com.example.petproject.dto.request.modify;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class DormitoryRequest {
-    // TODO: 23.06.2023 для строк - советую нотЕмпти/нотБланк
-    @NotNull
+
+    @NotEmpty
     private String number;
 
     @NotNull

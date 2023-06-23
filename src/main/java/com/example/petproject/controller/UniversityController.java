@@ -75,7 +75,7 @@ public class UniversityController {
     @GetMapping
     public ResponseEntity<Page<University>> getAll(@PageableDefault Pageable pageRequest) {
 
-        Page<University> universities = universityService.getUniversities(pageRequest);
+        Page<University> universities = universityService.getAll(pageRequest);
 
         return new ResponseEntity<>(universities, HttpStatus.OK);
     }

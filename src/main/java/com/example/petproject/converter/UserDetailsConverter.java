@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class UserDetailsToUserResponse implements Converter<UserDetails, UserResponse> {
+public class UserDetailsConverter implements Converter<UserDetails, UserResponse> {
 
     private final RoleService roleService;
 
-    public UserDetailsToUserResponse(RoleService roleService) {
+    public UserDetailsConverter(RoleService roleService) {
         this.roleService = roleService;
     }
 

@@ -1,9 +1,9 @@
 package com.example.petproject.controller;
 
 import com.example.petproject.converter.Converter;
+import com.example.petproject.domain.Dormitory;
 import com.example.petproject.dto.request.modify.DormitoryRequest;
 import com.example.petproject.dto.response.DormitoryResponse;
-import com.example.petproject.domain.Dormitory;
 import com.example.petproject.service.dormitory.DormitoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/dormitories")
@@ -80,7 +78,7 @@ public class DormitoryController {
     //  pageRequest -> pageable. выглядит логичнее
     public ResponseEntity<Page<Dormitory>> getAll(@PageableDefault Pageable pageRequest) {
 
-        Page<Dormitory> dormitories = dormitoryService.getDormitories(pageRequest);
+        Page<Dormitory> dormitories = dormitoryService.getAll(pageRequest);
 
         return new ResponseEntity<>(dormitories, HttpStatus.OK);
     }

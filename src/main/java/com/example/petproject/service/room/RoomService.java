@@ -16,5 +16,5 @@ public interface RoomService {
 
     Room update(Room room);
 
-    Page<Room> getRooms(Pageable pageRequest);
+    Page<Room> getAll(Pageable pageRequest);
 }
