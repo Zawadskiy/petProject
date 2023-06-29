@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public class UserRequestConverter implements Converter<UserRequest, User> {
-
+    // TODO: 29.06.2023 опять же, хэширование дб в сервисе
     private final PasswordEncoder encoder;
 
     @Autowired

@@ -43,6 +43,7 @@ public class AuthenticationFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
+        // TODO: 29.06.2023 лучше константа.икуалз(изменяемое значение). Защищает от NPE
         if (req.getRequestURI().equals(URL)) {
 
             CachedBodyHttpServletRequest cachedBodyHttpServletRequest = new CachedBodyHttpServletRequest(req);

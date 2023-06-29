@@ -33,6 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 
+    // TODO: 29.06.2023 дважды хэндлишь DuplicateUsernameException?
     @ExceptionHandler(DuplicateUsernameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public @ResponseBody ResponseEntity<String> objectNotFound(DuplicateUsernameException exception) {

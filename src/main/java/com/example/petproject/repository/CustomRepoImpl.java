@@ -21,6 +21,8 @@ public class CustomRepoImpl<T, ID> extends SimpleJpaRepository<T, ID> implements
 
     @Override
     public T findByIdCustom(ID id) {
+        // TODO: 29.06.2023 orElseThrow - на новой строке. Я бы в эксепшн передавал сам класс,
+        //  а внутри уже доставал бы имя - к чему лишний бойлер плейт? То же и с toString()
         return findById(id).orElseThrow(() -> new ObjectNotFoundException(type.getName(), id.toString()));
     }
 }
