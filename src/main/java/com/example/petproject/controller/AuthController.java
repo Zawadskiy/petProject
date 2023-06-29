@@ -2,6 +2,7 @@ package com.example.petproject.controller;
 
 import com.example.petproject.converter.Converter;
 import com.example.petproject.domain.User;
+import com.example.petproject.dto.request.LoginRequest;
 import com.example.petproject.dto.request.SignupRequest;
 import com.example.petproject.dto.request.modify.UserRequest;
 import com.example.petproject.service.user.UserService;
@@ -39,7 +40,7 @@ public class AuthController {
     @PostMapping("/signin")
     // TODO: 22.06.2023 заглушка? вроде же можно сделать без явного определения в контроллере.
     //  Просто указать в секьюрити конфиге урл для логина
-    public ResponseEntity<String> signIn() {
+    public ResponseEntity<String> signIn(@RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

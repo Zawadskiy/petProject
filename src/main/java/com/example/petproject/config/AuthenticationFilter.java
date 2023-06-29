@@ -3,33 +3,28 @@ package com.example.petproject.config;
 
 import com.example.petproject.dto.request.LoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
-@Component
-// TODO: 22.06.2023 не очень понятно, почему базовый сервлетный фильтр.
-//  Если не знаком - глянь в сторону BasicAuthenticationFilter и SecurityFilterChain.
-//  Не то, чтобы тут нужно глубоко нырять, но тебе будет интересно, кмк
-public class AuthenticationFilter implements Filter {
+public class AuthenticationFilter extends GenericFilterBean {
 
     private final AuthenticationManager authenticationManager;
 
     private final ObjectMapper objectMapper;
 
-    private final static String URL = "/auth/signin";
-
-    @Autowired
     public AuthenticationFilter(AuthenticationManager authenticationManager,
                                 ObjectMapper objectMapper) {
         this.authenticationManager = authenticationManager;
@@ -42,8 +37,6 @@ public class AuthenticationFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
-
-        if (req.getRequestURI().equals(URL)) {
 
             CachedBodyHttpServletRequest cachedBodyHttpServletRequest = new CachedBodyHttpServletRequest(req);
             String json = cachedBodyHttpServletRequest.getReader()
@@ -67,7 +60,6 @@ public class AuthenticationFilter implements Filter {
             //  Прикольно поразбираться с этим
             HttpSession session = req.getSession(true);
             session.setAttribute("SPRING_SECURITY_CONTEXT", context);
-        }
 
         chain.doFilter(request, response);
     }
