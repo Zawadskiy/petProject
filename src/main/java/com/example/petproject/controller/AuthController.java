@@ -40,6 +40,7 @@ public class AuthController {
     @PostMapping("/signin")
     // TODO: 22.06.2023 заглушка? вроде же можно сделать без явного определения в контроллере.
     //  Просто указать в секьюрити конфиге урл для логина
+    // TODO: 29.06.2023 несовпадение имени метода и класса-реквеста. Лучше именовать однообразно
     public ResponseEntity<String> signIn(@RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -72,6 +72,7 @@ public class WebSecurityConfig {
 
         http.csrf().disable();
 
+        // TODO: 29.06.2023 каждый параметр на новой строке было бы удобнее. Или вообще сделать фильтр бином
         http.addFilterAfter(new AuthenticationFilter(context.getBean(AuthenticationManager.class), context.getBean(ObjectMapper.class)),
                 BasicAuthenticationFilter.class);
 
