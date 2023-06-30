@@ -35,13 +35,14 @@ public class DormitoryRequestConverter implements Converter<DormitoryRequest, Do
     //  Отдельный вопрос - нужно ли сетать объект на уровне конвертера из реквеста.
     //  Мб имеет смысл делать на уровне сервиса
     public List<Dormitory> convert(List<DormitoryRequest> source) {
-
+// TODO: 29.06.2023 не везде поправил это
         Map<Long, University> universities = source.stream()
                 .map(DormitoryRequest::getUniversity)
                 .distinct()
                 .collect(Collectors.toMap(Function.identity(), universityService::getUniversity));
 
         return source.stream()
+                // TODO: 29.06.2023 dreq? Можно было бы здесь и извлекать из мапы универ
                 .map(dreq -> mapToDormitory(dreq, universities))
                 .toList();
     }

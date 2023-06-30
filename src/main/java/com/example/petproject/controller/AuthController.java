@@ -47,7 +47,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@Valid @RequestBody SignupRequest signupRequest) {
-
+// TODO: 29.06.2023 неудачное название переменной
         User convert = signupConverter.convert(signupRequest);
 
         userService.create(convert);

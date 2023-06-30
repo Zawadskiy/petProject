@@ -42,7 +42,9 @@ public class SignupRequestConverter implements Converter<SignupRequest, User> {
 
         user.setName(user.getName());
         user.setUsername(signupRequest.getUsername());
+        // TODO: 29.06.2023 это логика сервиса
         user.setPassword(encoder.encode(signupRequest.getPassword()));
+        // TODO: 29.06.2023 почему роль - не константа?
         user.setRole(roleService.getByName("ROLE_USER"));
 
         return user;
