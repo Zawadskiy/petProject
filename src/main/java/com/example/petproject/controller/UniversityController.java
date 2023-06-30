@@ -1,7 +1,7 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.converter.Converter;
-import com.example.petproject.domain.User;
+import com.example.petproject.converter.UniversityConverter;
+import com.example.petproject.converter.UniversityRequestConverter;
 import com.example.petproject.dto.request.modify.UniversityRequest;
 import com.example.petproject.dto.response.UniversityResponse;
 import com.example.petproject.domain.University;
@@ -15,35 +15,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/universities")
 public class UniversityController {
 
     private final UniversityService universityService;
 
-    private final Converter<UniversityRequest, University> universityConverter;
-    private final Converter<University, UniversityResponse> responseConverter;
+    private final UniversityRequestConverter universityRequestConverter;
+    private final UniversityConverter universityConverter;
 
     @Autowired
     public UniversityController(UniversityService universityService,
-                          Converter<UniversityRequest, University> universityConverter,
-                          Converter<University, UniversityResponse> responseConverter) {
+                                UniversityRequestConverter universityRequestConverter,
+                                UniversityConverter universityConverter) {
         this.universityService = universityService;
+        this.universityRequestConverter = universityRequestConverter;
         this.universityConverter = universityConverter;
-        this.responseConverter = responseConverter;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UniversityResponse> update(@Valid @RequestBody UniversityRequest request, @PathVariable long id) {
 
-        University convert = universityConverter.convert(request);
-        convert.setId(id);
+        University university = universityRequestConverter.convert(request, id);
+        University updatedUniversity = universityService.update(university);
 
-        University update = universityService.update(convert);
-
-        return new ResponseEntity<>(responseConverter.convert(update), HttpStatus.OK);
+        return new ResponseEntity<>(universityConverter.convert(updatedUniversity), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -51,17 +47,17 @@ public class UniversityController {
 
         University University = universityService.getUniversity(id);
 
-        return new ResponseEntity<>(responseConverter.convert(University), HttpStatus.OK);
+        return new ResponseEntity<>(universityConverter.convert(University), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<UniversityResponse> create(@Valid @RequestBody UniversityRequest request) {
 
-        University convert = universityConverter.convert(request);
+        University convert = universityRequestConverter.convert(request);
 
         University university = universityService.create(convert);
 
-        return new ResponseEntity<>(responseConverter.convert(university), HttpStatus.CREATED);
+        return new ResponseEntity<>(universityConverter.convert(university), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

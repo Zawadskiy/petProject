@@ -8,11 +8,20 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class UniversityRequestConverter implements Converter<UniversityRequest, University> {
+public class UniversityRequestConverter implements ConverterEx<UniversityRequest, University> {
 
     @Override
     public University convert(UniversityRequest source) {
         return convert(Collections.singletonList(source)).get(0);
+    }
+
+    @Override
+    public University convert(UniversityRequest source, long id) {
+
+        University university = convert(source);
+        university.setId(id);
+
+        return university;
     }
 
     @Override

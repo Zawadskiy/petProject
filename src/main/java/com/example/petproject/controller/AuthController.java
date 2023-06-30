@@ -40,17 +40,16 @@ public class AuthController {
     @PostMapping("/signin")
     // TODO: 22.06.2023 заглушка? вроде же можно сделать без явного определения в контроллере.
     //  Просто указать в секьюрити конфиге урл для логина
-    // TODO: 29.06.2023 несовпадение имени метода и класса-реквеста. Лучше именовать однообразно
-    public ResponseEntity<String> signIn(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@Valid @RequestBody SignupRequest signupRequest) {
-// TODO: 29.06.2023 неудачное название переменной
-        User convert = signupConverter.convert(signupRequest);
 
-        userService.create(convert);
+        User user = signupConverter.convert(signupRequest);
+
+        userService.create(user);
 
         return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
     }

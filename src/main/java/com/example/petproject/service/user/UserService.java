@@ -16,4 +16,6 @@ public interface UserService {
     void delete(long id);
 
     Page<User> getAll(Pageable pageable);
+
+    String encode(CharSequence rawPassword);
 }

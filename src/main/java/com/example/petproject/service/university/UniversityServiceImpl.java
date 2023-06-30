@@ -20,7 +20,7 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public University getUniversity(long id) {
-        return universityRepository.findByIdCustom(id);
+        return universityRepository.findByIdEx(id);
     }
 
     @Override

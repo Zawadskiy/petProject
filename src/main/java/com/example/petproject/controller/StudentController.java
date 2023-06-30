@@ -1,6 +1,8 @@
 package com.example.petproject.controller;
 
 import com.example.petproject.converter.Converter;
+import com.example.petproject.converter.StudentConverter;
+import com.example.petproject.converter.StudentRequestConverter;
 import com.example.petproject.dto.request.modify.StudentRequest;
 import com.example.petproject.dto.response.StudentResponse;
 import com.example.petproject.domain.Student;
@@ -14,34 +16,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
 
-    private final Converter<StudentRequest, Student> studentConverter;
-    private final Converter<Student, StudentResponse> responseConverter;
+    private final StudentRequestConverter studentRequestConverter;
+    private final StudentConverter studentConverter;
 
     @Autowired
     public StudentController(StudentService studentService,
-                             Converter<StudentRequest, Student> studentConverter,
-                             Converter<Student, StudentResponse> responseConverter) {
+                             StudentRequestConverter studentRequestConverter,
+                             StudentConverter studentConverter) {
         this.studentService = studentService;
+        this.studentRequestConverter = studentRequestConverter;
         this.studentConverter = studentConverter;
-        this.responseConverter = responseConverter;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<StudentResponse> update(@Valid @RequestBody StudentRequest request, @PathVariable long id) {
 
-        Student convert = studentConverter.convert(request);
-        convert.setId(id);
+        Student student = studentRequestConverter.convert(request, id);
+        Student updatedStudent = studentService.update(student);
 
-        Student update = studentService.update(convert);
-
-        return new ResponseEntity<>(responseConverter.convert(update), HttpStatus.OK);
+        return new ResponseEntity<>(studentConverter.convert(updatedStudent), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -49,17 +47,17 @@ public class StudentController {
 
         Student student = studentService.getStudent(id);
 
-        return new ResponseEntity<>(responseConverter.convert(student), HttpStatus.OK);
+        return new ResponseEntity<>(studentConverter.convert(student), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<StudentResponse> create(@Valid @RequestBody StudentRequest request) {
 
-        Student convert = studentConverter.convert(request);
+        Student convert = studentRequestConverter.convert(request);
 
         Student student = studentService.create(convert);
 
-        return new ResponseEntity<>(responseConverter.convert(student), HttpStatus.CREATED);
+        return new ResponseEntity<>(studentConverter.convert(student), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

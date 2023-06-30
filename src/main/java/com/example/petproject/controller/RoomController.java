@@ -1,6 +1,7 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.converter.Converter;
+import com.example.petproject.converter.RoomConverter;
+import com.example.petproject.converter.RoomRequestConverter;
 import com.example.petproject.domain.Room;
 import com.example.petproject.dto.request.modify.RoomRequest;
 import com.example.petproject.dto.response.RoomResponse;
@@ -14,35 +15,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/rooms")
 public class RoomController {
 
     private final RoomService roomService;
 
-    private final Converter<RoomRequest, Room> roomConverter;
-    private final Converter<Room, RoomResponse> responseConverter;
+    private final RoomRequestConverter roomRequestConverter;
+    private final RoomConverter roomConverter;
 
     @Autowired
     public RoomController(RoomService roomService,
-                          Converter<RoomRequest, Room> roomConverter,
-                          Converter<Room, RoomResponse> responseConverter) {
+                          RoomRequestConverter roomRequestConverter,
+                          RoomConverter roomConverter) {
         this.roomService = roomService;
+        this.roomRequestConverter = roomRequestConverter;
         this.roomConverter = roomConverter;
-        this.responseConverter = responseConverter;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RoomResponse> update(@Valid @RequestBody RoomRequest request, @PathVariable long id) {
 
-        Room convert = roomConverter.convert(request);
-        convert.setId(id);
+        Room room = roomRequestConverter.convert(request, id);
+        Room updatedRoom = roomService.update(room);
 
-        Room update = roomService.update(convert);
-
-        return new ResponseEntity<>(responseConverter.convert(update), HttpStatus.OK);
+        return new ResponseEntity<>(roomConverter.convert(updatedRoom), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -50,17 +47,17 @@ public class RoomController {
 
         Room room = roomService.getRoom(id);
 
-        return new ResponseEntity<>(responseConverter.convert(room), HttpStatus.OK);
+        return new ResponseEntity<>(this.roomConverter.convert(room), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<RoomResponse> create(@Valid @RequestBody RoomRequest request) {
 
-        Room convert = roomConverter.convert(request);
+        Room convert = roomRequestConverter.convert(request);
 
         Room room = roomService.create(convert);
 
-        return new ResponseEntity<>(responseConverter.convert(room), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.roomConverter.convert(room), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

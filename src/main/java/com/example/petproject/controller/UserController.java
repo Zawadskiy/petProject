@@ -1,6 +1,7 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.converter.Converter;
+import com.example.petproject.converter.UserConverter;
+import com.example.petproject.converter.UserRequestConverter;
 import com.example.petproject.dto.request.modify.UserRequest;
 import com.example.petproject.dto.response.UserResponse;
 import com.example.petproject.domain.User;
@@ -14,34 +15,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
-    private final Converter<UserRequest, User> userConverter;
-    private final Converter<User, UserResponse> responseConverter;
+    private final UserRequestConverter userRequestConverter;
+    private final UserConverter userConverter;
 
     @Autowired
     public UserController(UserService userService,
-                                Converter<UserRequest, User> userConverter,
-                                Converter<User, UserResponse> responseConverter) {
+                          UserRequestConverter userRequestConverter,
+                          UserConverter userConverter) {
         this.userService = userService;
+        this.userRequestConverter = userRequestConverter;
         this.userConverter = userConverter;
-        this.responseConverter = responseConverter;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> update(@Valid @RequestBody UserRequest request, @PathVariable long id) {
 
-        User convert = userConverter.convert(request);
-        convert.setId(id);
+        User user = userRequestConverter.convert(request, id);
+        User updatedUser = userService.update(user);
 
-        User update = userService.update(convert);
-
-        return new ResponseEntity<>(responseConverter.convert(update), HttpStatus.OK);
+        return new ResponseEntity<>(userConverter.convert(updatedUser), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -49,17 +46,17 @@ public class UserController {
 
         User user = userService.getUser(id);
 
-        return new ResponseEntity<>(responseConverter.convert(user), HttpStatus.OK);
+        return new ResponseEntity<>(userConverter.convert(user), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> create(@Valid @RequestBody UserRequest request) {
 
-        User convert = userConverter.convert(request);
+        User convert = userRequestConverter.convert(request);
 
         User user = userService.create(convert);
 
-        return new ResponseEntity<>(responseConverter.convert(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userConverter.convert(user), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

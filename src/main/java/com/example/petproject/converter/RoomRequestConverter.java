@@ -1,5 +1,7 @@
 package com.example.petproject.converter;
 
+import com.example.petproject.domain.University;
+import com.example.petproject.dto.request.modify.DormitoryRequest;
 import com.example.petproject.dto.request.modify.RoomRequest;
 import com.example.petproject.domain.Dormitory;
 import com.example.petproject.domain.Room;
@@ -8,9 +10,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
-public class RoomRequestConverter implements Converter<RoomRequest, Room> {
+public class RoomRequestConverter implements ConverterEx<RoomRequest, Room> {
 
     private final DormitoryService dormitoryService;
 
@@ -24,13 +29,28 @@ public class RoomRequestConverter implements Converter<RoomRequest, Room> {
     }
 
     @Override
+    public Room convert(RoomRequest source, long id) {
+
+        Room room = convert(source);
+        room.setId(id);
+
+        return room;
+    }
+
+    @Override
     public List<Room> convert(List<RoomRequest> source) {
+
+        Map<Long, Dormitory> dormitories = source.stream()
+                .map(RoomRequest::getDormitory)
+                .distinct()
+                .collect(Collectors.toMap(Function.identity(), dormitoryService::getDormitory));
+
         return source.stream()
-                .map(this::mapToRoom)
+                .map(request -> mapToRoom(request, dormitories.get(request.getDormitory())))
                 .toList();
     }
 
-    private Room mapToRoom(RoomRequest roomRequest) {
+    private Room mapToRoom(RoomRequest roomRequest, Dormitory dormitory) {
 
         Room room = new Room();
 
@@ -38,8 +58,6 @@ public class RoomRequestConverter implements Converter<RoomRequest, Room> {
         room.setCapacity(roomRequest.getCapacity());
         room.setAvailabilityForAccommodation(roomRequest.isAvailabilityForAccommodation());
         room.setResidentsGender(roomRequest.getResidentsGender());
-
-        Dormitory dormitory = dormitoryService.getDormitory(roomRequest.getDormitory());
         room.setDormitory(dormitory);
 
         return room;

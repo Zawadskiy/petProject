@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class DormitoryRequestConverter implements Converter<DormitoryRequest, Dormitory> {
+public class DormitoryRequestConverter implements ConverterEx<DormitoryRequest, Dormitory> {
 
     private final UniversityService universityService;
 
@@ -29,34 +29,38 @@ public class DormitoryRequestConverter implements Converter<DormitoryRequest, Do
     }
 
     @Override
-    // TODO: 22.06.2023 т.е. для каждой общаги ты делаешь запрос н аунивер в бд. Смысл?
-    //  Можно по списку общаг получить мапу айди универа-универ и дальше раскидать из нее.
-    //  Получится константное число запросов, а не как сейчас.
-    //  Отдельный вопрос - нужно ли сетать объект на уровне конвертера из реквеста.
-    //  Мб имеет смысл делать на уровне сервиса
+    public Dormitory convert(DormitoryRequest source, long id) {
+
+        Dormitory dormitory = convert(source);
+        dormitory.setId(id);
+
+        return dormitory;
+    }
+
+    @Override
     public List<Dormitory> convert(List<DormitoryRequest> source) {
-// TODO: 29.06.2023 не везде поправил это
+
         Map<Long, University> universities = source.stream()
                 .map(DormitoryRequest::getUniversity)
                 .distinct()
                 .collect(Collectors.toMap(Function.identity(), universityService::getUniversity));
 
         return source.stream()
-                // TODO: 29.06.2023 dreq? Можно было бы здесь и извлекать из мапы универ
-                .map(dreq -> mapToDormitory(dreq, universities))
+                .map(request -> mapToDormitory(request, universities.get(request.getUniversity())))
                 .toList();
     }
 
-    private Dormitory mapToDormitory(DormitoryRequest source, Map<Long, University> universities) {
+    private Dormitory mapToDormitory(DormitoryRequest source, University university) {
 
         Dormitory dormitory = new Dormitory();
 
         dormitory.setNumberOfRooms(source.getNumberOfRooms());
         dormitory.setNumber(source.getNumber());
         dormitory.setAvailabilityForAccommodation(source.isAvailabilityForAccommodation());
-
-        dormitory.setUniversity(universities.get(source.getUniversity()));
+        dormitory.setUniversity(university);
 
         return dormitory;
     }
+
+
 }

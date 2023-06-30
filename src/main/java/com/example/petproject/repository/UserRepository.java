@@ -4,7 +4,7 @@ import com.example.petproject.domain.User;
 
 import java.util.Optional;
 
-public interface UserRepository extends CustomRepo<User, Long> {
+public interface UserRepository extends CustomRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 

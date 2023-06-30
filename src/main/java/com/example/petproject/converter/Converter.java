@@ -2,6 +2,7 @@ package com.example.petproject.converter;
 
 import org.springframework.data.domain.Page;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.Collection;
 import java.util.List;
 

@@ -66,18 +66,23 @@ public class WebSecurityConfig {
     @Order(1)
     public SecurityFilterChain authenticationFilterChain(HttpSecurity http) throws Exception {
 
-        http.securityMatcher("/auth/signin")
+        http.securityMatcher("/auth")
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/signin").permitAll();
+                .requestMatchers("/auth").permitAll();
 
         http.csrf().disable();
 
-        // TODO: 29.06.2023 каждый параметр на новой строке было бы удобнее. Или вообще сделать фильтр бином
-        http.addFilterAfter(new AuthenticationFilter(context.getBean(AuthenticationManager.class), context.getBean(ObjectMapper.class)),
+        http.addFilterAfter(
+                new AuthenticationFilter(context.getBean(AuthenticationManager.class), context.getBean(ObjectMapper.class)),
                 BasicAuthenticationFilter.class);
 
         http.authenticationProvider(authenticationProvider());
 
         return http.build();
+    }
+
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
     }
 }

@@ -4,6 +4,6 @@ import com.example.petproject.domain.Role;
 
 import java.util.Optional;
 
-public interface RoleRepository extends CustomRepo<Role, Long> {
+public interface RoleRepository extends CustomRepository<Role, Long> {
     Optional<Role> findByName(String name);
 }

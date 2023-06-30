@@ -19,7 +19,7 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     @Override
     public Dormitory getDormitory(long id) {
-        return dormitoryRepository.findByIdCustom(id);
+        return dormitoryRepository.findByIdEx(id);
     }
 
     @Override

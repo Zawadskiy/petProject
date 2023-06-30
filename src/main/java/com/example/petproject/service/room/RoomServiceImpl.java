@@ -20,7 +20,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room getRoom(long id) {
-        return roomRepository.findByIdCustom(id);
+        return roomRepository.findByIdEx(id);
     }
 
     @Override
