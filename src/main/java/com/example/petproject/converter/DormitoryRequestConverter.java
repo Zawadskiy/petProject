@@ -61,6 +61,6 @@ public class DormitoryRequestConverter implements ConverterEx<DormitoryRequest, 
 
         return dormitory;
     }
-
+// TODO: 08.07.2023 пустые строки?
 
 }

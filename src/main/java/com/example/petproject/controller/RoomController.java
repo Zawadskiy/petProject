@@ -57,6 +57,7 @@ public class RoomController {
 
         Room room = roomService.create(convert);
 
+        // TODO: 08.07.2023 зачем this?
         return new ResponseEntity<>(this.roomConverter.convert(room), HttpStatus.CREATED);
     }
 

@@ -18,6 +18,7 @@ public class Dormitory {
     @JoinColumn(name = "university_id")
     private University university;
 
+    // TODO: 08.07.2023 я имел ввиду и поле, и колонку) колонки, опять же, snake_case
     @Column(name = "accommodationAvailability")
     private boolean availabilityForAccommodation;
 

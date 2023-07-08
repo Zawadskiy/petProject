@@ -72,6 +72,7 @@ public class WebSecurityConfig {
 
         http.csrf().disable();
 
+        // TODO: 08.07.2023 не исправил же:)
         http.addFilterAfter(
                 new AuthenticationFilter(context.getBean(AuthenticationManager.class), context.getBean(ObjectMapper.class)),
                 BasicAuthenticationFilter.class);
@@ -81,6 +82,7 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    // TODO: 08.07.2023 в какой-то отдельный конфиг. При чем тут секьюрити?) и зачем здесь get?
     @Bean
     public ObjectMapper getObjectMapper() {
         return new ObjectMapper();

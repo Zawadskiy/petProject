@@ -32,6 +32,7 @@ public class AuthenticationFilter extends GenericFilterBean {
         this.objectMapper = objectMapper;
     }
 
+    // TODO: 08.07.2023 параметры в одну строку, throws на следующей?
     @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
