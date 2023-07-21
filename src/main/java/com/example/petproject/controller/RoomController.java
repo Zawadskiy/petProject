@@ -47,7 +47,7 @@ public class RoomController {
 
         Room room = roomService.getRoom(id);
 
-        return new ResponseEntity<>(this.roomConverter.convert(room), HttpStatus.OK);
+        return new ResponseEntity<>(roomConverter.convert(room), HttpStatus.OK);
     }
 
     @PostMapping
@@ -57,8 +57,7 @@ public class RoomController {
 
         Room room = roomService.create(convert);
 
-        // TODO: 08.07.2023 зачем this?
-        return new ResponseEntity<>(this.roomConverter.convert(room), HttpStatus.CREATED);
+        return new ResponseEntity<>(roomConverter.convert(room), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

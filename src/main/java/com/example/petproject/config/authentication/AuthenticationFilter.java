@@ -1,4 +1,4 @@
-package com.example.petproject.config;
+package com.example.petproject.config.authentication;
 
 
 import com.example.petproject.dto.request.LoginRequest;
@@ -10,7 +10,6 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,17 +25,17 @@ public class AuthenticationFilter extends GenericFilterBean {
 
     private final ObjectMapper objectMapper;
 
+    private final static String SPRING_SECURITY_CONTEXT =  "SPRING_SECURITY_CONTEXT";
+
     public AuthenticationFilter(AuthenticationManager authenticationManager,
                                 ObjectMapper objectMapper) {
         this.authenticationManager = authenticationManager;
         this.objectMapper = objectMapper;
     }
 
-    // TODO: 08.07.2023 параметры в одну строку, throws на следующей?
     @Override
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
@@ -61,7 +60,7 @@ public class AuthenticationFilter extends GenericFilterBean {
             // TODO: 22.06.2023 просто на потыкать. Можно сессии в каком-нить редисе хранить.
             //  Прикольно поразбираться с этим
             HttpSession session = req.getSession(true);
-            session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+            session.setAttribute(SPRING_SECURITY_CONTEXT, context);
 
         chain.doFilter(request, response);
     }

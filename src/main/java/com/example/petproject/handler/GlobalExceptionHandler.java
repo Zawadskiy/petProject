@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -46,17 +46,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
 
-        List<String> errors = new ArrayList<>();
 
-        ex.getBindingResult()
-                .getFieldErrors()
-                // TODO: 23.06.2023 сайд эффекты - это не очень круто)
-                //  я бы подумал насчет получения двух списков из стримов и дальнейшего их слияния
-                .forEach(error -> errors.add(error.getField() + ": " + error.getDefaultMessage()));
+        List<String> errors = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .map(error -> String.format("%s : %s", error.getField(), error.getDefaultMessage()))
+                .collect(Collectors.toList());
 
-        ex.getBindingResult()
-                .getGlobalErrors()
-                .forEach(error -> errors.add(error.getObjectName() + ": " + error.getDefaultMessage()));
+        List<String> globalErrors = ex.getBindingResult().getGlobalErrors()
+                .stream()
+                .map(error -> String.format("%s : %s", error.getObjectName(), error.getDefaultMessage()))
+                .toList();
+
+        errors.addAll(globalErrors);
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
 

@@ -34,7 +34,7 @@ public class DormitoryConverter implements Converter<Dormitory, DormitoryRespons
 
         dormitoryDto.setNumber(source.getNumber());
         dormitoryDto.setNumberOfRooms(source.getNumberOfRooms());
-        dormitoryDto.setAvailabilityForAccommodation(source.isAvailabilityForAccommodation());
+        dormitoryDto.setAvailabilityForAccommodation(source.isAccommodationAvailability());
 
         return dormitoryDto;
     }

@@ -8,12 +8,11 @@ services:
     - 'POSTGRES_USER=admin'
     - 'POSTGRES_PASSWORD=admin'
     - 'POSTGRES_DB=pet'
-
     ports:
-    - 5432:5432
+    - "5432:5432"
 
   app:
     build: ./
     container_name: 'java-pet-app'
     ports:
-    - 8080:8080
+    - "8080:8080"

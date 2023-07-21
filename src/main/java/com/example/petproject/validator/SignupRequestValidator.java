@@ -5,7 +5,6 @@ import com.example.petproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
@@ -26,10 +25,9 @@ public class SignupRequestValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
-        // TODO: 23.06.2023 почему не анноташками?
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "username is required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "name is required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password is required");
+        if (errors.hasErrors()) {
+            return;
+        }
 
         if (target instanceof SignupRequest request) {
             if (userRepository.existsByUsername(request.getUsername())) {

@@ -56,11 +56,9 @@ public class DormitoryRequestConverter implements ConverterEx<DormitoryRequest, 
 
         dormitory.setNumberOfRooms(source.getNumberOfRooms());
         dormitory.setNumber(source.getNumber());
-        dormitory.setAvailabilityForAccommodation(source.isAvailabilityForAccommodation());
+        dormitory.setAccommodationAvailability(source.isAvailabilityForAccommodation());
         dormitory.setUniversity(university);
 
         return dormitory;
     }
-// TODO: 08.07.2023 пустые строки?
-
 }

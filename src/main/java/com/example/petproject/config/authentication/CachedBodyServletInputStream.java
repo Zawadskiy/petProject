@@ -1,4 +1,4 @@
-package com.example.petproject.config;
+package com.example.petproject.config.authentication;
 
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;

@@ -37,6 +37,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public Student update(Student update) {
+
+        Student student = studentRepository.findByIdEx(update.getId());
+        student.setDormitory(update.getDormitory());
+        student.setName(update.getName());
+        student.setRoom(update.getRoom());
+        student.setUniversity(update.getUniversity());
+        student.setLiveInDormitory(update.isLiveInDormitory());
+//        student.setDeductionDate(update.getDeductionDate());
+//        student.setAdmissionYear(update.getAdmissionYear());
+
         return studentRepository.save(update);
     }
 

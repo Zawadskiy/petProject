@@ -1,6 +1,6 @@
 package com.example.petproject.config.security;
 
-import com.example.petproject.config.AuthenticationFilter;
+import com.example.petproject.config.authentication.AuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -55,6 +55,7 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests()
+                .requestMatchers("/auth/signup").permitAll()
                 .requestMatchers("/**").authenticated()
                 .and()
                 .csrf().disable();
@@ -66,25 +67,21 @@ public class WebSecurityConfig {
     @Order(1)
     public SecurityFilterChain authenticationFilterChain(HttpSecurity http) throws Exception {
 
-        http.securityMatcher("/auth")
+        http.securityMatcher("/auth/signin")
                 .authorizeHttpRequests()
-                .requestMatchers("/auth").permitAll();
+                .requestMatchers("/auth/signin").permitAll();
+//                .and().formLogin()
+//                .loginPage("/auth/signin");
 
         http.csrf().disable();
 
-        // TODO: 08.07.2023 не исправил же:)
-        http.addFilterAfter(
-                new AuthenticationFilter(context.getBean(AuthenticationManager.class), context.getBean(ObjectMapper.class)),
+        http.addFilterAfter(new AuthenticationFilter(
+                        context.getBean(AuthenticationManager.class),
+                        context.getBean(ObjectMapper.class)),
                 BasicAuthenticationFilter.class);
 
         http.authenticationProvider(authenticationProvider());
 
         return http.build();
-    }
-
-    // TODO: 08.07.2023 в какой-то отдельный конфиг. При чем тут секьюрити?) и зачем здесь get?
-    @Bean
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
     }
 }

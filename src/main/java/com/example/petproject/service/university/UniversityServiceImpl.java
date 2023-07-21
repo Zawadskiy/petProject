@@ -31,6 +31,11 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     @Transactional
     public University update(University update) {
+
+        University university = universityRepository.findByIdEx(update.getId());
+        university.setName(update.getName());
+        university.setStudyDuration(update.getStudyDuration());
+
         return universityRepository.save(update);
     }
 

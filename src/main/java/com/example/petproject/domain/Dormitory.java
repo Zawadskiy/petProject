@@ -18,9 +18,8 @@ public class Dormitory {
     @JoinColumn(name = "university_id")
     private University university;
 
-    // TODO: 08.07.2023 я имел ввиду и поле, и колонку) колонки, опять же, snake_case
-    @Column(name = "accommodationAvailability")
-    private boolean availabilityForAccommodation;
+    @Column(name = "accommodation_availability")
+    private boolean accommodationAvailability;
 
     public long getId() {
         return id;
@@ -54,12 +53,12 @@ public class Dormitory {
         this.university = university;
     }
 
-    public boolean isAvailabilityForAccommodation() {
-        return availabilityForAccommodation;
+    public boolean isAccommodationAvailability() {
+        return accommodationAvailability;
     }
 
-    public void setAvailabilityForAccommodation(boolean availabilityForAccommodation) {
-        this.availabilityForAccommodation = availabilityForAccommodation;
+    public void setAccommodationAvailability(boolean accommodationAvailability) {
+        this.accommodationAvailability = accommodationAvailability;
     }
     // TODO: 16.05.2023 как насчет служебных полей? даты создания и обновления
 }

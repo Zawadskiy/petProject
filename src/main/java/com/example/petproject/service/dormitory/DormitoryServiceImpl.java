@@ -30,6 +30,13 @@ public class DormitoryServiceImpl implements DormitoryService {
     @Override
     @Transactional
     public Dormitory update(Dormitory update) {
+
+        Dormitory dormitory = dormitoryRepository.findByIdEx(update.getId());
+        dormitory.setNumber(update.getNumber());
+        dormitory.setUniversity(update.getUniversity());
+        dormitory.setAccommodationAvailability(update.isAccommodationAvailability());
+        dormitory.setNumberOfRooms(update.getNumberOfRooms());
+
         return dormitoryRepository.save(update);
     }
 
