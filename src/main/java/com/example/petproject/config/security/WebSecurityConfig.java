@@ -75,6 +75,7 @@ public class WebSecurityConfig {
 
         http.csrf().disable();
 
+        // TODO: 28.07.2023 бины параметрами метода, а не инжект из контекста?
         http.addFilterAfter(new AuthenticationFilter(
                         context.getBean(AuthenticationManager.class),
                         context.getBean(ObjectMapper.class)),

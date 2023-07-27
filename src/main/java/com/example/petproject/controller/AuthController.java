@@ -38,6 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
+    // TODO: 28.07.2023 замечание то же. Вроде как не обязательно полноценный метод объявлять ради заглушки.
     public ResponseEntity<String> login() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
