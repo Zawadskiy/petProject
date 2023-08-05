@@ -35,8 +35,6 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
     }
 
     @Override
-    // TODO: 23.06.2023 имеет право на жизнь, но тоже есть нюансы.
-    //  Как с конвертером общаг пофиксишь - пни, нырнем тут глубже
     public Student convert(StudentRequest source) {
         return convert(Collections.singletonList(source)).get(0);
     }
@@ -53,27 +51,34 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
     @Override
     public List<Student> convert(List<StudentRequest> source) {
 
-        Map<Long, University> universities = source.stream()
+        List<Long> universities = source.stream()
                 .map(StudentRequest::getUniversity)
-                .distinct()
-                .collect(Collectors.toMap(Function.identity(), universityService::getUniversity));
+                .distinct().toList();
+        Map<Long, University> universityMap = universityService.getAllIn(universities)
+                .stream()
+                .collect(Collectors.toMap(University::getId, Function.identity()));
 
-        Map<Long, Dormitory> dormitories = source.stream()
+        List<Long> dormitories = source.stream()
                 .map(StudentRequest::getDormitory)
-                .distinct()
-                .collect(Collectors.toMap(Function.identity(), dormitoryService::getDormitory));
+                .distinct().toList();
+        Map<Long, Dormitory> dormitoryMap = dormitoryService.getAllIn(dormitories)
+                .stream()
+                .collect(Collectors.toMap(Dormitory::getId, Function.identity()));
 
-        Map<Long, Room> rooms = source.stream()
+        List<Long> rooms = source.stream()
                 .map(StudentRequest::getRoom)
-                .distinct()
-                .collect(Collectors.toMap(Function.identity(), roomService::getRoom));
+                .distinct().toList();
+        Map<Long, Room> roomMap = roomService.getAllIn(rooms)
+                .stream()
+                .collect(Collectors.toMap(Room::getId, Function.identity()));
+
 
         return source.stream()
                 .map(request -> mapToStudent(
                         request,
-                        universities.get(request.getUniversity()),
-                        dormitories.get(request.getDormitory()),
-                        rooms.get(request.getRoom())
+                        universityMap.get(request.getUniversity()),
+                        dormitoryMap.get(request.getDormitory()),
+                        roomMap.get(request.getRoom())
                 )).toList();
     }
 

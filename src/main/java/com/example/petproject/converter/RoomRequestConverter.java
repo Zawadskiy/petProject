@@ -5,6 +5,7 @@ import com.example.petproject.dto.request.modify.DormitoryRequest;
 import com.example.petproject.dto.request.modify.RoomRequest;
 import com.example.petproject.domain.Dormitory;
 import com.example.petproject.domain.Room;
+import com.example.petproject.dto.request.modify.StudentRequest;
 import com.example.petproject.service.dormitory.DormitoryService;
 import org.springframework.stereotype.Component;
 
@@ -40,13 +41,15 @@ public class RoomRequestConverter implements ConverterEx<RoomRequest, Room> {
     @Override
     public List<Room> convert(List<RoomRequest> source) {
 
-        Map<Long, Dormitory> dormitories = source.stream()
+        List<Long> dormitories = source.stream()
                 .map(RoomRequest::getDormitory)
-                .distinct()
-                .collect(Collectors.toMap(Function.identity(), dormitoryService::getDormitory));
+                .distinct().toList();
+        Map<Long, Dormitory> dormitoryMap = dormitoryService.getAllIn(dormitories)
+                .stream()
+                .collect(Collectors.toMap(Dormitory::getId, Function.identity()));
 
         return source.stream()
-                .map(request -> mapToRoom(request, dormitories.get(request.getDormitory())))
+                .map(request -> mapToRoom(request, dormitoryMap.get(request.getDormitory())))
                 .toList();
     }
 

@@ -21,11 +21,11 @@ import java.io.IOException;
 
 public class AuthenticationFilter extends GenericFilterBean {
 
+    private final static String SPRING_SECURITY_CONTEXT =  "SPRING_SECURITY_CONTEXT";
+
     private final AuthenticationManager authenticationManager;
 
     private final ObjectMapper objectMapper;
-    // TODO: 28.07.2023 обычно константы над обычными полями
-    private final static String SPRING_SECURITY_CONTEXT =  "SPRING_SECURITY_CONTEXT";
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
                                 ObjectMapper objectMapper) {

@@ -46,11 +46,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
 
-// TODO: 28.07.2023 .getFieldErrors() на след строке
-        List<String> errors = ex.getBindingResult().getFieldErrors()
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
                 .stream()
-                // TODO: 28.07.2023 "".formatted()
-                .map(error -> String.format("%s : %s", error.getField(), error.getDefaultMessage()))
+                .map(error -> "%s : %s".formatted(error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
 
         List<String> globalErrors = ex.getBindingResult().getGlobalErrors()

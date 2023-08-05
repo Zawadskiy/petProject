@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UniversityServiceImpl implements UniversityService {
 
@@ -51,5 +53,8 @@ public class UniversityServiceImpl implements UniversityService {
         universityRepository.deleteById(id);
     }
 
-
+    @Override
+    public List<University> getAllIn(List<Long> id) {
+        return universityRepository.findAllByIdIn(id);
+    }
 }

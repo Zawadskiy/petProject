@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DormitoryServiceImpl implements DormitoryService {
     private final DormitoryRepository dormitoryRepository;
@@ -50,5 +52,10 @@ public class DormitoryServiceImpl implements DormitoryService {
     @Transactional
     public void delete(long id) {
         dormitoryRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Dormitory> getAllIn(List<Long> id) {
+        return dormitoryRepository.findAllByIdIn(id);
     }
 }

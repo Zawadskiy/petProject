@@ -17,4 +17,7 @@ public interface RoomService {
     Room update(Room room);
 
     Page<Room> getAll(Pageable pageRequest);
+
+    List<Room> getAllIn(List<Long> id);
+
 }

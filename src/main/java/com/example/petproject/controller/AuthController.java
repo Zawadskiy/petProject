@@ -4,7 +4,6 @@ import com.example.petproject.converter.Converter;
 import com.example.petproject.domain.User;
 import com.example.petproject.dto.request.LoginRequest;
 import com.example.petproject.dto.request.SignupRequest;
-import com.example.petproject.dto.request.modify.UserRequest;
 import com.example.petproject.service.user.UserService;
 import com.example.petproject.validator.SignupRequestValidator;
 import jakarta.validation.Valid;

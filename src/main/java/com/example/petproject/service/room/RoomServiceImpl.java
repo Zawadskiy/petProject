@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoomServiceImpl implements RoomService {
 
@@ -52,5 +54,10 @@ public class RoomServiceImpl implements RoomService {
         room.setCapacity(update.getCapacity());
 
         return roomRepository.save(room);
+    }
+
+    @Override
+    public List<Room> getAllIn(List<Long> id) {
+        return roomRepository.findAllByIdIn(id);
     }
 }
