@@ -3,7 +3,6 @@ package com.example.petproject.repository;
 import com.example.petproject.domain.Dormitory;
 import com.example.petproject.domain.University;
 import com.example.petproject.exception.ObjectNotFoundException;
-import com.example.petproject.exception.RoleNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
@@ -14,9 +13,10 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 
 
 public class CustomRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements CustomRepository<T, ID> {
@@ -52,7 +52,8 @@ public class CustomRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> impl
         Root<T> root = query.from(type);
         List<Order> orderBy = pageable.getSort()
                 .stream()
-                .map(order -> cb.asc(root.get(order.getProperty()))).toList();
+                .map(order -> cb.asc(root.get(order.getProperty())))
+                .toList();
 
         query.select(root)
                 .orderBy(orderBy);
@@ -69,16 +70,13 @@ public class CustomRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> impl
 
     private long executeCountQuery(TypedQuery<Long> query) {
 
-        Assert.notNull(query, "TypedQuery must not be null");
+        Objects.requireNonNull(query, "TypedQuery must not be null");
 
         List<Long> totals = query.getResultList();
-        long total = 0L;
 
-        for (Long element : totals) {
-            total += element == null ? 0 : element;
-        }
-
-        return total;
+        return totals.stream()
+                .mapToLong(Long::longValue)
+                .sum();
     }
 
     private void where(CriteriaBuilder cb, Root<T> from, CriteriaQuery<T> query) {
@@ -89,7 +87,7 @@ public class CustomRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> impl
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()
-                .orElseThrow(() -> new RoleNotFoundException("User doesn't have a role"));
+                .orElseThrow(() -> new ObjectNotFoundException("User doesn't have any role"));
 
         String[] info = role.split("_");
 
@@ -99,46 +97,54 @@ public class CustomRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> impl
             }
 
             case UNIVERSITY -> {
-                switch (type.getName().toUpperCase()) {
-                    case UNIVERSITY -> {
-                        Predicate name = cb.like(cb.upper(from.get("name")), info[2]);
-                        query.where(name);
-                    }
-                    case DORMITORY, STUDENT -> {
-                        long universityId = findUniversityIdByName(info[2]);
-                        query.where(from.get("university").in(universityId));
-                    }
-                    case ROOM -> {
-                        List<Long> dormitories = findDormitoriesByUniversity(findUniversityIdByName(info[2]));
-                        query.where(from.get("dormitory").in(dormitories));
-                    }
-//                    case STUDENT -> {
-//                        long universityId = findUniversityIdByName(info[2]);
-//                        query.where(from.get("university").in(universityId));
-//                    }
-                }
+                buildQueryForUniversityRole(cb, from, query, info[2]);
             }
 
             case DORMITORY -> {
-                switch (type.getName().toUpperCase()) {
-                    case UNIVERSITY -> {
-                        throw new RuntimeException();
-                    }
-                    case DORMITORY -> {
-                        query.where(cb.like(from.get("number"), info[2]));
-                    }
-                    case ROOM -> {
-                        query.where(from.get("dormitory").in(findDormitoryByNumber(info[2])));
-                    }
-                    case STUDENT -> {
-                        long dormitory = findDormitoryByNumber(info[2]);
-                        query.where(from.get("dormitory").in(dormitory));
-                    }
-                }
+                buildQueryForDormitoryRole(cb, from, query, info[2]);
             }
+
+            default -> throw new RuntimeException();
         }
     }
 
+    private void buildQueryForUniversityRole(CriteriaBuilder cb, Root<T> from, CriteriaQuery<T> query, String universityName) {
+        switch (type.getName().toUpperCase()) {
+            case UNIVERSITY -> {
+                Predicate name = cb.like(cb.upper(from.get("name")), universityName);
+                query.where(name);
+            }
+            case DORMITORY, STUDENT -> {
+                long universityId = findUniversityIdByName(universityName);
+                query.where(from.get("university").in(universityId));
+            }
+            case ROOM -> {
+                List<Long> dormitories = findDormitoriesByUniversity(findUniversityIdByName(universityName));
+                query.where(from.get("dormitory").in(dormitories));
+            }
+            default -> throw new RuntimeException();
+        }
+    }
+
+    private void buildQueryForDormitoryRole(CriteriaBuilder cb, Root<T> from, CriteriaQuery<T> query, String dormitoryNumber) {
+        switch (type.getName().toUpperCase()) {
+            case UNIVERSITY -> {
+                throw new RuntimeException();
+            }
+            case DORMITORY -> {
+                query.where(cb.like(from.get("number"), dormitoryNumber));
+            }
+            case ROOM -> {
+                query.where(from.get("dormitory").in(findDormitoryByNumber(dormitoryNumber)));
+            }
+            case STUDENT -> {
+                long dormitory = findDormitoryByNumber(dormitoryNumber);
+                query.where(from.get("dormitory").in(dormitory));
+            }
+            default -> throw new RuntimeException();
+        }
+
+    }
     private long findUniversityIdByName(String name) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();

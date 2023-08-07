@@ -3,7 +3,6 @@ package com.example.petproject.converter;
 import com.example.petproject.domain.Dormitory;
 import com.example.petproject.domain.University;
 import com.example.petproject.dto.request.modify.DormitoryRequest;
-import com.example.petproject.dto.request.modify.StudentRequest;
 import com.example.petproject.service.university.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +42,8 @@ public class DormitoryRequestConverter implements ConverterEx<DormitoryRequest, 
 
         List<Long> universities = source.stream()
                 .map(DormitoryRequest::getUniversity)
-                .distinct().toList();
+                .distinct()
+                .toList();
         Map<Long, University> universityMap = universityService.getAllIn(universities)
                 .stream()
                 .collect(Collectors.toMap(University::getId, Function.identity()));

@@ -43,7 +43,8 @@ public class RoomRequestConverter implements ConverterEx<RoomRequest, Room> {
 
         List<Long> dormitories = source.stream()
                 .map(RoomRequest::getDormitory)
-                .distinct().toList();
+                .distinct()
+                .toList();
         Map<Long, Dormitory> dormitoryMap = dormitoryService.getAllIn(dormitories)
                 .stream()
                 .collect(Collectors.toMap(Dormitory::getId, Function.identity()));

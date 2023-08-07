@@ -53,21 +53,24 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
 
         List<Long> universities = source.stream()
                 .map(StudentRequest::getUniversity)
-                .distinct().toList();
+                .distinct()
+                .toList();
         Map<Long, University> universityMap = universityService.getAllIn(universities)
                 .stream()
                 .collect(Collectors.toMap(University::getId, Function.identity()));
 
         List<Long> dormitories = source.stream()
                 .map(StudentRequest::getDormitory)
-                .distinct().toList();
+                .distinct()
+                .toList();
         Map<Long, Dormitory> dormitoryMap = dormitoryService.getAllIn(dormitories)
                 .stream()
                 .collect(Collectors.toMap(Dormitory::getId, Function.identity()));
 
         List<Long> rooms = source.stream()
                 .map(StudentRequest::getRoom)
-                .distinct().toList();
+                .distinct()
+                .toList();
         Map<Long, Room> roomMap = roomService.getAllIn(rooms)
                 .stream()
                 .collect(Collectors.toMap(Room::getId, Function.identity()));

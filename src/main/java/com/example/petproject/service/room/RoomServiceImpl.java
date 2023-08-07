@@ -58,6 +58,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getAllIn(List<Long> id) {
-        return roomRepository.findAllByIdIn(id);
+        return roomRepository.findAllById(id);
     }
 }

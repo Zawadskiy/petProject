@@ -56,6 +56,6 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     @Override
     public List<Dormitory> getAllIn(List<Long> id) {
-        return dormitoryRepository.findAllByIdIn(id);
+        return dormitoryRepository.findAllById(id);
     }
 }

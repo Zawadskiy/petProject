@@ -55,6 +55,6 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public List<University> getAllIn(List<Long> id) {
-        return universityRepository.findAllByIdIn(id);
+        return universityRepository.findAllById(id);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.petproject.service.student;
 
 import com.example.petproject.domain.Student;
-import com.example.petproject.domain.University;
 import com.example.petproject.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +60,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getAllIn(List<Long> id) {
-        return studentRepository.findAllByIdIn(id);
+        return studentRepository.findAllById(id);
     }
 }
