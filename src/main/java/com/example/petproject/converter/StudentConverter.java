@@ -41,9 +41,8 @@ public class StudentConverter implements Converter<Student, StudentResponse> {
             studentResponse.setUniversity(student.getUniversity().getId());
         }
 
-//        @TODO
-//        studentResponse.setAdmissionYear();
-//        studentResponse.setDeductionDate();
+        studentResponse.setAdmissionYear(student.getAdmissionYear().toString());
+        studentResponse.setDeductionDate(student.getDeductionDate().toString());
 
         return studentResponse;
     }

@@ -24,13 +24,14 @@ public class AuthController {
     private final SignupRequestValidator signupRequestValidator;
 
     @InitBinder("signupRequest")
-    void initStudentValidator(WebDataBinder binder) {
+    void initSignupRequestValidator(WebDataBinder binder) {
         binder.setValidator(signupRequestValidator);
     }
 
 
     @Autowired
-    public AuthController(UserService userService, Converter<SignupRequest, User> signupConverter, SignupRequestValidator signupRequestValidator) {
+    public AuthController(UserService userService, Converter<SignupRequest,
+            User> signupConverter, SignupRequestValidator signupRequestValidator) {
         this.userService = userService;
         this.signupConverter = signupConverter;
         this.signupRequestValidator = signupRequestValidator;

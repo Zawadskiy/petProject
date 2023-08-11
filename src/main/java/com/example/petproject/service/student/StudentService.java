@@ -20,4 +20,6 @@ public interface StudentService {
     Student getStudent(long id);
 
     void delete(long id);
+
+    List<Student> getAllByRoom(long id);
 }

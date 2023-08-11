@@ -68,7 +68,6 @@ public class DormitoryController {
     }
 
     @GetMapping
-    // TODO: 16.05.2023 Не хочешь заодно фильтрацию сюда прикрутить?
     public ResponseEntity<Page<Dormitory>> getAll(@PageableDefault Pageable pageable) {
 
         Page<Dormitory> dormitories = dormitoryService.getAll(pageable);

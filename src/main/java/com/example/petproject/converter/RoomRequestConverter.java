@@ -1,11 +1,8 @@
 package com.example.petproject.converter;
 
-import com.example.petproject.domain.University;
-import com.example.petproject.dto.request.modify.DormitoryRequest;
 import com.example.petproject.dto.request.modify.RoomRequest;
 import com.example.petproject.domain.Dormitory;
 import com.example.petproject.domain.Room;
-import com.example.petproject.dto.request.modify.StudentRequest;
 import com.example.petproject.service.dormitory.DormitoryService;
 import org.springframework.stereotype.Component;
 
@@ -41,11 +38,10 @@ public class RoomRequestConverter implements ConverterEx<RoomRequest, Room> {
     @Override
     public List<Room> convert(List<RoomRequest> source) {
 
-        List<Long> dormitories = source.stream()
+        Map<Long, Dormitory> dormitoryMap = source.stream()
                 .map(RoomRequest::getDormitory)
                 .distinct()
-                .toList();
-        Map<Long, Dormitory> dormitoryMap = dormitoryService.getAllIn(dormitories)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), dormitoryService::getAllIn))
                 .stream()
                 .collect(Collectors.toMap(Dormitory::getId, Function.identity()));
 
@@ -60,7 +56,7 @@ public class RoomRequestConverter implements ConverterEx<RoomRequest, Room> {
 
         room.setNumber(roomRequest.getNumber());
         room.setCapacity(roomRequest.getCapacity());
-        room.setAvailabilityForAccommodation(roomRequest.isAvailabilityForAccommodation());
+        room.setAccommodationAvailability(roomRequest.isAvailabilityForAccommodation());
         room.setResidentsGender(roomRequest.getResidentsGender());
         room.setDormitory(dormitory);
 

@@ -51,27 +51,24 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
     @Override
     public List<Student> convert(List<StudentRequest> source) {
 
-        List<Long> universities = source.stream()
+        Map<Long, University> universityMap = source.stream()
                 .map(StudentRequest::getUniversity)
                 .distinct()
-                .toList();
-        Map<Long, University> universityMap = universityService.getAllIn(universities)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), universityService::getAllIn))
                 .stream()
                 .collect(Collectors.toMap(University::getId, Function.identity()));
 
-        List<Long> dormitories = source.stream()
+        Map<Long, Dormitory> dormitoryMap = source.stream()
                 .map(StudentRequest::getDormitory)
                 .distinct()
-                .toList();
-        Map<Long, Dormitory> dormitoryMap = dormitoryService.getAllIn(dormitories)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), dormitoryService::getAllIn))
                 .stream()
                 .collect(Collectors.toMap(Dormitory::getId, Function.identity()));
 
-        List<Long> rooms = source.stream()
+        Map<Long, Room> roomMap = source.stream()
                 .map(StudentRequest::getRoom)
                 .distinct()
-                .toList();
-        Map<Long, Room> roomMap = roomService.getAllIn(rooms)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), roomService::getAllIn))
                 .stream()
                 .collect(Collectors.toMap(Room::getId, Function.identity()));
 
@@ -95,10 +92,8 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
         student.setUniversity(university);
         student.setDormitory(dormitory);
         student.setRoom(room);
-
-//        @TODO
-//        student.setAdmissionYear();
-//        student.setDeductionDate();
+        student.setAdmissionYear(studentRequest.getAdmissionYear());
+        student.setDeductionDate(studentRequest.getDeductionDate());
 
         return student;
     }

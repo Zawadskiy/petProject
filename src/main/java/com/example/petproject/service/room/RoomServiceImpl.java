@@ -1,6 +1,7 @@
 package com.example.petproject.service.room;
 
 import com.example.petproject.domain.Room;
+import com.example.petproject.repository.DormitoryRepository;
 import com.example.petproject.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,12 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
+    private final DormitoryRepository dormitoryRepository;
 
     @Autowired
-    public RoomServiceImpl(RoomRepository roomRepository) {
+    public RoomServiceImpl(RoomRepository roomRepository, DormitoryRepository dormitoryRepository) {
         this.roomRepository = roomRepository;
+        this.dormitoryRepository = dormitoryRepository;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class RoomServiceImpl implements RoomService {
 
         Room room = roomRepository.findByIdEx(update.getId());
 
-        room.setDormitory(update.getDormitory());
+        room.setDormitory(dormitoryRepository.findByIdEx(update.getDormitory().getId()));
         room.setNumber(update.getNumber());
         room.setResidentsGender(update.getResidentsGender());
         room.setCapacity(update.getCapacity());
