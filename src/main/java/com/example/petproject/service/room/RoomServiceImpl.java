@@ -51,6 +51,7 @@ public class RoomServiceImpl implements RoomService {
 
         Room room = roomRepository.findByIdEx(update.getId());
 
+        // TODO: 18.08.2023 переменная?
         room.setDormitory(dormitoryRepository.findByIdEx(update.getDormitory().getId()));
         room.setNumber(update.getNumber());
         room.setResidentsGender(update.getResidentsGender());

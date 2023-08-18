@@ -69,6 +69,7 @@ public class WebSecurityConfig {
     @Order(1)
     public SecurityFilterChain authenticationFilterChain(HttpSecurity http, AuthenticationManager authenticationManager,
                                                          ObjectMapper objectMapper)
+//            todo: можно было throws и не переносить, как по мне
             throws Exception {
 
         http.securityMatcher("/auth/signin")

@@ -50,7 +50,7 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
 
     @Override
     public List<Student> convert(List<StudentRequest> source) {
-
+// TODO: 18.08.2023 можно в приватные методы вынести формирование мап
         Map<Long, University> universityMap = source.stream()
                 .map(StudentRequest::getUniversity)
                 .distinct()

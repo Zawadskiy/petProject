@@ -37,6 +37,7 @@ public class UserDetailsConverter implements Converter<UserDetails, UserResponse
 
         String role = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
+                // TODO: 18.08.2023 orElseThrow на след строку
                 .findAny().orElseThrow(() -> new ObjectNotFoundException("User don't have any role"));
 
         userDto.setUsername(userDetails.getUsername());

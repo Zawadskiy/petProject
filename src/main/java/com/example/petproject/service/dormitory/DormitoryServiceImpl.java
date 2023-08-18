@@ -38,6 +38,7 @@ public class DormitoryServiceImpl implements DormitoryService {
 
         Dormitory dormitory = dormitoryRepository.findByIdEx(update.getId());
         dormitory.setNumber(update.getNumber());
+        // TODO: 18.08.2023 я бы в переменную вынес параметр
         dormitory.setUniversity(universityRepository.findByIdEx(update.getUniversity().getId()));
         dormitory.setAccommodationAvailability(update.isAccommodationAvailability());
         dormitory.setNumberOfRooms(update.getNumberOfRooms());
@@ -58,6 +59,7 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
+    // TODO: 18.08.2023 как помне, getAll тоже норм имя
     public List<Dormitory> getAllIn(List<Long> id) {
         return dormitoryRepository.findAllById(id);
     }

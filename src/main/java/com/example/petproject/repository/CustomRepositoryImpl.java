@@ -108,6 +108,7 @@ public class CustomRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> impl
         }
     }
 
+    // TODO: 18.08.2023 это что за чудо?)
     private void buildQueryForUniversityRole(CriteriaBuilder cb, Root<T> from, CriteriaQuery<T> query, String universityName) {
         switch (type.getName().toUpperCase()) {
             case UNIVERSITY -> {

@@ -41,6 +41,7 @@ public class StudentConverter implements Converter<Student, StudentResponse> {
             studentResponse.setUniversity(student.getUniversity().getId());
         }
 
+        // TODO: 18.08.2023 зачем toString()?
         studentResponse.setAdmissionYear(student.getAdmissionYear().toString());
         studentResponse.setDeductionDate(student.getDeductionDate().toString());
 
