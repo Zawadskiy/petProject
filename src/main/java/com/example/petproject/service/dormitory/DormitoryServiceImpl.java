@@ -2,19 +2,24 @@ package com.example.petproject.service.dormitory;
 
 import com.example.petproject.domain.Dormitory;
 import com.example.petproject.repository.DormitoryRepository;
+import com.example.petproject.repository.UniversityRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DormitoryServiceImpl implements DormitoryService {
     private final DormitoryRepository dormitoryRepository;
+    private final UniversityRepository universityRepository;
 
     @Autowired
-    public DormitoryServiceImpl(DormitoryRepository dormitoryRepository) {
+    public DormitoryServiceImpl(DormitoryRepository dormitoryRepository, UniversityRepository universityRepository) {
         this.dormitoryRepository = dormitoryRepository;
+        this.universityRepository = universityRepository;
     }
 
     @Override
@@ -33,7 +38,8 @@ public class DormitoryServiceImpl implements DormitoryService {
 
         Dormitory dormitory = dormitoryRepository.findByIdEx(update.getId());
         dormitory.setNumber(update.getNumber());
-        dormitory.setUniversity(update.getUniversity());
+        // TODO: 18.08.2023 я бы в переменную вынес параметр
+        dormitory.setUniversity(universityRepository.findByIdEx(update.getUniversity().getId()));
         dormitory.setAccommodationAvailability(update.isAccommodationAvailability());
         dormitory.setNumberOfRooms(update.getNumberOfRooms());
 
@@ -50,5 +56,11 @@ public class DormitoryServiceImpl implements DormitoryService {
     @Transactional
     public void delete(long id) {
         dormitoryRepository.deleteById(id);
+    }
+
+    @Override
+    // TODO: 18.08.2023 как помне, getAll тоже норм имя
+    public List<Dormitory> getAllIn(List<Long> id) {
+        return dormitoryRepository.findAllById(id);
     }
 }

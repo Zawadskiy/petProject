@@ -40,13 +40,15 @@ public class DormitoryRequestConverter implements ConverterEx<DormitoryRequest, 
     @Override
     public List<Dormitory> convert(List<DormitoryRequest> source) {
 
-        Map<Long, University> universities = source.stream()
+        Map<Long, University> universityMap = source.stream()
                 .map(DormitoryRequest::getUniversity)
                 .distinct()
-                .collect(Collectors.toMap(Function.identity(), universityService::getUniversity));
+                .collect(Collectors.collectingAndThen(Collectors.toList(), universityService::getAllIn))
+                .stream()
+                .collect(Collectors.toMap(University::getId, Function.identity()));
 
         return source.stream()
-                .map(request -> mapToDormitory(request, universities.get(request.getUniversity())))
+                .map(request -> mapToDormitory(request, universityMap.get(request.getUniversity())))
                 .toList();
     }
 

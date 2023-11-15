@@ -1,6 +1,7 @@
 package com.example.petproject.service.room;
 
 import com.example.petproject.domain.Room;
+import com.example.petproject.repository.DormitoryRepository;
 import com.example.petproject.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +9,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
+    private final DormitoryRepository dormitoryRepository;
 
     @Autowired
-    public RoomServiceImpl(RoomRepository roomRepository) {
+    public RoomServiceImpl(RoomRepository roomRepository, DormitoryRepository dormitoryRepository) {
         this.roomRepository = roomRepository;
+        this.dormitoryRepository = dormitoryRepository;
     }
 
     @Override
@@ -46,11 +51,17 @@ public class RoomServiceImpl implements RoomService {
 
         Room room = roomRepository.findByIdEx(update.getId());
 
-        room.setDormitory(update.getDormitory());
+        // TODO: 18.08.2023 переменная?
+        room.setDormitory(dormitoryRepository.findByIdEx(update.getDormitory().getId()));
         room.setNumber(update.getNumber());
         room.setResidentsGender(update.getResidentsGender());
         room.setCapacity(update.getCapacity());
 
         return roomRepository.save(room);
+    }
+
+    @Override
+    public List<Room> getAllIn(List<Long> id) {
+        return roomRepository.findAllById(id);
     }
 }

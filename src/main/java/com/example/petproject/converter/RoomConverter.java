@@ -29,7 +29,7 @@ public class RoomConverter implements Converter<Room, RoomResponse> {
         roomResponse.setId(room.getId());
         roomResponse.setCapacity(room.getCapacity());
         roomResponse.setNumber(room.getNumber());
-        roomResponse.setAvailabilityForAccommodation(room.isAvailabilityForAccommodation());
+        roomResponse.setAvailabilityForAccommodation(room.isAccommodationAvailability());
         roomResponse.setResidentsGender(room.getResidentsGender());
 
         if (room.getDormitory() != null) {

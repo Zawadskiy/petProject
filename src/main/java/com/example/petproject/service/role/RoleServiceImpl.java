@@ -2,7 +2,6 @@ package com.example.petproject.service.role;
 
 import com.example.petproject.domain.Role;
 import com.example.petproject.exception.ObjectNotFoundException;
-import com.example.petproject.exception.RoleNotFoundException;
 import com.example.petproject.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role getByName(String name) {
         return roleRepository.findByName(name)
-                .orElseThrow(()-> new RoleNotFoundException(name));
+                .orElseThrow(()-> new ObjectNotFoundException(name));
     }
 }

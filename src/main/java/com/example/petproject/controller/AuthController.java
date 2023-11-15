@@ -4,7 +4,6 @@ import com.example.petproject.converter.Converter;
 import com.example.petproject.domain.User;
 import com.example.petproject.dto.request.LoginRequest;
 import com.example.petproject.dto.request.SignupRequest;
-import com.example.petproject.dto.request.modify.UserRequest;
 import com.example.petproject.service.user.UserService;
 import com.example.petproject.validator.SignupRequestValidator;
 import jakarta.validation.Valid;
@@ -25,13 +24,14 @@ public class AuthController {
     private final SignupRequestValidator signupRequestValidator;
 
     @InitBinder("signupRequest")
-    void initStudentValidator(WebDataBinder binder) {
+    void initSignupRequestValidator(WebDataBinder binder) {
         binder.setValidator(signupRequestValidator);
     }
 
 
     @Autowired
-    public AuthController(UserService userService, Converter<SignupRequest, User> signupConverter, SignupRequestValidator signupRequestValidator) {
+    public AuthController(UserService userService, Converter<SignupRequest,
+            User> signupConverter, SignupRequestValidator signupRequestValidator) {
         this.userService = userService;
         this.signupConverter = signupConverter;
         this.signupRequestValidator = signupRequestValidator;

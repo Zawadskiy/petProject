@@ -2,7 +2,6 @@ package com.example.petproject.config.authentication;
 
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
-import jakarta.transaction.NotSupportedException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

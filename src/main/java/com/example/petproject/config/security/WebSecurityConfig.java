@@ -56,7 +56,9 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/signup").permitAll()
-                .requestMatchers("/**").authenticated()
+//                .requestMatchers("/**").authenticated()
+                .requestMatchers("/**").permitAll()
+
                 .and()
                 .csrf().disable();
 
@@ -65,7 +67,10 @@ public class WebSecurityConfig {
 
     @Bean
     @Order(1)
-    public SecurityFilterChain authenticationFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain authenticationFilterChain(HttpSecurity http, AuthenticationManager authenticationManager,
+                                                         ObjectMapper objectMapper)
+//            todo: можно было throws и не переносить, как по мне
+            throws Exception {
 
         http.securityMatcher("/auth/signin")
                 .authorizeHttpRequests()
@@ -75,11 +80,7 @@ public class WebSecurityConfig {
 
         http.csrf().disable();
 
-        // TODO: 28.07.2023 бины параметрами метода, а не инжект из контекста?
-        http.addFilterAfter(new AuthenticationFilter(
-                        context.getBean(AuthenticationManager.class),
-                        context.getBean(ObjectMapper.class)),
-                BasicAuthenticationFilter.class);
+        http.addFilterAfter(new AuthenticationFilter(authenticationManager, objectMapper), BasicAuthenticationFilter.class);
 
         http.authenticationProvider(authenticationProvider());
 

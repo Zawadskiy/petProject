@@ -1,7 +1,7 @@
 package com.example.petproject.converter;
 
 import com.example.petproject.dto.response.UserResponse;
-import com.example.petproject.exception.RoleNotFoundException;
+import com.example.petproject.exception.ObjectNotFoundException;
 import com.example.petproject.service.role.RoleService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +37,8 @@ public class UserDetailsConverter implements Converter<UserDetails, UserResponse
 
         String role = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .findAny().orElseThrow(() -> new RoleNotFoundException("User don't have any role"));
+                // TODO: 18.08.2023 orElseThrow на след строку
+                .findAny().orElseThrow(() -> new ObjectNotFoundException("User don't have any role"));
 
         userDto.setUsername(userDetails.getUsername());
         userDto.setRole(roleService.getByName(role));

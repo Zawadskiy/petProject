@@ -17,8 +17,8 @@ public class Room {
 
     private int capacity;
 
-    @Column(name = "available_for_accommodation")
-    private boolean availabilityForAccommodation;
+    @Column(name = "accommodation_availability")
+    private boolean accommodationAvailability;
 
     @Enumerated(EnumType.STRING)
     private Gender residentsGender;
@@ -56,12 +56,12 @@ public class Room {
         this.capacity = capacity;
     }
 
-    public boolean isAvailabilityForAccommodation() {
-        return availabilityForAccommodation;
+    public boolean isAccommodationAvailability() {
+        return accommodationAvailability;
     }
 
-    public void setAvailabilityForAccommodation(boolean availabilityForAccommodation) {
-        this.availabilityForAccommodation = availabilityForAccommodation;
+    public void setAccommodationAvailability(boolean accommodationAvailability) {
+        this.accommodationAvailability = accommodationAvailability;
     }
 
     public Gender getResidentsGender() {

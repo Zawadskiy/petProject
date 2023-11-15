@@ -7,6 +7,7 @@ import com.example.petproject.dto.request.modify.StudentRequest;
 import com.example.petproject.dto.response.StudentResponse;
 import com.example.petproject.domain.Student;
 import com.example.petproject.service.student.StudentService;
+import com.example.petproject.validator.StudentRequestValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,13 +26,22 @@ public class StudentController {
     private final StudentRequestConverter studentRequestConverter;
     private final StudentConverter studentConverter;
 
+    private final StudentRequestValidator studentRequestValidator;
+
+    @InitBinder("studentRequest")
+    void initStudentValidator(WebDataBinder binder) {
+        binder.setValidator(studentRequestValidator);
+    }
+
     @Autowired
     public StudentController(StudentService studentService,
                              StudentRequestConverter studentRequestConverter,
-                             StudentConverter studentConverter) {
+                             StudentConverter studentConverter,
+                             StudentRequestValidator studentRequestValidator) {
         this.studentService = studentService;
         this.studentRequestConverter = studentRequestConverter;
         this.studentConverter = studentConverter;
+        this.studentRequestValidator = studentRequestValidator;
     }
 
     @PutMapping("/{id}")

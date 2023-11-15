@@ -17,4 +17,6 @@ public interface UniversityService {
     void delete(long id);
 
     Page<University> getAll(Pageable pageRequest);
+
+    List<University> getAllIn(List<Long> id);
 }

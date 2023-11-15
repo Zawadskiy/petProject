@@ -35,8 +35,6 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
     }
 
     @Override
-    // TODO: 23.06.2023 имеет право на жизнь, но тоже есть нюансы.
-    //  Как с конвертером общаг пофиксишь - пни, нырнем тут глубже
     public Student convert(StudentRequest source) {
         return convert(Collections.singletonList(source)).get(0);
     }
@@ -52,28 +50,35 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
 
     @Override
     public List<Student> convert(List<StudentRequest> source) {
-
-        Map<Long, University> universities = source.stream()
+// TODO: 18.08.2023 можно в приватные методы вынести формирование мап
+        Map<Long, University> universityMap = source.stream()
                 .map(StudentRequest::getUniversity)
                 .distinct()
-                .collect(Collectors.toMap(Function.identity(), universityService::getUniversity));
+                .collect(Collectors.collectingAndThen(Collectors.toList(), universityService::getAllIn))
+                .stream()
+                .collect(Collectors.toMap(University::getId, Function.identity()));
 
-        Map<Long, Dormitory> dormitories = source.stream()
+        Map<Long, Dormitory> dormitoryMap = source.stream()
                 .map(StudentRequest::getDormitory)
                 .distinct()
-                .collect(Collectors.toMap(Function.identity(), dormitoryService::getDormitory));
+                .collect(Collectors.collectingAndThen(Collectors.toList(), dormitoryService::getAllIn))
+                .stream()
+                .collect(Collectors.toMap(Dormitory::getId, Function.identity()));
 
-        Map<Long, Room> rooms = source.stream()
+        Map<Long, Room> roomMap = source.stream()
                 .map(StudentRequest::getRoom)
                 .distinct()
-                .collect(Collectors.toMap(Function.identity(), roomService::getRoom));
+                .collect(Collectors.collectingAndThen(Collectors.toList(), roomService::getAllIn))
+                .stream()
+                .collect(Collectors.toMap(Room::getId, Function.identity()));
+
 
         return source.stream()
                 .map(request -> mapToStudent(
                         request,
-                        universities.get(request.getUniversity()),
-                        dormitories.get(request.getDormitory()),
-                        rooms.get(request.getRoom())
+                        universityMap.get(request.getUniversity()),
+                        dormitoryMap.get(request.getDormitory()),
+                        roomMap.get(request.getRoom())
                 )).toList();
     }
 
@@ -87,10 +92,8 @@ public class StudentRequestConverter implements ConverterEx<StudentRequest, Stud
         student.setUniversity(university);
         student.setDormitory(dormitory);
         student.setRoom(room);
-
-//        @TODO
-//        student.setAdmissionYear();
-//        student.setDeductionDate();
+        student.setAdmissionYear(studentRequest.getAdmissionYear());
+        student.setDeductionDate(studentRequest.getDeductionDate());
 
         return student;
     }
